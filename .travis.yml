@@ -1,4 +1,4 @@
-language: python
-install: pip -r requirements.txt
-script:
-  - pytest
+language: ruby
+rvm:
+ - 2.2
+ - jruby
