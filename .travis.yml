@@ -5,5 +5,9 @@ before_install:
   - pip install codecov
   - pip install coverage
 
-script: True
+script: 
+  - coverage run test.py
 
+after_success:
+  - codecov
+  - bash <(curl -s https://codecov.io/bash) -t 8c281f16-f2da-4a66-aba4-3c6b63bec375 
