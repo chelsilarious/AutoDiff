@@ -15,10 +15,10 @@ For a function, even a complicated one, the computer is able to compute its deri
 
 In the graph structure of such calculation, each node is an intermediate result, and each arrow is an elementary operation. An elementary operation are such as addition, subtraction, multiplication, division, or taking exponential, log, sine, cosine, etc. An example is provided below.
 
-$f(x,y) = sin(x) - y^2$
+$$f(x,y) = sin(x) - y^2$$
 
-$v_{-1} = x, v_0 = y, v_1 = sin(v_{-1}) = sin(x)$  
-$v_2 = v_0^2 = y^2, v_3 = -v_2 = -y^2, v4 = v_1 + v_3 =  sin(x) - y^2 = f(x,y)$
+$$v_{-1} = x, v_0 = y, v_1 = sin(v_{-1}) = sin(x)$  $
+$$v_2 = v_0^2 = y^2, v_3 = -v_2 = -y^2, v4 = v_1 + v_3 =  sin(x) - y^2 = f(x,y)$$
 
 ![AD_example.png](AD_example.png)
 
