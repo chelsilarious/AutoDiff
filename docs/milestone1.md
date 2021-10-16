@@ -15,11 +15,11 @@ For a function, even a complicated one, the computer is able to compute its deri
 
 In the graph structure of such calculation, each node is an intermediate result, and each arrow is an elementary operation. An elementary operation are such as addition, subtraction, multiplication, division, or taking exponential, log, sine, cosine, etc. An example is provided below.
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;x=f(x,y) = sin(x) - y^2" title="Large x=f(x,y) = sin(x) - y^2" />
+<img src="https://latex.codecogs.com/svg.latex?f(x,y)&space;=&space;sin(x)&space;-&space;y^2,&space;\quad&space;v_{-1}&space;=&space;x,&space;\quad&space;v_0&space;=&space;y" title="f(x,y) = sin(x) - y^2, \quad v_{-1} = x, \quad v_0 = y" /></a>
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;x=v_{-1} = x, v_0 = y, v_1 = sin(v_{-1}) = sin(x)" title="Large x=v_{-1} = x, v_0 = y, v_1 = sin(v_{-1})" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;v_{-1} = x, v_0 = y, v_1 = sin(v_{-1}) = sin(x)" title="Large x=v_{-1} = x, v_0 = y, v_1 = sin(v_{-1})" />
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;x=v_2 = v_0^2 = y^2, v_3 = -v_2 = -y^2, v4 = v_1 + v_3 =  sin(x) - y^2 = f(x,y)" title="Large x=v_2 = v_0^2 = y^2, v_3 = -v_2 = -y^2, v4 = v_1 + v_3 =  sin(x) - y^2 = f(x,y)" />
+<img src="https://latex.codecogs.com/svg.latex?\begin{aligned}&space;&v_1&space;=&space;sin(v_{-1})&space;=&space;sin(x),&space;\\&space;&v_2&space;=&space;v_0^2&space;=&space;y^2,&space;\quad&space;v_3&space;=&space;-v_2&space;=&space;-y^2,&space;\quad&space;v4&space;=&space;v_1\&space;&plus;&space;\&space;v_3&space;=&space;sin(x)&space;-&space;y^2&space;=&space;f(x,&space;y)&space;\end{aligned}" title="\begin{aligned} &v_1 = sin(v_{-1}) = sin(x), \\ &v_2 = v_0^2 = y^2, \quad v_3 = -v_2 = -y^2, \quad v4 = v_1\ + \ v_3 = sin(x) - y^2 = f(x, y) \end{aligned}" /></a>
 
 ![AD_example.png](AD_example.png)
 
