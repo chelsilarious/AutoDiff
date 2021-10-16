@@ -6,7 +6,7 @@ Automatic differentiation is useful in many fields, including but not limit to:
 - Calculation of the gradient of an objective function in optimization
 - Calculation of derivatives/gradients which are parts of some numerical methods to solve differential equation systems
 
-The functions and features in this package can evaluate derivatives of specified functions and free users from manual calculation.
+The functions and features in this package can evaluate derivatives/gradients of specified expressions and free users from manual calculation.
 
 
 ## Background
