@@ -26,6 +26,41 @@ An example is provided below.
 
 ## How to use
 
+### Installation
+
+```
+python -m pip install -i https://test.pypi.org/simple/cs107_ADpackage
+```
+
+You are recommended to use the package under Python version 3.6.2 or later. 
+
+###  Demo
+
+Import package
+
+```python
+import cs107_ADpackage as ad
+```
+
+Specify problem and draw the graph structure of the automatic differentiation
+
+```python
+f = lambda x, y: np.sin(x) - y**2
+
+func = ad.objective(formula = f)
+func.comp_graph()
+```
+
+Get the first derivatives of the function
+
+```python
+inputs = {x: 5, y: 6}
+drvt = func.backward(degree=1, input=inputs)
+print(drvt)
+```
+
+
+
 ## Software Organizatoin
 
 ## Implementation
