@@ -64,7 +64,8 @@ print(drvt)
 
 #### What will the directory structure look like?
 cs107project/
-  src/
+
+src/
 
 #### What modules do you plan on including? What is their basic functionality?
 We plan on using NumPy, Matplotlib, PyTest and PyTorch. We intend to use NumPy to create matrices and perform elementary calculations, Matplotlib to properly portray our results on graphs, PyTest to run tests, and PyTorch to perform benchmarks on these tests.
