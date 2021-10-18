@@ -63,11 +63,14 @@ print(drvt)
 ## Software Organizatoin
 
 #### What will the directory structure look like?
+cs107project/
+  src/
 
 #### What modules do you plan on including? What is their basic functionality?
 - Numpy: 
 
 #### Where will your test suite live? Will you use TravisCI? CodeCov?
+Our test suite will live in TravisCI which will be in the /tests directory.
 
 #### How will you distribute your package (e.g. PyPI)?
 
