@@ -96,3 +96,4 @@ As of right now we are still working on this project, so we could potentially ma
 
 ## License
 
+The license that we decided to choose is the MIT License. We chose this license because our research showed that this license is usually the one that developers choose if they want their software to be easily accessible and quickly distributed to other developers and others in the community. We ultimately settled for this license because we believe in allowing other developers to freely use the software written for their desired purposes.
