@@ -63,19 +63,20 @@ print(drvt)
 ## Software Organizatoin
 
 #### What will the directory structure look like?
-cs107project/
 
-    src/
+     cs107project/
+
+	src/
   
-    docs/
+	docs/
   
-    tests/
+	tests/
   
-    README.md
+	README.md
   
-    LICENSE.md
+	LICENSE
   
-    .travis.yml
+	.travis.yml
 
 #### What modules do you plan on including? What is their basic functionality?
 We plan on using NumPy, Matplotlib, PyTest and PyTorch. We intend to use NumPy to create matrices and perform elementary calculations, Matplotlib to properly portray our results on graphs, PyTest to run tests, and PyTorch to perform benchmarks on these tests.
@@ -95,15 +96,18 @@ As of right now we are still working on this project, so we could potentially ma
 ## Implementation
 
 #### What are the core data structures?
+The core data structure will be the representation of the AD graph. We will also be using a structure to efficiently store the function 
 
 #### What classes will you implement?
+The most generic base class will be the Node class to accomodate for the different nodes in the AD structure.
 
 #### What method and name attributes will your classes have?
 
 #### What external dependencies will you rely on?
+We will rely on the latest version of numpy. Other required dependencies will be the latest version of matplotlib, to be used specifically for outputting the visual representation of our data structures.
 
 #### How will you deal with elementary functions like sin, sqrt, log, and exp (and all the others)?
-
+Most elementary functions can be obtained from the numpy dependency. For more niche arithmetic functions that are not included in the package (or have definitions that are different from the standard implementations), we will likely overload with our home-grown implementations.
 
 ## License
 
