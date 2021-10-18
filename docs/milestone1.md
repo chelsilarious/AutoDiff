@@ -73,10 +73,13 @@ cs107project/
 Our test suite will live in TravisCI which will be in the /tests directory.
 
 #### How will you distribute your package (e.g. PyPI)?
+We will distribute our package by uploading it to PyPI so everyone can use it.
 
 #### How will you package your software? Will you use a framework? If so, which one and why? If not, why not?
+We will not be packing out software. The code will be on GitHub and PyPI so it will be accessible by everyone.
 
 #### Other considerations?
+As of right now we are still working on this project, so we could potentially make changes to the software later.
 
 ## Implementation
 
