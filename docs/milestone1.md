@@ -62,7 +62,8 @@ print(drvt)
 
 ## Software Organizatoin
 
-#### What will the directory structure look like?
+#### Directory Structure
+
 ```
 cs107project/
     src/
@@ -73,37 +74,58 @@ cs107project/
     .travis.yml
  ```   
 
-#### What modules do you plan on including? What is their basic functionality?
-We plan on using NumPy, Matplotlib, PyTest and PyTorch. We intend to use NumPy to create matrices and perform elementary calculations, Matplotlib to properly portray our results on graphs, PyTest to run tests, and PyTorch to perform benchmarks on these tests.
+#### Included Modules and their Basic Functionality
 
-#### Where will your test suite live? Will you use TravisCI? CodeCov?
-Our test suite will live in TravisCI which will be in the /tests directory.
+We plan on using NumPy, Matplotlib, PyTest and PyTorch. We intend to use NumPy to create matrices and perform elementary calculations, Matplotlib to properly portray graphical structures of functions consisting of elementray operations, PyTest to run tests on our new code, and PyTorch to perform benchmarks on these tests.
 
-#### How will you distribute your package (e.g. PyPI)?
+#### Test Suite
+
+Our test suite will live a test file /tests directory and it will be tested by TravisCI.
+
+#### Package Distribution
+
 We will distribute our package by uploading it to PyPI so everyone can use it.
 
-#### How will you package your software? Will you use a framework? If so, which one and why? If not, why not?
+#### Notes
+
 We will not be packing out software. The code will be on GitHub and PyPI so it will be accessible by everyone.
 
-#### Other considerations?
 As of right now we are still working on this project, so we could potentially make changes to the software later.
+
 
 ## Implementation
 
-#### What are the core data structures?
-The core data structure will be the representation of the AD graph. For each node of the graph, we will also be using a structure to efficiently store the function gradient, inputs, and values.
+#### Core Data Structures
 
-#### What classes will you implement?
-The most generic base class will be the node class to accomodate for the different nodes in the AD structure. Each node class will then be extended to create more specific nodes, such as a node representing an operator or input literal, along with another node type representing a variable. We will then have a graph class that is a collection of these nodes and the edges between them that encapsulates our graph data structure.
+1. Nodes comprising variables and elementary operations
+2. Target objective function comprising nodes
+3. Forward mode AD structure containing a target objective function and forward-mode-specific attributes
+4. Backward mode AD structure containing a target objective function and backward-mode-specific attributes
 
-#### What method and name attributes will your classes have?
-Some methods that we will 
+#### Classes
 
-#### What external dependencies will you rely on?
+The most generic base class will be the `node` class to accomodate for the different nodes in the AD structure. Each node class will then be extended to create more specific nodes, such as a node representing an operator or input literal, along with another node type representing a variable. 
+
+We will then have a `objective` class that is a collection of these nodes and the edges between them that encapsulates the operations.
+
+We will also have two other classes, `forward` for forward mode AD and `backward` for backward mode AD. 
+
+#### Methods and Name Attributes
+
+The `objective` class will store the expression of the target objective function in `func`, and the nodes composing it in `node`. It will have a method `comp_graph()`  to draw the graph structure of the automatic differentiation for the specified function. 
+
+A `forward` instance will store a function and its nodes (together of the `objective` class type) in `targetFunc` and the expressions of the forward tangent trace in `trace`. It will have a method `fit()` that is able to calculate the gradients using forward mode AD based on input. 
+
+A `backward` instance will store a function and its nodes (together of the `objective` class type) in `targetFunc`, the expressions of forward partial derivatives in `forwardPD`, and the expressions of backward partial derivatives in `backwardPD`. It will have a method `fit()` that is able to calculate the gradients using backward mode AD based on input. 
+
+#### External Dependencies
+
 We will rely on the latest version of numpy. Other required dependencies will be the latest version of matplotlib, to be used specifically for outputting the visual representation of our data structures.
 
-#### How will you deal with elementary functions like sin, sqrt, log, and exp (and all the others)?
+#### How will we deal with elementary functions?
+
 Most elementary functions can be obtained from the numpy dependency. For more niche arithmetic functions that are not included in the package (or have definitions that are different from the standard implementations), we will likely overload with our home-grown implementations.
+
 
 ## License
 
