@@ -45,9 +45,9 @@ import cs107_ADpackage as ad
 Specify problem and draw the graph structure of the automatic differentiation
 
 ```python
-f = lambda x, y: np.sin(x) - y**2
+f = np.sin(x) - y**2
 
-func = ad.objective(formula = f)
+func = ad.objective(function = f)
 func.comp_graph()
 ```
 
@@ -55,7 +55,9 @@ Get the first derivatives of the function using backward propagation
 
 ```python
 inputs = {x: 5, y: 6}
-drvt = func.backward(degree=1, input=inputs)
+bw = forward(targetFunc=func)
+drvt = bw.fit(degree=1, input=inputs)
+
 print(drvt)
 ```
 
@@ -66,11 +68,13 @@ print(drvt)
 
 ```
 cs107project/
+    LICENSE
+    README.md
     src/
+        cs107_ADpackage
     docs/
     tests/
-    README.md
-    LICENSE.md
+        test.py
     .travis.yml
  ```   
 
@@ -112,7 +116,7 @@ We will also have two other classes, `forward` for forward mode AD and `backward
 
 #### Methods and Name Attributes
 
-The `objective` class will store the expression of the target objective function in `func`, and the nodes composing it in `node`. It will have a method `comp_graph()`  to draw the graph structure of the automatic differentiation for the specified function. 
+The `objective` class will store the expression of the target objective function in `function`, and the nodes composing it in `node`. It will have a method `comp_graph()`  to draw the graph structure of the automatic differentiation for the specified function. 
 
 A `forward` instance will store a function and its nodes (together of the `objective` class type) in `targetFunc` and the expressions of the forward tangent trace in `trace`. It will have a method `fit()` that is able to calculate the gradients using forward mode AD based on input. 
 
