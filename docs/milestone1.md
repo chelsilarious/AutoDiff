@@ -67,7 +67,7 @@ cs107project/
   src/
 
 #### What modules do you plan on including? What is their basic functionality?
-- Numpy: 
+We plan on using NumPy, Matplotlib, PyTest and PyTorch. We intend to use NumPy to create matrices and perform elementary calculations, Matplotlib to properly portray our results on graphs, PyTest to run tests, and PyTorch to perform benchmarks on these tests.
 
 #### Where will your test suite live? Will you use TravisCI? CodeCov?
 Our test suite will live in TravisCI which will be in the /tests directory.
