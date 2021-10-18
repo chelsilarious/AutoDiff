@@ -91,12 +91,13 @@ As of right now we are still working on this project, so we could potentially ma
 ## Implementation
 
 #### What are the core data structures?
-The core data structure will be the representation of the AD graph. We will also be using a structure to efficiently store the function 
+The core data structure will be the representation of the AD graph. For each node of the graph, we will also be using a structure to efficiently store the function gradient, inputs, and values.
 
 #### What classes will you implement?
-The most generic base class will be the Node class to accomodate for the different nodes in the AD structure.
+The most generic base class will be the node class to accomodate for the different nodes in the AD structure. Each node class will then be extended to create more specific nodes, such as a node representing an operator or input literal, along with another node type representing a variable. We will then have a graph class that is a collection of these nodes and the edges between them that encapsulates our graph data structure.
 
 #### What method and name attributes will your classes have?
+Some methods that we will 
 
 #### What external dependencies will you rely on?
 We will rely on the latest version of numpy. Other required dependencies will be the latest version of matplotlib, to be used specifically for outputting the visual representation of our data structures.
