@@ -108,7 +108,7 @@ As of right now we are still working on this project, so we could potentially ma
 
 #### Classes
 
-![classes.png](classes.png)
+![classes.png](images/classes.png)
 
 The most generic base class will be the `node` class to accomodate for the different nodes in the AD structure. Each node class will then be extended to create more specific nodes, such as a node representing an operator or input literal, along with another node type representing a variable. 
 
@@ -126,7 +126,7 @@ The `objective` class will store the expression of the target objective function
 
 A `forward` instance will store a function and its nodes (together of the `objective` class type) in `targetFunc` and the expressions of the forward tangent trace in `trace`. It will have a method `fit()` that is able to calculate the gradients using forward mode AD based on input. 
 
-![backward_class.png](images/backward_class.png)
+![reverse_class.png](images/reverse_class.png)
 
 A `backward` instance will store a function and its nodes (together of the `objective` class type) in `targetFunc`, the expressions of forward partial derivatives in `forwardPD`, and the expressions of backward partial derivatives in `backwardPD`. It will have a method `fit()` that is able to calculate the gradients using backward mode AD based on input. 
 
