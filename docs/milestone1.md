@@ -108,7 +108,7 @@ As of right now we are still working on this project, so we could potentially ma
 
 #### Classes
 
-The most generic base class will be the `node` class to accomodate for the different nodes in the AD structure. Each node class will then be extended to create more specific nodes, such as a node representing an operator or input literal, along with another node type representing a variable. 
+The most generic base class will be the `Node` class to accomodate for the different nodes in the AD structure. Each node class will then be extended to create more specific nodes in the subclasses, such as a node representing an operator `Operator` or input literal, along with another node type representing a variable `Variable`. (We may instead define a class `Dual` for dual numbers that might make AD easier.)
 
 We will then have a `objective` class that is a collection of these nodes and the edges between them that encapsulates the operations.
 
