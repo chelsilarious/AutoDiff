@@ -108,7 +108,9 @@ As of right now we are still working on this project, so we could potentially ma
 
 #### Classes
 
-The most generic base class will be the `Node` class to accomodate for the different nodes in the AD structure. Each node class will then be extended to create more specific nodes in the subclasses, such as a node representing an operator `Operator` or input literal, along with another node type representing a variable `Variable`. (We may instead define a class `Dual` for dual numbers that might make AD easier.)
+![classes.png](images/classes.png)
+
+The most generic base class will be the `node` class to accomodate for the different nodes in the AD structure. Each node class will then be extended to create more specific nodes, such as a node representing an operator or input literal, along with another node type representing a variable. 
 
 We will then have a `objective` class that is a collection of these nodes and the edges between them that encapsulates the operations.
 
@@ -116,11 +118,25 @@ We will also have two other classes, `forward` for forward mode AD and `backward
 
 #### Methods and Name Attributes
 
+![objective_class.png](images/objective_class.png)
+
 The `objective` class will store the expression of the target objective function in `function`, and the nodes composing it in `node`. It will have a method `comp_graph()`  to draw the graph structure of the automatic differentiation for the specified function. 
+
+![forward_class.png](images/forward_class.png)
 
 A `forward` instance will store a function and its nodes (together of the `objective` class type) in `targetFunc` and the expressions of the forward tangent trace in `trace`. It will have a method `fit()` that is able to calculate the gradients using forward mode AD based on input. 
 
+![reverse_class.png](images/reverse_class.png)
+
 A `backward` instance will store a function and its nodes (together of the `objective` class type) in `targetFunc`, the expressions of forward partial derivatives in `forwardPD`, and the expressions of backward partial derivatives in `backwardPD`. It will have a method `fit()` that is able to calculate the gradients using backward mode AD based on input. 
+
+![tape_entry_class.png](images/tape_entry_class.png)
+
+A `tapeEntry` instance will store the graphical structure of each node. It will have a `get_tape` method which will return the node's children as a list. It will also have a `reset_tape` method to reset the history once a node is evaluated. This will be used for reverse mode automatic differentiation.
+
+![node_class.png](images/node_class.png)
+
+A `node` instance will store the vairables in the graph as nodes. Each node will have `primal` and `tangent` as their attribute to store the primal and tangent trace. It will have basic arithmatic operations such as `sin`, `cos`, and `add`, `sub` with overrode methods for dual number. 
 
 #### External Dependencies
 
