@@ -21,7 +21,7 @@ An example is provided below.
 
 <img src="https://latex.codecogs.com/svg.latex?\begin{aligned}&space;&v_1&space;=&space;sin(v_{-1})&space;=&space;sin(x),&space;\\&space;&v_2&space;=&space;v_0^2&space;=&space;y^2,&space;\quad&space;v_3&space;=&space;-v_2&space;=&space;-y^2,&space;\quad&space;v4&space;=&space;v_1\&space;&plus;&space;\&space;v_3&space;=&space;sin(x)&space;-&space;y^2&space;=&space;f(x,&space;y)&space;\end{aligned}" title="\begin{aligned} &v_1 = sin(v_{-1}) = sin(x), \\ &v_2 = v_0^2 = y^2, \quad v_3 = -v_2 = -y^2, \quad v4 = v_1\ + \ v_3 = sin(x) - y^2 = f(x, y) \end{aligned}" /></a>
 
-![AD_example.png](AD_example.png)
+![AD_example.png](images/AD_example.png)
 
 
 ## How to use
@@ -51,7 +51,7 @@ func = ad.objective(function = f)
 func.comp_graph()
 ```
 
-Get the first derivatives of the function using backward propagation
+Get the first derivatives of the function using forward propagation
 
 ```python
 inputs = {x: 5, y: 6}
@@ -101,34 +101,34 @@ As of right now we are still working on this project, so we could potentially ma
 
 #### Core Data Structures
 
-1. Nodes comprising variables and elementary operations
+1. Nodes comprising variables and elementary operations, with basic operators overridden
 2. Target objective function comprising nodes
 3. Forward mode AD structure containing a target objective function and forward-mode-specific attributes
-4. Backward mode AD structure containing a target objective function and backward-mode-specific attributes
+4. Reverse mode AD structure containing a target objective function and reverse-mode-specific attributes
 
 #### Classes
 
 ![classes.png](images/classes.png)
 
-The most generic base class will be the `node` class to accomodate for the different nodes in the AD structure. Each node class will then be extended to create more specific nodes, such as a node representing an operator or input literal, along with another node type representing a variable. 
+The most generic base class will be the `Node` class to accomodate for the different nodes in the AD structure. Each node class will then be extended to create more specific nodes, such as a node representing an operator or input literal, along with another node type representing a variable. We will override the basic operators and elementary fucntions in this class.
 
-We will then have a `objective` class that is a collection of these nodes and the edges between them that encapsulates the operations.
+We will then have a `Objective` class that is a collection of these nodes and the edges between them that encapsulates the operations.
 
-We will also have two other classes, `forward` for forward mode AD and `backward` for backward mode AD. 
+We will also have two other classes, `Forward` for forward mode AD and `Reverse` for backward mode AD. 
 
 #### Methods and Name Attributes
 
 ![objective_class.png](images/objective_class.png)
 
-The `objective` class will store the expression of the target objective function in `function`, and the nodes composing it in `node`. It will have a method `comp_graph()`  to draw the graph structure of the automatic differentiation for the specified function. 
+The `Objective` class will store the expression of the target objective function in `function`, and the nodes composing it in `Node`. It will have a method `comp_graph()`  to draw the graph structure of the automatic differentiation for the specified function. 
 
 ![forward_class.png](images/forward_class.png)
 
-A `forward` instance will store a function and its nodes (together of the `objective` class type) in `targetFunc` and the expressions of the forward tangent trace in `trace`. It will have a method `fit()` that is able to calculate the gradients using forward mode AD based on input. 
+A `Forward` instance will store a function and its nodes (together of the `Objective` class type) in `targetFunc` and the expressions of the forward tangent trace in `trace`. It will have a method `fit()` that is able to calculate the gradients using forward mode AD based on input. 
 
 ![reverse_class.png](images/reverse_class.png)
 
-A `backward` instance will store a function and its nodes (together of the `objective` class type) in `targetFunc`, the expressions of forward partial derivatives in `forwardPD`, and the expressions of backward partial derivatives in `backwardPD`. It will have a method `fit()` that is able to calculate the gradients using backward mode AD based on input. 
+A `Reverse` instance will store a function and its nodes (together of the `Objective` class type) in `targetFunc`, the structure of the function in tapeEntry (of the `tapeEntry` class type), the expressions of forward partial derivatives in `forwardPD`, and the expressions of reverse partial derivatives in `reversePD`. It will have a method `fit()` that is able to calculate the gradients using reverse mode AD based on input. 
 
 ![tape_entry_class.png](images/tape_entry_class.png)
 
@@ -136,7 +136,7 @@ A `tapeEntry` instance will store the graphical structure of each node. It will 
 
 ![node_class.png](images/node_class.png)
 
-A `node` instance will store the vairables in the graph as nodes. Each node will have `primal` and `tangent` as their attribute to store the primal and tangent trace. It will have basic arithmatic operations such as `sin`, `cos`, and `add`, `sub` with overrode methods for dual number. 
+A `Node` instance will store the variables in the graph as nodes. Each node will have `primal` and `tangent` as their attribute to store the primal and tangent trace. It will have basic arithmatic operations such as `sin`, `cos`, and `add`, `sub` with overridden methods for dual numbers. 
 
 #### External Dependencies
 
