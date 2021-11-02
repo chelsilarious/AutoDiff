@@ -151,7 +151,7 @@ Most elementary functions can be obtained from the numpy dependency. For more ni
 
 The license that we decided to choose is the MIT License. We chose this license because our research showed that this license is usually the one that developers choose if they want their software to be easily accessible and quickly distributed to other developers and others in the community. We ultimately settled for this license because we believe in allowing other developers to freely use the software written for their desired purposes.
 
-## Milestone 1 Feedback
+## Feedback
 
 Introduction 1.5/2
 It would be better if you illustrate more about the advantages of automatic differentiation over other differencing methods like finite-difference. 
@@ -172,3 +172,7 @@ License 2/2
 Great Discussion! 
 
 Total 13.5/15
+
+## Milestone 1
+
+For the introduction, we were told to write about the advantages of automatic differentiation over other differencing methods like finite-difference. To address this comment, we added more about automatic differentiation and its advantages versus other differencing methods. 
