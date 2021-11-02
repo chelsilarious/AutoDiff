@@ -7,7 +7,7 @@ Automatic differentiation is useful in many fields, including but not limit to:
 - Calculation of derivatives/gradients which are parts of some numerical methods to solve differential equation systems
 
 Automatic differentiation is better than other differencing methods like finite-difference because it is much cheaper. Finite differences are expensive, since you need to do a forward pass for
-each derivative. Automatic differentiation is  both efficient (linear in the cost of computing the value) and numerically stable.
+each derivative. Automatic differentiation is  both efficient (linear in the cost of computing the value) and numerically stable. Traditional methods of differentiation such as symbolic differentiation do not scale well to vector functions with multiple variable inputs, which are widely used to solve real world problems.
 
 The functions and features in this package can evaluate derivatives/gradients of specified expressions and free users from manual calculation.
 
