@@ -185,7 +185,7 @@ Resposne: For the introduction, we were told to write about the advantages of au
 #### Background 1.5/2 
 Comments: I like the plot of computational graph you use to illustrate the computational process! It would be better if you illustrate more about how derivatives are computed during the process. 
 
-Response: For the background, we were asked to add more details about how derivatives are calculated. To address this comment, we add paragraphs explaining how the two different modes of AD, forward mode and reverse mode, compute the intermediate values and intermediate derivatives, and also write out the mathematical formulae for such computations for the two modes respectively.
+Response: For the background, we were asked to add more details about how derivatives are calculated. To address this comment, we add paragraphs explaining how the two different modes of AD, forward mode and reverse mode, compute the intermediate values and intermediate derivatives, and also write out the mathematical formulae for such computations for the two modes respectively. We also include the trace tables for each of the two modes for a easier understanding of how intermediate values and derivatives are calculated in an example.
 
 #### How to Use 3/3 
 Comments: Good job! It would be amazing if you succeed in implementing drawing the graph structure of the automatic differentiation. 
