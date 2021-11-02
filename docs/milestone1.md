@@ -150,3 +150,25 @@ Most elementary functions can be obtained from the numpy dependency. For more ni
 ## License
 
 The license that we decided to choose is the MIT License. We chose this license because our research showed that this license is usually the one that developers choose if they want their software to be easily accessible and quickly distributed to other developers and others in the community. We ultimately settled for this license because we believe in allowing other developers to freely use the software written for their desired purposes.
+
+## Milestone 1 Feedback
+
+Introduction 1.5/2
+It would be better if you illustrate more about the advantages of automatic differentiation over other differencing methods like finite-difference. 
+
+Background 1.5/2 
+I like the plot of computational graph you use to illustrate the computational process! It would be better if you illustrate more about how derivatives are computed during the process. 
+
+How to Use 3/3 
+Good job! It would be amazing if you succeed in implementing drawing the graph structure of the automatic differentiation. 
+
+Software Organization 2/2 
+You may want to mention Codecov as well for the test coverage of your code as well. 
+
+Implementations 3.5/4 
+It seems that you are dealing with a lot of classes, which might be problematic in implmentation. Also you may want to illustrate more about how you deal with vector functions of vectors and scalar function of vectors. 
+
+License 2/2 
+Great Discussion! 
+
+Total 13.5/15
