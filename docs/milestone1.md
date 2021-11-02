@@ -130,35 +130,45 @@ As of right now we are still working on this project, so we could potentially ma
 
 #### Classes
 
-![classes.png](images/classes.png)
+Our implementation will use 3 classes:
 
-The most generic base class will be the `Node` class to accomodate for the different nodes in the AD structure. Each node class will then be extended to create more specific nodes, such as a node representing an operator or input literal, along with another node type representing a variable. We will override the basic operators and elementary fucntions in this class.
-
-We will then have a `Objective` class that is a collection of these nodes and the edges between them that encapsulates the operations.
-
-We will also have two other classes, `Forward` for forward mode AD and `Reverse` for backward mode AD. 
+- Objective class: contains the objective functions, can also directly fit input data and calculate derivative using either forward or reverse mode depending on the paramter chosen
+- Forward class: perform forward mode automatic differentiation on target function, evaluated with input value
+- Reverse class: perform reverse mode automatic differentiation on target function, evaluated with input value
 
 #### Methods and Name Attributes
 
+##### Objective class
+
+The `Objective` class will store the expression of the target objective function in `function`.
+
+- `comp_graph()`: draw the graph structure of the automatic differentiation for the specified function. 
+- `fit()`: allow user to fit input values directly to the objective function. If an method is specified, it will be applied. If no automatic differentiation methods is provided, then the optimial mode for the given function will be decided and applied. For instance, for a function with input dimension R ^ n and output dimension R ^ m:
+	- If n < m, reverse mode AD will be use
+	- If n > m, reverse mode AD will be uses
+
 ![objective_class.png](images/objective_class.png)
 
-The `Objective` class will store the expression of the target objective function in `function`, and the nodes composing it in `Node`. It will have a method `comp_graph()`  to draw the graph structure of the automatic differentiation for the specified function. 
+##### Forward class
 
-![forward_class.png](images/forward_class.png)
+A `Forward` instance will store a function in `targetFunc` and the expressions of the forward tangent trace in `primal` and `tangent`. 
 
-A `Forward` instance will store a function and its nodes (together of the `Objective` class type) in `targetFunc` and the expressions of the forward tangent trace in `trace`. It will have a method `fit()` that is able to calculate the gradients using forward mode AD based on input. 
+- `fit()`: that is able to calculate the gradients using forward mode AD based on input, if no degree is specified, first derivative will be calculated.
+- Overload basic operations: basic operation such as `__add__`, `__sub__` will be overload to support either dual numbers operation or dual number and scaler operation. It will also be implemented to support both scaler and vector input.
+- Overload elementary operations: elementary operation such as `sin`, `cos` will also be overload to support either dual numbers operation or dual number and scaler operation. It will also be implemented to support both scaler and vector input.
+
+![forward_class.png](images/forward_class.png) 
+
+##### Reverse Class
+
+A `Reverse` instance will store a function in `targetFunc` and the structure of the function in `tapeEntry` , the expressions of forward partial derivatives in `forwardPD`, and the expressions of reverse partial derivatives in `reversePD`. 
+
+- `fit()`: that is able to calculate the gradients using reverse mode AD based on input, if no degree is specified, first derivative will be calculated.
+- `reverse_pass_gradient`: calculate reverse pass the derivative recursively base on the graph structure stored in `tapeEntry`.
+- Overload basic operations: basic operation such as `__add__`, `__sub__` will be overload to support either dual numbers operation or dual number and scaler operation. It will also be implemented to support both scaler and vector input.
+- Overload elementary operations: elementary operation such as `sin`, `cos` will also be overload to support either dual numbers operation or dual number and scaler operation. It will also be implemented to support both scaler and vector input.
 
 ![reverse_class.png](images/reverse_class.png)
-
-A `Reverse` instance will store a function and its nodes (together of the `Objective` class type) in `targetFunc`, the structure of the function in tapeEntry (of the `tapeEntry` class type), the expressions of forward partial derivatives in `forwardPD`, and the expressions of reverse partial derivatives in `reversePD`. It will have a method `fit()` that is able to calculate the gradients using reverse mode AD based on input. 
-
-![tape_entry_class.png](images/tape_entry_class.png)
-
-A `tapeEntry` instance will store the graphical structure of each node. It will have a `get_tape` method which will return the node's children as a list. It will also have a `reset_tape` method to reset the history once a node is evaluated. This will be used for reverse mode automatic differentiation.
-
-![node_class.png](images/node_class.png)
-
-A `Node` instance will store the variables in the graph as nodes. Each node will have `primal` and `tangent` as their attribute to store the primal and tangent trace. It will have basic arithmatic operations such as `sin`, `cos`, and `add`, `sub` with overridden methods for dual numbers. 
 
 #### External Dependencies
 
@@ -195,6 +205,12 @@ Comments: You may want to mention Codecov as well for the test coverage of your 
 
 #### Implementations 3.5/4 
 Comments: It seems that you are dealing with a lot of classes, which might be problematic in implmentation. Also you may want to illustrate more about how you deal with vector functions of vectors and scalar function of vectors. 
+
+Response: We decided to reduce our class type to Objective, Forward and Reverse to make the implementation process easier. We will implement the attributes and overload the basic operation (`__add__`, `__sub__`, etc) and elementary operation (`sin`, `cos`, etc) functions in the previous `Node` class inside `Forward` and `Reverse` class now. We will also replace the `TapeEntry` class and simply create a `tapeEntry` variable with `get_tape()` and `reset_tape()` functions in the Reverse class to keep track of the graphical structure and dependency of node. 
+
+To deal with vector functions of vectors and scalar functions of vector, we will first check for the input functions type as vector or scaler in our when initializing the `Objective`, `Forward` or `Reverse` class, the input function will be stored as an attribute, and if multiple functions are input, the the `fit()` function will be execute on each of the function. 
+
+We will also check the input data type for the function variable as either scaler or vector. The overloaded functions will contain methods to execute the respective operation for both scaler and vector input.  
 
 #### License 2/2 
 Comments: Great Discussion! 
