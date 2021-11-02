@@ -7,7 +7,7 @@ Automatic differentiation is useful in many fields, including but not limit to:
 - Calculation of derivatives/gradients which are parts of some numerical methods to solve differential equation systems
 
 Automatic differentiation is better than other differencing methods like finite-difference because it is much cheaper. Finite differences are expensive, since you need to do a forward pass for
-each derivative. Automatic differentiation is  both efficient (linear in the cost of computing the value) and numerically stable. Traditional methods of differentiation such as symbolic differentiation do not scale well to vector functions with multiple variable inputs, which are widely used to solve real world problems.
+each derivative. Automatic differentiation is both efficient (linear in the cost of computing the value) and numerically stable. Traditional methods of differentiation such as symbolic differentiation do not scale well to vector functions with multiple variable inputs, which are widely used to solve real world problems.
 
 The functions and features in this package can evaluate derivatives/gradients of specified expressions and free users from manual calculation.
 
@@ -16,7 +16,7 @@ The functions and features in this package can evaluate derivatives/gradients of
 
 For a function, even a complicated one, the computer is able to compute its derivatives by breaking it down into smaller parts, applying chain rule to the elementary operations, and calculate intermerdiate results at each step. 
 
-In the graph structure of such calculation, each node is an intermediate result, and each arrow is an elementary operation. An elementary operation are such as addition, subtraction, multiplication, division, or taking exponential, log, sine, cosine, etc. 
+In the graph structure of such calculation, each node is an intermediate result, and each arrow is an elementary operation. An elementary operation are such as addition, subtraction, multiplication, division, or taking exponential, log, sine, cosine, etc. In short, AD represent a function as a composition of elementary functions through elemtary operations by a sequence of intermediate values.
 
 An example is provided below.
 
@@ -25,6 +25,17 @@ An example is provided below.
 <img src="https://latex.codecogs.com/svg.latex?\begin{aligned}&space;&v_1&space;=&space;sin(v_{-1})&space;=&space;sin(x),&space;\\&space;&v_2&space;=&space;v_0^2&space;=&space;y^2,&space;\quad&space;v_3&space;=&space;-v_2&space;=&space;-y^2,&space;\quad&space;v4&space;=&space;v_1\&space;&plus;&space;\&space;v_3&space;=&space;sin(x)&space;-&space;y^2&space;=&space;f(x,&space;y)&space;\end{aligned}" title="\begin{aligned} &v_1 = sin(v_{-1}) = sin(x), \\ &v_2 = v_0^2 = y^2, \quad v_3 = -v_2 = -y^2, \quad v4 = v_1\ + \ v_3 = sin(x) - y^2 = f(x, y) \end{aligned}" /></a>
 
 ![AD_example.png](images/AD_example.png)
+
+
+There are two modes of Automatic Differentiation: one is Forward Mode, and the other is Reverse Mode.
+
+In forward mode, AD starts from the inputs and work towards the outputs, evaluating the value of each intermediate value along with its derivative with respect to a fixed input variable using the chain rule
+
+<img src="https://latex.codecogs.com/gif.latex?\dot{v}_k&space;=&space;\frac{\partial{v_k}}{\partial{x_i}}&space;=&space;\sum_{v_m&space;\in&space;\text{parent}(v_k)}&space;\frac{\partial{v_k}}{\partial{v_m}}&space;\frac{\partial{v_m}}{\partial{x_i}}" title="\dot{v}_k = \frac{\partial{v_k}}{\partial{x_i}} = \sum_{v_m \in \text{parent}(v_k)} \frac{\partial{v_k}}{\partial{v_m}} \frac{\partial{v_m}}{\partial{x_i}}" /></a>
+
+In reverse mode, AD starts from the inputs to do a forward pass to calculate all the intermediate values, and then starts from the outputs to do a reverse pass to compute the derivatives of the function with respect to the intermediate values backwards using the chain rule.
+
+<img src="https://latex.codecogs.com/gif.latex?\bar{v}_k&space;=&space;\frac{\partial{f}}{\partial{v_k}}&space;=&space;\sum_{v_n&space;\in&space;\text{child}(v_k)}&space;\frac{\partial{f}}{\partial{v_n}}&space;\frac{\partial{v_n}}{\partial{v_k}}" title="\bar{v}_k = \frac{\partial{f}}{\partial{v_k}} = \sum_{v_n \in \text{child}(v_k)} \frac{\partial{f}}{\partial{v_n}} \frac{\partial{v_n}}{\partial{v_k}}" /></a>
 
 
 ## How to use
@@ -156,26 +167,26 @@ The license that we decided to choose is the MIT License. We chose this license 
 
 ## Feedback
 
-Introduction 1.5/2
-It would be better if you illustrate more about the advantages of automatic differentiation over other differencing methods like finite-difference. 
+### Milestone 1 (Total 13.5/15)
 
-Background 1.5/2 
-I like the plot of computational graph you use to illustrate the computational process! It would be better if you illustrate more about how derivatives are computed during the process. 
+#### Introduction 1.5/2
+Comments: It would be better if you illustrate more about the advantages of automatic differentiation over other differencing methods like finite-difference. 
 
-How to Use 3/3 
-Good job! It would be amazing if you succeed in implementing drawing the graph structure of the automatic differentiation. 
+Resposne: For the introduction, we were told to write about the advantages of automatic differentiation over other differencing methods like finite-difference. To address this comment, we add more about automatic differentiation and its advantages versus other differencing methods. 
 
-Software Organization 2/2 
-You may want to mention Codecov as well for the test coverage of your code as well. 
+#### Background 1.5/2 
+Comments: I like the plot of computational graph you use to illustrate the computational process! It would be better if you illustrate more about how derivatives are computed during the process. 
 
-Implementations 3.5/4 
-It seems that you are dealing with a lot of classes, which might be problematic in implmentation. Also you may want to illustrate more about how you deal with vector functions of vectors and scalar function of vectors. 
+Response: For the background, we were asked to add more details about how derivatives are calculated. To address this comment, we add paragraphs explaining how the two different modes of AD, forward mode and reverse mode, compute the intermediate values and intermediate derivatives, and also write out the mathematical formulae for such computations for the two modes respectively.
 
-License 2/2 
-Great Discussion! 
+#### How to Use 3/3 
+Comments: Good job! It would be amazing if you succeed in implementing drawing the graph structure of the automatic differentiation. 
 
-Total 13.5/15
+#### Software Organization 2/2 
+Comments: You may want to mention Codecov as well for the test coverage of your code as well. 
 
-## Milestone 1
+#### Implementations 3.5/4 
+Comments: It seems that you are dealing with a lot of classes, which might be problematic in implmentation. Also you may want to illustrate more about how you deal with vector functions of vectors and scalar function of vectors. 
 
-For the introduction, we were told to write about the advantages of automatic differentiation over other differencing methods like finite-difference. To address this comment, we added more about automatic differentiation and its advantages versus other differencing methods. 
+#### License 2/2 
+Comments: Great Discussion! 
