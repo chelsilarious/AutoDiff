@@ -19,3 +19,13 @@
 ### Work done since Milestone 1:
 - revised and updated the Implementation section in Milestone accroding to the feedback
 - looked into the methods for implementing the elementry math function for our library
+
+## Group Member: Kazi Tasnim
+
+### Tasks Assigned
+- Responsible for instantiating an automatic differentiation object to be used in the forward mode
+- Responsible for creating the related test suites and docs
+
+### Work done since Milestone 1:
+- revised and edited the introduction section of the milestone1.md file
+- added in the TF feedback onto the same document
