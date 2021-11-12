@@ -3,8 +3,8 @@
 ## Group Member: Chelsea Chen
 
 ### Tasks Assigned:
-- Responsible for implementing the function for computing the Jacobian 
-- Responsible for creating related test suite and generating docs for the code to compute the Jacobian 
+- Responsible for implementing the Node class structure for computing the values and gradients
+- Responsible for creating related test suite and generating docs for the Node class structure for computing the values and gradients 
 - Responsible for Codecov and TravisCI management
 
 ### Work done since Milestone 1:
