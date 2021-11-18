@@ -5,7 +5,7 @@ from src.reverseNode import ReverseNode
 
 def constant(val, mode='forward'):
     if mode == 'forward':
-        new = ForwardNode(val, 1)
+        new = ForwardNode(val, 0)
     elif mode == 'reverse':
         new = ReverseNode(val)
         new.adjoint = 0
