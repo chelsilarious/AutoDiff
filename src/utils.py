@@ -87,7 +87,7 @@ def arctan(node):
 
 
 def arcsin(node):
-    if np.abs(node.value) >= 1:
+    if np.abs(node.value) > 1:
         raise ValueError(f"Invalid value: arcsin for {node.value} doesn't exist.")
     elif type(node) is ForwardNode:
         new = ForwardNode(np.arcsin(node.value), node.trace * (1 / np.sqrt(1 - node.value ** 2)))
@@ -99,7 +99,7 @@ def arcsin(node):
 
 
 def arccos(node):
-    if np.abs(node.value) >= 1:
+    if np.abs(node.value) > 1:
         raise ValueError(f"Invalid value: arccos for {node.value} doesn't exist.")
     elif type(node) is ForwardNode:
         new = ForwardNode(np.arccos(node.value), -1 * node.trace * (1 / np.sqrt(1 - node.value ** 2)))
