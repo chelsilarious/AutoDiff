@@ -1,6 +1,6 @@
 import numpy as np
-from forwardNode import ForwardNode
-from reverseNode import ReverseNode
+from src.forwardNode import ForwardNode
+from src.reverseNode import ReverseNode
 
 
 def constant(val, mode='forward'):
@@ -56,7 +56,7 @@ def sqrt(node):
     if node.value < 0:
         raise ValueError(f"Invalid value: cannot calculate the square root for {node.value}.")
     elif type(node) is ForwardNode:
-        new = ForwardNode(node.value ** 0.5, node.trace * node.value ** -0.5)
+        new = ForwardNode(node.value ** 0.5, 0.5 * node.trace * node.value ** -0.5)
         # new.depends.append((node.value ** -0.5, node))  # sqrt(x) -> d/dx = x ^ -1/2
     elif type(node) is ReverseNode:
         new = ReverseNode(node.value ** 0.5)
@@ -90,7 +90,7 @@ def arcsin(node):
     if np.abs(node.value) >= 1:
         raise ValueError(f"Invalid value: arcsin for {node.value} doesn't exist.")
     elif type(node) is ForwardNode:
-        new = ForwardNode(np.arcsin(node.value), node.trace * (1 / np.sqrt(1 - node.value ** 2)))
+        new = ForwardNode(np.arcsin(node.value), 1 / np.sqrt(1 - node.value ** 2))
         # new.depends.append((1 / (1 + node.value ** 2), node)) # arctan(x) -> d/dx = 1 / 1 + x^2
     elif type(node) is ReverseNode:
         new = ReverseNode(np.arcsin(node.value))

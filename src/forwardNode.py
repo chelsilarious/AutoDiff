@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class ForwardNode():
     def __init__(self, value, trace = 1.0):
         self.value = value
@@ -53,6 +56,15 @@ class ForwardNode():
             new = ForwardNode(value, trace)
         except AttributeError:
             new = ForwardNode(self.value ** other, self.trace * other * self.value ** (other - 1))
+        return new
+
+    def __rpow__(self, other):
+        try:
+            value = other.value ** self.value
+            trace = self.trace * (other.value ** (self.value - 1)) * other.trace + (other.value ** self.value) * np.log(other.value) * self.trace
+            new = ForwardNode(value, trace)
+        except AttributeError:
+            new = ForwardNode(other ** self.value, other ** self.value * np.log(other) * self.trace)
         return new
 
     def __repr__(self):
