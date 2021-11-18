@@ -232,7 +232,31 @@ class Tests:
     func = np.arctan(x)
     assert func.trace == 1
 
-  #
+  # Arcsin Function
+  def test_arcsin_val(self):
+    value = 0
+    x = ForwardNode(value, trace = 0)
+    func = 2*np.arcsin(x)
+    assert func.value == 0
+
+  def test_arcsin_trace(self):
+    value = 0
+    x = ForwardNode(value, trace = 0)
+    func = 2*np.arcsin(x)
+    assert func.trace == 2.0
+
+  # Arccos Function
+  def test_arccos_val(self):
+    value = 1.0
+    x = ForwardNode(value, trace = 0)
+    func = 2*np.arccos(x)
+    assert func.value == 0
+
+  def test_arccos_trace(self):
+    value = 1.0
+    x = ForwardNode(value, trace = 0)
+    func = 2*np.arccos(x)
+    assert func.trace == 2.0
 
   
 
