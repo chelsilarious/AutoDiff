@@ -36,7 +36,7 @@ class ForwardNodeTests(unittest.TestCase):
     value = 5.0 
     x = ForwardNode(value, trace = 1.0)
     func = 2.0 + x
-    self.assertEqual(func.value, 1.0)
+    self.assertEqual(func.value, 7.0)
 
   def test_radd_trace(self):
     value = 5.0 
@@ -172,7 +172,7 @@ class ForwardNodeTests(unittest.TestCase):
   def test_log_val(self):
     value = 2.0
     x = ForwardNode(value, trace = 1.0)
-    func = 2*log(x)
+    func = 2*np.log(x)
     self.assertEqual(func.value, 1.3862943611198906)
   
   def test_log_trace(self):
@@ -185,13 +185,13 @@ class ForwardNodeTests(unittest.TestCase):
   def test_exp_val(self):
     value = np.log(2.0)
     x = ForwardNode(value, trace = 1.0)
-    func = 2 * exp(ForwardNode(x))
+    func = 2 * np.exp(ForwardNode(x))
     self.assertEqual(func.value, 8.0)
 
   def test_exp_trace(self):
     value = np.log(2.0)
     x = ForwardNode(value, trace = 1.0)
-    func = 2 * exp(ForwardNode(x))
+    func = 2 * np.exp(ForwardNode(x))
     self.assertEqual(func.trace, 8.0)
 
   # Square root 
