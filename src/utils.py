@@ -87,8 +87,8 @@ def arctan(node):
 
 
 def arcsin(node):
-    if np.abs(node.value) > 1:
-        raise ValueError(f"Invalid value: arcsin for {node.value} doesn't exist.")
+    if np.abs(node.value) >= 1:
+        raise ValueError(f"Invalid value: derivative of arcsin for {node.value} doesn't exist.")
     elif type(node) is ForwardNode:
         new = ForwardNode(np.arcsin(node.value), node.trace * (1 / np.sqrt(1 - node.value ** 2)))
         # new.depends.append((1 / (1 + node.value ** 2), node)) # arctan(x) -> d/dx = 1 / 1 + x^2
@@ -99,8 +99,8 @@ def arcsin(node):
 
 
 def arccos(node):
-    if np.abs(node.value) > 1:
-        raise ValueError(f"Invalid value: arccos for {node.value} doesn't exist.")
+    if np.abs(node.value) >= 1:
+        raise ValueError(f"Invalid value: derivative of arccos for {node.value} doesn't exist.")
     elif type(node) is ForwardNode:
         new = ForwardNode(np.arccos(node.value), -1 * node.trace * (1 / np.sqrt(1 - node.value ** 2)))
         # new.depends.append((1 / (1 + node.value ** 2), node)) # arctan(x) -> d/dx = 1 / 1 + x^2
