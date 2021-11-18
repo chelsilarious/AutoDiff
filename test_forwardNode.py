@@ -299,4 +299,44 @@ class ForwardNodeTests(unittest.TestCase):
     func = sinh(x)
     self.assertEqual(func.value, 0)
   
+   # Log Base
+  def test_log_val(self):
+    value = 10
+    x = ForwardNode(value, trace = 1.0)
+    func = np.log(x)
+    self.assertEqual(func.value, 1.0)
+
+  def test_log_trace(self):
+    value = 10
+    x = ForwardNode(value, trace = 1.0)
+    func = np.log(x)
+    self.assertEqual(func.trace, 0.10)
+
+  # Cotangent
+  def test_cot_val(self):
+    value = 3.14/2
+    x = ForwardNode(value, trace = 1.0)
+    func = 1/tan(x)
+    self.assertEqual(func.value, 0)
+
+  def test_cot_trace(self):
+    value = 3.14/2
+    x = ForwardNode(value, trace = 1.0)
+    func = 1/tan(x)
+    self.assertEqual(func.trace, -1.0)
+
+  # Secant
+  def test_sec_val(self):
+    value = 0
+    x = ForwardNode(value, trace = 1.0)
+    func = 1/tan(x)
+    self.assertEqual(func.value, 1)
+
+  def test_sec_trace(self):
+    value = 0
+    x = ForwardNode(value, trace = 1.0)
+    func = 1/tan(x)
+    self.assertEqual(func.trace, 0)
+
+
 
