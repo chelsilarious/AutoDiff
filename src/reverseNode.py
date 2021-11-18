@@ -1,3 +1,5 @@
+import numpy as np
+
 class ReverseNode():
     def __init__(self, value):
         self.value = value
