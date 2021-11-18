@@ -133,38 +133,38 @@ class ForwardNodeTests(unittest.TestCase):
   # Constant
   def test_constant_val(self):
     value = 2.0
-    x = ForwardNode(value, trace = 1.0)
-    func = 2.0
+    x = constant(value, mode='forward')
+    func = x
     self.assertEqual(func.value, 2.0)
 
   def test_constant_trace(self):
     value = 2.0
-    x = ForwardNode(value, trace = 1.0)
-    func = 2.0
+    x = constant(value, mode='forward')
+    func = x
     self.assertEqual(func.trace, 0)
 
   # Sine Function
   def test_sin_val(self):
-    value = 3.14
+    value = np.pi
     x = ForwardNode(value, trace = 1.0)
     func = 2*sin(x)
     self.assertEqual(func.value, 0)
 
   def test_sin_trace(self):
-    value = 3.14
+    value = np.pi
     x = ForwardNode(value, trace = 1.0)
     func = 2*sin(x)
     self.assertEqual(func.trace, -2.0)
   
   # Cosine Function
   def test_cos_val(self):
-    value = 3.14
+    value = np.pi
     x = ForwardNode(value, trace = 1.0)
     func = 2*cos(x)
     self.assertEqual(func.value, -2.0)
 
   def test_cos_trace(self):
-    value = 3.14
+    value = np.pi
     x = ForwardNode(value, trace = 1.0)
     func = 2*cos(x)
     self.assertEqual(func.trace, 0)
