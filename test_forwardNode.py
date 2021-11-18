@@ -2,6 +2,7 @@
 import unittest
 import numpy as np
 from src.forwardNode import ForwardNode
+from src.utils import *
 
 class ForwardNodeTests(unittest.TestCase):
 
@@ -146,33 +147,33 @@ class ForwardNodeTests(unittest.TestCase):
   def test_sin_val(self):
     value = 3.14
     x = ForwardNode(value, trace = 1.0)
-    func = 2*np.sin(x)
+    func = 2*sin(x)
     self.assertEqual(func.value, 0)
 
   def test_sin_trace(self):
     value = 3.14
     x = ForwardNode(value, trace = 1.0)
-    func = 2*np.sin(x)
+    func = 2*sin(x)
     self.assertEqual(func.trace, -2.0)
   
   # Cosine Function
   def test_cos_val(self):
     value = 3.14
     x = ForwardNode(value, trace = 1.0)
-    func = 2*np.cos(x)
+    func = 2*cos(x)
     self.assertEqual(func.value, -2.0)
 
   def test_cos_trace(self):
     value = 3.14
     x = ForwardNode(value, trace = 1.0)
-    func = 2*np.cos(x)
+    func = 2*cos(x)
     self.assertEqual(func.trace, 0)
   
   # Logarithmic Function
   def test_log_val(self):
     value = 2.0
     x = ForwardNode(value, trace = 1.0)
-    func = 2*np.log(x)
+    func = 2*log(x)
     self.assertEqual(func.value, 1.3862943611198906)
   
   def test_log_trace(self):
@@ -185,117 +186,117 @@ class ForwardNodeTests(unittest.TestCase):
   def test_exp_val(self):
     value = np.log(2.0)
     x = ForwardNode(value, trace = 1.0)
-    func = 2 * np.exp(ForwardNode(x))
+    func = 2 * exp(ForwardNode(x))
     self.assertEqual(func.value, 8.0)
 
   def test_exp_trace(self):
     value = np.log(2.0)
     x = ForwardNode(value, trace = 1.0)
-    func = 2 * np.exp(ForwardNode(x))
+    func = 2 * exp(ForwardNode(x))
     self.assertEqual(func.trace, 8.0)
 
   # Square root 
   def test_sqrt_val(self):
     value = 4
     x = ForwardNode(value, trace = 1.0)
-    func = 2 * np.sqrt(ForwardNode(x))
+    func = 2 * sqrt(ForwardNode(x))
     self.assertEqual(func.value, 4.0)
 
   def test_sqrt_trace(self):
     value = 4
     x = ForwardNode(value, trace = 1.0)
-    func = 2 * np.sqrt(ForwardNode(x))
+    func = 2 * sqrt(ForwardNode(x))
     self.assertEqual(func.trace, 0.5)
 
   # Tan Function
   def test_tan_val(self):
     value = np.pi
     x = ForwardNode(value, trace = 1.0)
-    func = 2 * np.tan(ForwardNode(x))
+    func = 2 * tan(ForwardNode(x))
     self.assertEqual(func.value, 0.0)
 
   def test_tan_trace(self):
     value = np.pi
     x = ForwardNode(value, trace = 1.0)
-    func = 2 * np.tan(ForwardNode(x))
+    func = 2 * tan(ForwardNode(x))
     self.assertEqual(func.trace, 2)
 
   # Arctan Function
   def test_arctan_val(self):
     value = 0
     x = ForwardNode(value, trace = 1.0)
-    func = np.arctan(x)
+    func = arctan(x)
     self.assertEqual(func.value, 0)
 
   def test_arctan_trace(self):
     value = 0
     x = ForwardNode(value, trace = 1.0)
-    func = np.arctan(x)
+    func = arctan(x)
     self.assertEqual(func.trace, 1)
 
   # Arcsin Function
   def test_arcsin_val(self):
     value = 0
     x = ForwardNode(value, trace = 0)
-    func = 2*np.arcsin(x)
+    func = 2*arcsin(x)
     self.assertEqual(func.value, 0)
 
   def test_arcsin_trace(self):
     value = 0
     x = ForwardNode(value, trace = 0)
-    func = 2*np.arcsin(x)
+    func = 2*arcsin(x)
     self.assertEqual(func.trace, 2.0)
 
   # Arccos Function
   def test_arccos_val(self):
     value = 1.0
     x = ForwardNode(value, trace = 0)
-    func = 2*np.arccos(x)
+    func = 2*arccos(x)
     self.assertEqual(func.value, 0)
 
   def test_arccos_trace(self):
     value = 1.0
     x = ForwardNode(value, trace = 0)
-    func = 2*np.arccos(x)
+    func = 2*arccos(x)
     self.assertEqual(func.trace, 2.0)
     
     # Tanh Function
   def test_tanh_val(self):
     value = 0
     x = ForwardNode(value, trace = 1.0)
-    func = np.tanh(x)
+    func = tanh(x)
     assert func.value == 0
 
   def test_tanh_trace(self):
     value = 0
     x = ForwardNode(value, trace = 1.0)
-    func = np.tanh(x)
+    func = tanh(x)
     assert func.trace == 0
 
   # Sinh Function
   def test_sinh_val(self):
     value = 0
     x = ForwardNode(value, trace = 1.0)
-    func = np.sinh(x)
+    func = sinh(x)
     self.assertEqual(func.value, 0)
 
   def test_sinh_trace(self):
     value = 0 
     x = ForwardNode(value, trace = 1.0)
-    func = np.sinh(x)
+    func = sinh(x)
     self.assertEqual(func.value, 1.0)
 
   # Cosh Function
   def test_cosh_val(self):
     value = 0
     x = ForwardNode(value, trace = 1.0)
-    func = np.sinh(x)
+    func = sinh(x)
     self.assertEqual(func.value, 1.0)
 
   def test_cosh_trace(self):
     value = 0 
     x = ForwardNode(value, trace = 1.0)
-    func = np.sinh(x)
+    func = sinh(x)
     self.assertEqual(func.value, 0)
   
 

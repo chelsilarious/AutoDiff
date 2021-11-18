@@ -1,6 +1,6 @@
 import numpy as np
-from forwardNode import ForwardNode
-from reverseNode import ReverseNode
+from src.forwardNode import ForwardNode
+from src.reverseNode import ReverseNode
 
 
 def constant(val, mode='forward'):
