@@ -258,6 +258,44 @@ class ForwardNodeTests(unittest.TestCase):
     x = ForwardNode(value, trace = 0)
     func = 2*np.arccos(x)
     self.assertEqual(func.trace, 2.0)
+    
+    # Tanh Function
+  def test_tanh_val(self):
+    value = 0
+    x = ForwardNode(value, trace = 1.0)
+    func = np.tanh(x)
+    assert func.value == 0
 
+  def test_tanh_trace(self):
+    value = 0
+    x = ForwardNode(value, trace = 1.0)
+    func = np.tanh(x)
+    assert func.trace == 0
+
+  # Sinh Function
+  def test_sinh_val(self):
+    value = 0
+    x = ForwardNode(value, trace = 1.0)
+    func = np.sinh(x)
+    self.assertEqual(func.value, 0)
+
+  def test_sinh_trace(self):
+    value = 0 
+    x = ForwardNode(value, trace = 1.0)
+    func = np.sinh(x)
+    self.assertEqual(func.value, 1.0)
+
+  # Cosh Function
+  def test_cosh_val(self):
+    value = 0
+    x = ForwardNode(value, trace = 1.0)
+    func = np.sinh(x)
+    self.assertEqual(func.value, 1.0)
+
+  def test_cosh_trace(self):
+    value = 0 
+    x = ForwardNode(value, trace = 1.0)
+    func = np.sinh(x)
+    self.assertEqual(func.value, 0)
   
 
