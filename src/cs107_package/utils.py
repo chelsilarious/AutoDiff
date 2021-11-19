@@ -90,7 +90,7 @@ def arcsin(node):
     if np.abs(node.value) >= 1:
         raise ValueError(f"Invalid value: derivative of arcsin for {node.value} doesn't exist.")
     elif type(node) is ForwardNode:
-        new = ForwardNode(np.arcsin(node.value), 1 / np.sqrt(1 - node.value ** 2))
+        new = ForwardNode(np.arcsin(node.value), node.trace * (1 / np.sqrt(1 - node.value ** 2)))
         # new.depends.append((1 / (1 + node.value ** 2), node)) # arctan(x) -> d/dx = 1 / 1 + x^2
     elif type(node) is ReverseNode:
         new = ReverseNode(np.arcsin(node.value))
@@ -106,7 +106,7 @@ def arccos(node):
         # new.depends.append((1 / (1 + node.value ** 2), node)) # arctan(x) -> d/dx = 1 / 1 + x^2
     elif type(node) is ReverseNode:
         new = ReverseNode(np.arccos(node.value))
-        node.children.append((1 / np.sqrt(1 - node.value ** 2), new))  # arctan(x) -> d/dx = 1 / 1 + x^2
+        node.children.append((-1 / np.sqrt(1 - node.value ** 2), new))  # arctan(x) -> d/dx = 1 / 1 + x^2
     return new
 
 
