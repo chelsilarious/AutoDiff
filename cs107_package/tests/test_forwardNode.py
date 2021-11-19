@@ -252,15 +252,15 @@ class ForwardNodeTests(unittest.TestCase):
   # Arccos Function
   def test_arccos_val(self):
     value = 0
-    x = ForwardNode(value, trace=0)
+    x = ForwardNode(value)
     func = 2 * arccos(x)
     assert func.value == np.pi
 
   def test_arccos_trace(self):
     value = 0
-    x = ForwardNode(value, trace=0)
+    x = ForwardNode(value)
     func = 2 * arccos(x)
-    assert func.trace == 0.0
+    assert func.trace == -2
 
   # Tanh Function
   def test_tanh_val(self):
