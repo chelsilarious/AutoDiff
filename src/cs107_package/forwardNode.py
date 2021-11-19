@@ -2,7 +2,7 @@ import numpy as np
 
 
 class ForwardNode():
-    def __init__(self, value, trace=1.0):
+    def __init__(self, value, trace = 1.0):
         self.value = value
         self.trace = trace
 
