@@ -60,7 +60,7 @@ def sqrt(node):
         # new.depends.append((node.value ** -0.5, node))  # sqrt(x) -> d/dx = x ^ -1/2
     elif type(node) is ReverseNode:
         new = ReverseNode(node.value ** 0.5)
-        node.children.append((node.value ** -0.5, new))  # sqrt(x) -> d/dx = x ^ -1/2
+        node.children.append((0.5 * node.value ** -0.5, new))  # sqrt(x) -> d/dx = x ^ -1/2
     return new
 
 
@@ -94,7 +94,7 @@ def arcsin(node):
         # new.depends.append((1 / (1 + node.value ** 2), node)) # arctan(x) -> d/dx = 1 / 1 + x^2
     elif type(node) is ReverseNode:
         new = ReverseNode(np.arcsin(node.value))
-        node.children.append((1 / np.sqrt(1 - node.value ** 2)), new)  # arctan(x) -> d/dx = 1 / 1 + x^2
+        node.children.append((1 / np.sqrt(1 - node.value ** 2), new))  # arctan(x) -> d/dx = 1 / 1 + x^2
     return new
 
 
@@ -106,7 +106,7 @@ def arccos(node):
         # new.depends.append((1 / (1 + node.value ** 2), node)) # arctan(x) -> d/dx = 1 / 1 + x^2
     elif type(node) is ReverseNode:
         new = ReverseNode(np.arccos(node.value))
-        node.children.append((1 / np.sqrt(1 - node.value ** 2), new))  # arctan(x) -> d/dx = 1 / 1 + x^2
+        node.children.append((-1 / np.sqrt(1 - node.value ** 2), new))  # arctan(x) -> d/dx = 1 / 1 + x^2
     return new
 
 
