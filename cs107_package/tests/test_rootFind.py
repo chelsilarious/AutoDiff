@@ -1,5 +1,5 @@
 import unittest
-from src.forwardNode import ForwardNode
+from cs107_package.src.forwardNode import ForwardNode
 
 def root_finding_algo(f, inp_dim, x_init, num_iter):
   # make a note for documentation of input types later
