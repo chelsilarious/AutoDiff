@@ -27,7 +27,7 @@ class ForwardNode():
     
     def __mul__(self, other):
         try:
-            new = ForwardNode(self.value * other.value, self.value * other.trace + self.trace + other.value)
+            new = ForwardNode(self.value * other.value, self.value * other.trace + self.trace * other.value)
         except AttributeError:
             new = ForwardNode(self.value * other, self.trace * other)
         return new

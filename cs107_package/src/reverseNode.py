@@ -34,3 +34,6 @@ class ReverseNode():
         self.children.append((other.value * ((self.value) ** (other.value - 1)), new))
         other.children.append((np.log(self.value) * (self.value) ** (other.value), new))
         return new
+        
+    def __eq__(self, other):
+        raise NotImplementedError
