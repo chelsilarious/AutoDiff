@@ -2,12 +2,10 @@ import unittest
 import numpy as np
 
 import sys
-sys.path.append('../AutoDiff')  # directory for the package
-sys.path.append('AutoDiff')
 
-from forwardNode import ForwardNode
-from utils import *
-from ad import init_trace, create_node, gradientF, forward_auto_diff, auto_diff
+from AutoDiff.forwardNode import ForwardNode
+from AutoDiff.utils import *
+from AutoDiff.ad import init_trace, create_node, gradientF, forward_auto_diff, auto_diff
 
 
 class ForwardNodeTests(unittest.TestCase):

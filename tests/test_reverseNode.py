@@ -2,12 +2,10 @@ import unittest
 import numpy as np
 
 import sys
-sys.path.append('../AutoDiff')  # directory for the package
-sys.path.append('AutoDiff')
 
-from reverseNode import ReverseNode
-from utils import *
-from ad import gradientR, reverse_auto_diff, auto_diff
+from AutoDiff.reverseNode import ReverseNode
+from AutoDiff.utils import *
+from AutoDiff.ad import gradientR, reverse_auto_diff, auto_diff
 
 class ReverseNodeTests(unittest.TestCase):
   
