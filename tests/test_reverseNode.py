@@ -25,12 +25,59 @@ class ReverseNodeTests(unittest.TestCase):
     assert func.value == 2.1
     assert x.gradient() == 1
 
+  def test_add_revnode(self):
+    value = 0.1
+    x = ReverseNode(value)
+    func = x + ReverseNode(2)
+    assert func.value == 2.1
+    assert x.gradient() == 1
+
+  def test_add_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = x + "string is not a valid type"
+    self.assertRaises(AttributeError, assert_error)
+
   def test_sub(self):
     value = 0.1
     x = ReverseNode(value)
     func = x - 2
     assert func.value == -1.9
     assert x.gradient() == 1
+
+  def test_sub_revnode(self):
+    value = 0.1
+    x = ReverseNode(value)
+    func = x - ReverseNode(2)
+    assert func.value == -1.9
+    assert x.gradient() == 1
+
+  def test_sub_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = x - "string is not a valid type"
+    self.assertRaises(AttributeError, assert_error)
+
+  def test_radd(self):
+    value = 0.1
+    x = ReverseNode(value)
+    func = 2 + x
+    assert func.value == 2.1
+
+  def test_rsub(self):
+    value = 2
+    x = ReverseNode(value)
+    func = 0.1 - x
+    assert func.value == -1.9
+
+  def test_rsub_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = "string is not a valid type" - x
+    self.assertRaises(AttributeError, assert_error)
 
   def test_mul(self):
     value = 0.1
@@ -39,13 +86,113 @@ class ReverseNodeTests(unittest.TestCase):
     assert func.value == 0.2
     assert x.gradient() == 2
 
+  def test_mul_revnode(self):
+    value = 0.1
+    x = ReverseNode(value)
+    func = x * ReverseNode(2)
+    assert func.value == 0.2
+    assert x.gradient() == 2
+
+  def test_mul_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = x * "string is not a valid type"
+    self.assertRaises(AttributeError, assert_error)
+
+  def test_rmul(self):
+    value = 0.1
+    x = ReverseNode(value)
+    func = 2 * x
+    assert func.value == 0.2
+    assert x.gradient() == 2
+
+  def test_truediv(self):
+    value = 3
+    x = ReverseNode(value)
+    func = x / 3
+    assert func.value == 1
+    assert x.gradient() == 1/3
+
+  def test_truediv_revnode(self):
+    value = 3
+    x = ReverseNode(value)
+    func = x / ReverseNode(3)
+    assert func.value == 1
+    assert x.gradient() == 1/3
+
+  def test_truediv_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = x / "string is not a valid type"
+    self.assertRaises(AttributeError, assert_error)
+
+  def test_rtruediv(self):
+    value = 3
+    x = ReverseNode(value)
+    func = 3/ x
+    assert func.value == 1
+
+  def test_rtruediv_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = "string is not a valid type" / x
+    self.assertRaises(AttributeError, assert_error)
+
   def test_pow(self):
     value = 2
     x = ReverseNode(value)
     func = x ** 2
     assert func.value == 4
     assert x.gradient() == 4.0
-    
+
+  def test_pow_revnode(self):
+    value = 2
+    x = ReverseNode(value)
+    func = x ** ReverseNode(2)
+    assert func.value == 4
+    assert x.gradient() == 4.0
+
+  def test_pow_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = x ** "string is not a valid type"
+    self.assertRaises(AttributeError, assert_error)
+
+  def test_rpow(self):
+    value = 2
+    x = ReverseNode(value)
+    func = 2 ** x
+    assert func.value == 4
+
+  def test_rpow_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = "string is not a valid type" ** x
+    self.assertRaises(AttributeError, assert_error)
+
+  def test_neg(self):
+    pass
+
+  def test_lt(self):
+    pass
+
+  def test_gt(self):
+    pass 
+
+  def test_ge(self):
+    pass 
+
+  def test_eq(self):
+    pass 
+
+  def test_neq(self):
+    pass 
+  
   # Constant
   def test_constant_val(self):
     value = 2.0
@@ -297,7 +444,6 @@ class ReverseNodeTests(unittest.TestCase):
   def test_str(self):
     x = ReverseNode(value=5)
     assert str(x) == "ReverseNode Variable Value: 5, Adjoint: 1.0, Chidren: []"
-
 
 if __name__ == "__main__":
   unittest.main()
