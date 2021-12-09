@@ -7,7 +7,7 @@ import numpy as np
 
 from AutoDiff.forwardNode import ForwardNode
 from AutoDiff.utils import *
-from AutoDiff.ad import init_trace, create_node, gradientF, forward_auto_diff, auto_diff
+from AutoDiff.ad import init_trace, create_node, gradientF, forward_auto_diff, auto_diff, translate
 
 
 class ForwardNodeTests(unittest.TestCase):
@@ -402,6 +402,19 @@ class ForwardNodeTests(unittest.TestCase):
     res = auto_diff(functions, var_dict, ["x1", "x2", "x3"], mode="forward")
 
     assert [[round(r, 4) for r in row] for row in res] == [[ 0.1588, 30.0536, 0.0], [ 1.0, -1.5708, 0.0], [ 0.3536, 0.0, 1.0]]
+
+  def test_translate(self):
+    functions = lambda x1, x2: exp(x1) + log(x2) - 5
+    new_functions = translate(functions)
+
+    assert new_functions == ['exp(x1) + log(x2) - 5']
+
+  def test_lambda_input(self):
+    functions = lambda x1, x2: exp(x1) + log(x2) - 5
+    var_dict = {"x1": 3, "x2": 5}
+    res = auto_diff(functions, var_dict, ["x1", "x2"], "forward")
+
+    assert [[round(r, 4) for r in row] for row in res] == [[20.0855, 0.2]]
 
   def test_repr(self):
     x = ForwardNode(value=5, trace=1, var="x1")

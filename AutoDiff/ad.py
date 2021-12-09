@@ -1,4 +1,5 @@
 import numpy as np
+import inspect
 from AutoDiff.forwardNode import ForwardNode
 from AutoDiff.reverseNode import ReverseNode
 from AutoDiff.utils import *
@@ -225,6 +226,30 @@ def reverse_auto_diff(functions, var_dict, target):
     return res
 
 
+def translate(lambda_func):
+    '''
+        Translate lambda function input to string representation of function
+
+        Input:
+        lambda_func - function, lambda function(s) that the user want to perform automatic differentiation
+
+        Output:
+        String representation of function input
+
+        Examples:
+        >>> functions = lambda x1, x2: x1 + sin(x2)
+        >>> translate(lambda_func=functions)
+        ['x1 + sin(x2)', 'cos(x1) + 5 / exp(x2)']
+
+        >>> functions = lambda x1, x2: [x1 + sin(x2), cos(x1) + 5 / exp(x2)]
+        >>> translate(lambda_func=functions)
+        ['exp(x1) + log(x2) - 5']
+
+        '''
+    functions = inspect.getsourcelines(lambda_func)[0][0].strip('\n').split(": ")[-1].strip('][').split(", ")
+    return functions
+
+
 def auto_diff(functions, var_dict, target, mode="forward"):
     '''
     Wrap function for automatic differentiation
@@ -250,8 +275,10 @@ def auto_diff(functions, var_dict, target, mode="forward"):
     [[0.15883159318006335, 30.053624782229708, 0.0], [1.0, -1.5707963267948966, 0.0], [0.3535533905932738, 0.0, 1.0]]
 
     '''
+    if (not isinstance(functions, (str, list))) and functions.__name__ == "<lambda>":
+        functions = translate(functions)
     if not (isinstance(functions, str) or all([isinstance(f, str) for f in functions])):
-        raise TypeError('Invalid input type: each function should be a string')
+        raise TypeError('Invalid input type: each function should be a string or lambda function')
     if not isinstance(var_dict, dict):
         raise TypeError('Invalid input type: input variables should be dictionary')
     if not (isinstance(target, str) or all([t in var_dict.keys() for t in target])):
@@ -263,4 +290,15 @@ def auto_diff(functions, var_dict, target, mode="forward"):
         return reverse_auto_diff(functions, var_dict, target)
     else:
         raise ValueError("Invalid mode: please choose between forward and reverse mode")
+
+
+def main():
+    functions = lambda x1, x2: exp(x1) + log(x2) - 5
+    print(translate(functions))
+    var_dict = {"x1": 3, "x2": 5}
+    auto_diff(functions, var_dict, ["x1", "x2"], "reverse")
+
+
+if __name__ == "__main__":
+    main()
 

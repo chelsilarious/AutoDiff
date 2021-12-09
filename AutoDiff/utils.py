@@ -51,15 +51,15 @@ def log(node):
 
     '''
     if isinstance(node, (int, float)):
-        if node < 0:
+        if node <= 0:
             raise ValueError("Invalid inpput: cannot take log for value <= 0")
         return np.log(node)
     elif isinstance(node, ForwardNode):
-        if node.value < 0:
+        if node.value <= 0:
             raise ValueError("Invalid inpput: cannot take log for value <= 0")
         return ForwardNode(np.log(node.value), node.trace / node.value, node.var)
     elif isinstance(node, ReverseNode):
-        if node.value < 0:
+        if node.value <= 0:
             raise ValueError("Invalid inpput: cannot take log for value <= 0")
         new = ReverseNode(np.log(node.value))
         node.children.append((1/node.value, new))
