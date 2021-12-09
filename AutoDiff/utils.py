@@ -2,6 +2,9 @@ import numpy as np
 from AutoDiff.forwardNode import ForwardNode
 from AutoDiff.reverseNode import ReverseNode
 
+__all__ = ['sin', 'cos', 'log', 'exp', 'sqrt', 'tan', 'cot', 'sec', 'csc',
+           'arctan', 'arcsin', 'arccos', 'tanh', 'sinh', 'cosh', 'log_base']
+
 
 def exp(node):
     '''
