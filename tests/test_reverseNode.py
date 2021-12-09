@@ -1,6 +1,7 @@
 import unittest
 import numpy as np
 
+import sys
 sys.path.append('../AutoDiff')  # directory for the package
 sys.path.append('AutoDiff')
 
