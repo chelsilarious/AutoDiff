@@ -7,6 +7,18 @@ Kexin Yang: kexin_yang@hsph.harvard.edu
 Kazi Tasnim: kazitasnim@college.harvard.edu  
 Andrew Sima: asima@college.harvard.edu  
 
+## Overview
+
+TODO
+
+## Documentation
+
+[add a link here]
+
+## Quick Start on How to use
+
+TODO
+
 #### Broader Impact and Inclusivity Statement
 Over the past few years, people have put in an increased effort to bridge the gap in STEM between underrepresented groups and inclusivity. However, even with this increased effort there is much more that can and should be done to fill this gap. While creating our software, we kept in mind that people from different backgrounds and experience levels would access this. Therefore, we tried to add docstrings and the proper documentation in order to make this software as accessible as possible. However, we do understand that there is more work that needs to be done to make our software more accessible and user-friendly. Currently, our software is targeted towards those who are familiar with English mathematical terms and symbols. Our software is catered towards the average English speaker. Moving forward, to make our software more inclusive, we would try to make it more accessible for those who are not as familiar with the English language.
 
