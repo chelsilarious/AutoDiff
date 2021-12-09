@@ -1,3 +1,5 @@
+name = "AutoDiff"
+import numpy as np
 from .forwardNode import ForwardNode
 from .reverseNode import ReverseNode
 from .utils import *
