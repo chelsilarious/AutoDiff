@@ -2,6 +2,8 @@ import unittest
 import numpy as np
 
 import sys
+sys.path.append('../AutoDiff')
+sys.path.append('AutoDiff')
 
 from AutoDiff.forwardNode import ForwardNode
 from AutoDiff.utils import *
