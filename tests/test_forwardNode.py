@@ -1,9 +1,12 @@
-# need to import the ForwardNode Function
 import unittest
 import numpy as np
-from cs107_package.src.forwardNode import ForwardNode
-from cs107_package.src.utils import *
-from cs107_package.src.__main__ import init_trace, create_node, gradientF, forward_auto_diff, auto_diff
+
+sys.path.append('../AutoDiff')  # directory for the package
+sys.path.append('AutoDiff')
+
+from forwardNode import ForwardNode
+from utils import *
+from __main__ import init_trace, create_node, gradientF, forward_auto_diff, auto_diff
 
 
 class ForwardNodeTests(unittest.TestCase):

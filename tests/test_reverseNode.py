@@ -1,7 +1,12 @@
 import unittest
-from cs107_package.src.reverseNode import ReverseNode
-from cs107_package.src.utils import *
-from cs107_package.src.__main__ import gradientR, reverse_auto_diff, auto_diff
+import numpy as np
+
+sys.path.append('../AutoDiff')  # directory for the package
+sys.path.append('AutoDiff')
+
+from reverseNode import ReverseNode
+from utils import *
+from __main__ import gradientR, reverse_auto_diff, auto_diff
 
 class ReverseNodeTests(unittest.TestCase):
   
