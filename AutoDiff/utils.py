@@ -1,7 +1,7 @@
-
 import numpy as np
-from .forwardNode import forwardNode
-from .reverseNode import ReverseNode
+from cs107_package.src.forwardNode import ForwardNode
+from cs107_package.src.reverseNode import ReverseNode
+
 
 def exp(node):
     '''
@@ -322,7 +322,7 @@ def arcsin(node):
     elif isinstance(node, ReverseNode):
         if np.abs(node.value) > 1:
             raise ValueError(f"Invalid Value: arcsin of {node.value} does not exist.")
-        new = ReverseNode(1 / np.arcsin(node.value))
+        new = ReverseNode(np.arcsin(node.value))
         node.children.append((1.0 / np.sqrt(1 - node.value ** 2), new))
         return new
     else:
@@ -356,7 +356,7 @@ def arccos(node):
     elif isinstance(node, ReverseNode):
         if np.abs(node.value) > 1:
             raise ValueError(f"Invalid Value: arccos of {node.value} does not exist.")
-        new = ReverseNode(1 / np.arccos(node.value))
+        new = ReverseNode(np.arccos(node.value))
         node.children.append((-1.0 / np.sqrt(1 - node.value ** 2), new))
         return new
     else:
@@ -384,7 +384,7 @@ def arctan(node):
     elif isinstance(node, ForwardNode):
         return ForwardNode(np.arctan(node.value), node.trace / (1 + node.value ** 2), node.var)
     elif isinstance(node, ReverseNode):
-        new = ReverseNode(1 / np.arctan(node.value))
+        new = ReverseNode(np.arctan(node.value))
         node.children.append((1.0 / (1 + node.value ** 2), new))
         return new
     else:
@@ -412,7 +412,7 @@ def sinh(node):
     elif isinstance(node, ForwardNode):
         return ForwardNode(np.sinh(node.value), node.trace * np.cosh(node.value), node.var)
     elif isinstance(node, ReverseNode):
-        new = ReverseNode(1 / np.sinh(node.value))
+        new = ReverseNode(np.sinh(node.value))
         node.children.append((np.cosh(node.value), new))
         return new
     else:
@@ -440,7 +440,7 @@ def cosh(node):
     elif isinstance(node, ForwardNode):
         return ForwardNode(np.cosh(node.value), node.trace * np.sinh(node.value), node.var)
     elif isinstance(node, ReverseNode):
-        new = ReverseNode(1 / np.cosh(node.value))
+        new = ReverseNode(np.cosh(node.value))
         node.children.append((np.sinh(node.value), new))
         return new
     else:
@@ -468,7 +468,7 @@ def tanh(node):
     elif isinstance(node, ForwardNode):
         return ForwardNode(np.tanh(node.value), node.trace / np.cosh(node.value) ** 2, node.var)
     elif isinstance(node, ReverseNode):
-        new = ReverseNode(1 / np.tanh(node.value))
+        new = ReverseNode(np.tanh(node.value))
         node.children.append((1 / np.cosh(node.value) ** 2, new))
         return new
     else:

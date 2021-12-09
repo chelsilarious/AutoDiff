@@ -1,5 +1,5 @@
-
 import numpy as np
+
 
 class ForwardNode():
     def __init__(self, value, trace=1.0, var='x1'):
@@ -424,6 +424,11 @@ class ForwardNode():
         False
 
         '''
+        # if isinstance(self, (int,float)):
+        #    if isinstance(other, (int,float)):
+        #        return self <= other
+        #    elif isinstance(other, ForwardNode):
+        #        return self <= other.value
         if isinstance(self, ForwardNode):
             if isinstance(other, (int, float)):
                 return self.value <= other
@@ -551,4 +556,3 @@ class ForwardNode():
 
         '''
         return f'ForwardNode Variable: {self.var},  Value: {self.value}, Trace: {self.trace}'
-
