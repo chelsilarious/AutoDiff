@@ -41,7 +41,7 @@ jobs:
       - run:
           name: install requirements
           # This assumes pytest is installed via the install-package step above
-          command: sudo pip install -r requirements.txt
+          command: pip install -r requirements.txt
       - run:
           name: run tests
           # This assumes pytest is installed via the install-package step above
@@ -51,6 +51,7 @@ jobs:
           command: coverage xml
       - codecov/upload:
           file: coverage.xml
+          token: '8c281f16-f2da-4a66-aba4-3c6b63bec375'
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
