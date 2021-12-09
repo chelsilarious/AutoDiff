@@ -1,6 +1,6 @@
-from cs107_package.src.forwardNode import ForwardNode
-from cs107_package.src.reverseNode import ReverseNode
-from cs107_package.src.utils import *
+from .forwardNode import ForwardNode
+from .reverseNode import ReverseNode
+from .utils import *
 
 
 def init_trace(var, variables):
