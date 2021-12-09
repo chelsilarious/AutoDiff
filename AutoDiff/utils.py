@@ -1,6 +1,6 @@
 import numpy as np
-from .forwardNode import ForwardNode
-from .reverseNode import ReverseNode
+from AutoDiff.forwardNode import ForwardNode
+from AutoDiff.reverseNode import ReverseNode
 
 
 def exp(node):

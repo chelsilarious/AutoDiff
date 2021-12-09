@@ -1,6 +1,6 @@
-from .forwardNode import ForwardNode
-from .reverseNode import ReverseNode
-from .utils import *
+from AutoDiff.forwardNode import ForwardNode
+from AutoDiff.reverseNode import ReverseNode
+from AutoDiff.utils import *
 
 
 def init_trace(var, variables):
