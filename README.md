@@ -1,6 +1,23 @@
 # Group 24, cs107-FinalProject [![Build Status](https://app.travis-ci.com/cs107-runtimeterror/cs107-FinalProject.svg?token=stMPL4xedtyEMYyN72oW&branch=milestone1b-dev)](https://app.travis-ci.com/cs107-runtimeterror/cs107-FinalProject) [![codecov](https://codecov.io/gh/cs107-runtimeterror/cs107-FinalProject/branch/final/graph/badge.svg?token=FF27EQ75ID)](https://codecov.io/gh/cs107-runtimeterror/cs107-FinalProject) [![CircleCI](https://circleci.com/gh/cs107-runtimeterror/cs107-FinalProject/tree/final.svg?style=svg&circle-token=a541ffb380dd87b8b5e70a86f8ac3a5f5857e6c8)](https://circleci.com/gh/cs107-runtimeterror/cs107-FinalProject/tree/final)
 
-## Group Members: Kazi Tasnim, Andrew Sima, Kexin Yang, Chelsea (Zixi) Chen
+## Group Members: 
+
+Chelsea (Zixi) Chen: zixichen@g.harvard.edu  
+Kexin Yang: kexin_yang@hsph.harvard.edu  
+Kazi Tasnim: kazitasnim@college.harvard.edu  
+Andrew Sima: asima@college.harvard.edu  
+
+## Overview
+
+TODO
+
+## Documentation
+
+[add a link here]
+
+## Quick Start on How to use
+
+TODO
 
 #### Broader Impact and Inclusivity Statement
 Over the past few years, people have put in an increased effort to bridge the gap in STEM between underrepresented groups and inclusivity. However, even with this increased effort there is much more that can and should be done to fill this gap. While creating our software, we kept in mind that people from different backgrounds and experience levels would access this. Therefore, we tried to add docstrings and the proper documentation in order to make this software as accessible as possible. However, we do understand that there is more work that needs to be done to make our software more accessible and user-friendly. Currently, our software is targeted towards those who are familiar with English mathematical terms and symbols. Our software is catered towards the average English speaker. Moving forward, to make our software more inclusive, we would try to make it more accessible for those who are not as familiar with the English language.
