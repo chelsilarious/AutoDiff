@@ -7,7 +7,7 @@ sys.path.append('AutoDiff')
 
 from forwardNode import ForwardNode
 from utils import *
-from __main__ import init_trace, create_node, gradientF, forward_auto_diff, auto_diff
+from ad import init_trace, create_node, gradientF, forward_auto_diff, auto_diff
 
 
 class ForwardNodeTests(unittest.TestCase):

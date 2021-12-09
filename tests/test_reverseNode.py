@@ -7,7 +7,7 @@ sys.path.append('AutoDiff')
 
 from reverseNode import ReverseNode
 from utils import *
-from __main__ import gradientR, reverse_auto_diff, auto_diff
+from ad import gradientR, reverse_auto_diff, auto_diff
 
 class ReverseNodeTests(unittest.TestCase):
   
