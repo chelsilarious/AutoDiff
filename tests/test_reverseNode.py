@@ -173,23 +173,60 @@ class ReverseNodeTests(unittest.TestCase):
       func = "string is not a valid type" ** x
     self.assertRaises(AttributeError, assert_error)
 
-  def test_neg(self):
-    pass
-
   def test_lt(self):
-    pass
+    x = ReverseNode(3)
+    assert x < 4
+
+  def test_lt_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = x < "string is not a valid type"
+    self.assertRaises(AttributeError, assert_error)
 
   def test_gt(self):
-    pass 
+    x = ReverseNode(3)
+    assert x > 2
+
+  def test_gt_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = x > "string is not a valid type"
+    self.assertRaises(AttributeError, assert_error)
+
+  def test_le(self):
+    x = ReverseNode(3)
+    assert x <= 4
+
+  def test_le_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = x <= "string is not a valid type"
+    self.assertRaises(AttributeError, assert_error)
 
   def test_ge(self):
-    pass 
+    x = ReverseNode(3)
+    assert x >= 2
+
+  def test_ge_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = x >= "string is not a valid type"
+    self.assertRaises(AttributeError, assert_error)
 
   def test_eq(self):
-    pass 
+    x = ReverseNode(3)
+    assert x == 3
 
-  def test_neq(self):
-    pass 
+  def test_eq_assert_err(self):
+    def assert_error():
+      value = 0.1
+      x = ReverseNode(value)
+      func = x == "string is not a valid type"
+    self.assertRaises(AttributeError, assert_error)
   
   # Constant
   def test_constant_val(self):

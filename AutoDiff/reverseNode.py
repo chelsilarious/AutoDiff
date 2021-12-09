@@ -436,20 +436,12 @@ class ReverseNode():
         False
 
         '''
-        # if isinstance(self, (int,float)):
-        #    if isinstance(other, (int,float)):
-        #        return self <= other
-        #    elif isinstance(other, ReverseNode):
-        #        return self <= other.value
-        if isinstance(self, ReverseNode):
-            if isinstance(other, (int, float)):
-                return self.value <= other
-            elif isinstance(other, ReverseNode):
-                return self.value <= other.value
+        if isinstance(other, (int, float)):
+            return self.value <= other
         elif isinstance(other, ReverseNode):
-            if isinstance(self, (int, float)):
-                return self <= other.value
-        raise AttributeError("Invalid Input!")
+            return self.value <= other.value
+        else:
+            raise AttributeError("Invalid Input!")
 
     def __ge__(self, other):
         '''
@@ -473,7 +465,12 @@ class ReverseNode():
         False
 
         '''
-        return other.__le__(self)
+        if isinstance(other, (int, float)):
+            return self.value >= other
+        elif isinstance(other, ReverseNode):
+            return self.value >= other.value
+        else:
+            raise AttributeError("Invalid Input!")
 
     def __eq__(self, other):
         '''
