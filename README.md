@@ -1,4 +1,4 @@
-# Group 24, cs107-FinalProject [![Build Status](https://app.travis-ci.com/cs107-runtimeterror/cs107-FinalProject.svg?token=stMPL4xedtyEMYyN72oW&branch=milestone1b-dev)](https://app.travis-ci.com/cs107-runtimeterror/cs107-FinalProject) [![codecov](https://codecov.io/gh/cs107-runtimeterror/cs107-FinalProject/branch/milestone1b-dev/graph/badge.svg?token=FF27EQ75ID)](https://codecov.io/gh/cs107-runtimeterror/cs107-FinalProject) 
+# Group 24, cs107-FinalProject [![Build Status](https://app.travis-ci.com/cs107-runtimeterror/cs107-FinalProject.svg?token=stMPL4xedtyEMYyN72oW&branch=milestone1b-dev)](https://app.travis-ci.com/cs107-runtimeterror/cs107-FinalProject) [![codecov](https://codecov.io/gh/cs107-runtimeterror/cs107-FinalProject/branch/milestone1b-dev/graph/badge.svg?token=FF27EQ75ID)](https://codecov.io/gh/cs107-runtimeterror/cs107-FinalProject)[![CircleCI](https://circleci.com/gh/cs107-runtimeterror/cs107-FinalProject/tree/final.svg?style=svg&circle-token=a541ffb380dd87b8b5e70a86f8ac3a5f5857e6c8)](https://circleci.com/gh/cs107-runtimeterror/cs107-FinalProject/tree/final)
 
 ## Group Members: Kazi Tasnim, Andrew Sima, Kexin Yang, Chelsea (Zixi) Chen
 
