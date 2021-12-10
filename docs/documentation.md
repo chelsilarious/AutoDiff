@@ -295,7 +295,7 @@ vk = ForwardNode(valuek, tracek, variables)
 ```python
 valuek, tracek = np.log(value1)/np.log(b), trace1/(value1*np.log(b))
 vk = ForwardNode(valuek, tracek, variables)
-
+```
 
 ## Extension
  
