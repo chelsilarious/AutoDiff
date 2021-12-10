@@ -55,7 +55,206 @@ You are recommended to use the package under Python version 3.6.2 or later.
 
 ### Demo
 
-TODO
+#### ReverseNode Class
+
+Create a ReverseNode object
+```
+x1 = ReverseNode(value=5.0)
+x2 = ReverseNode(value=10.0)
+x3 = ReverseNode(value=8.5)
+
+print(x1)
+print(x2)
+print(x3)
+```
+Output:
+```
+ReverseNode Variable Value: 5.0, Adjoint: 1.0, Chidren: []
+ReverseNode Variable Value: 10.0, Adjoint: 1.0, Chidren: []
+ReverseNode Variable Value: 8.5, Adjoint: 1.0, Chidren: []
+```
+
+Elementary function with ReverseNode objects
+```
+y1 = x1 + x2 - x3
+y2 = x1 ** 3 / x2 - x3
+
+print(y1)
+print(y2)
+```
+Output:
+```
+ReverseNode Variable Value: 6.5, Adjoint: 1.0, Chidren: []
+ReverseNode Variable Value: 4.0, Adjoint: 1.0, Chidren: []
+```
+
+Math function with ReverseNode objects
+```
+y3 = sin(x1) + cos(x2) / tan(x3)
+y4 = csc(5 * x1) * sinh(x2 / 2) - arcsin(x3 / 10)
+
+print(y3)
+print(y4)
+```
+Output:
+```
+ReverseNode Variable Value: -0.32631413015080835, Adjoint: 1.0, Chidren: []
+ReverseNode Variable Value: -561.667510664444, Adjoint: 1.0, Chidren: []
+```
+Using gradient_reset() to reset gradient of a ReverseNode object and then get the derivative for each ReverseNode object using gradient() function.
+```
+x1.gradient_reset()
+x2.gradient_reset()
+x3.gradient_reset()
+
+y5 = sin(x1 / 2) + exp(x2) - log(x3 ** 2)
+
+der1 = x1.gradient()
+der2 = x2.gradient()
+der3 = x3.gradient()
+
+print(f"Partical derivative of x1 with respect to y5: {der1}")
+print(f"Partical derivative of x2 with respect to y5: {der2}")
+print(f"Partical derivative of x3 with respect to y5: {der3}")
+```
+Output:
+```
+Partical derivative of x1 with respect to y5: -0.40057180777346685
+Partical derivative of x2 with respect to y5: 22026.465794806718
+Partical derivative of x3 with respect to y5: -0.23529411764705882
+```
+#### Automatic Differentiation with auto_diff() function
+
+The auto_diff() function takes 4 parameters:
+
+- functions - str, the functions output we are caculating
+- var_dict - dictionary, name and value pair of all variables in function
+- target - list, name of our target variable(s) to calculate the gradient
+- mode - str, either forward or reverse model
+
+To use it for reverse mode automatic differentiation, simple put mode = "reverse"
+
+Calculating the derivative for a single variable in a function using auto_diff()
+
+```
+var_dict = {"x1": np.pi}
+function1 = "sin(x1) + cos(x1)"
+der = auto_diff(functions=function1, var_dict=var_dict, target=["x1"], mode="reverse")
+```
+Output:
+```
+Functions: sin(x1) + cos(x1)
+Variables: {'x1': 3.141592653589793}
+------------------------------
+Jacobian:
+ [[-1.0000000000000002]]
+ ```
+
+The function will print the function, input variable and result (derivative / partial derivative / gradient / jacobian depending on inputs) automatically, and it will also return the result as a list.
+
+```
+print(der)
+```
+Output:
+```
+[[-1.0000000000000002]]
+```
+
+Calculating the partial derivative of variables in a function using auto_diff()
+```
+var_dict = {"x1": np.pi / 2, "x2": 1, "x3": 0}
+function1 = "sin(x1) + cos(x2) - exp(x3)"
+
+der1 = auto_diff(function1, var_dict, ["x1"], mode="reverse")
+der2 = auto_diff(function1, var_dict, ["x2"], mode="reverse")
+der3 = auto_diff(function1, var_dict, ["x3"], mode="reverse")
+```
+Output:
+```
+Functions: ['sin(x1) + cos(x2) - exp(x3)']
+Variables: {'x1': 1.5707963267948966, 'x2': 1, 'x3': 0}
+------------------------------
+partial derivative with respect to x1: [6.123233995736766e-17]
+
+Functions: ['sin(x1) + cos(x2) - exp(x3)']
+Variables: {'x1': 1.5707963267948966, 'x2': 1, 'x3': 0}
+------------------------------
+partial derivative with respect to x2: [-0.8414709848078965]
+
+Functions: ['sin(x1) + cos(x2) - exp(x3)']
+Variables: {'x1': 1.5707963267948966, 'x2': 1, 'x3': 0}
+------------------------------
+partial derivative with respect to x3: [-1.0]
+```
+
+Calculating the gradient of a variable for a vector function using auto_diff()
+```
+var_dict = {"x1": np.pi / 2, "x2": 1, "x3": 0}
+function1 = ["tanh(x1) + cosh(x2 * 3) - sec(x3)", "x1 / x2 * cos(x3)", "sin(x1 / 2) + x2 * x3"]
+
+gradient = auto_diff(function1, var_dict, ["x1"], mode="reverse")
+```
+Output:
+```
+Functions: ['tanh(x1) + cosh(x2 * 3) - sec(x3)', 'x1 / x2 * cos(x3)', 'sin(x1 / 2) + x2 * x3']
+Variables: {'x1': 1.5707963267948966, 'x2': 1, 'x3': 0}
+------------------------------
+gradient with respect to x1: [0.15883159318006335, 1.0, 0.3535533905932738]
+```
+
+Calculating the jacobian of input variables for a vector function using `auto_diff()`
+```
+var_dict = {"x1": np.pi / 2, "x2": 1, "x3": 0}
+functions = ["tanh(x1) + cosh(x2 * 3) - sec(x3)", "x1 / x2 * cos(x3)", "sin(x1 / 2) + x2 * x3"]
+
+jacobian = auto_diff(functions, var_dict, ["x1", "x2", "x3"], mode="forward")
+```
+Output:
+```
+Functions: ['tanh(x1) + cosh(x2 * 3) - sec(x3)', 'x1 / x2 * cos(x3)', 'sin(x1 / 2) + x2 * x3']
+Variables: {'x1': 1.5707963267948966, 'x2': 1, 'x3': 0}
+------------------------------
+Jacobian:
+ [[ 0.15883159 30.05362478  0.        ]
+ [ 1.         -1.57079633  0.        ]
+ [ 0.35355339  0.          1.        ]]
+ ```
+
+ #### Lambda function input using `auto_diff()` function
+
+In our final submission, we added lambda function input as one of our new features.
+
+To perform automatic differentiation on lambda function, we first translate it into string representation using traslante() function
+
+```
+var_dict = {"x1": np.pi, "x2": 2, "x3": 5}
+
+lambda_func = lambda x1, x2: sin(x1) + exp(x2) - x3 ** 4
+
+functions = translate(lambda_func=lambda_func)
+print(functions)
+```
+Output:
+```
+['sin(x1) + exp(x2) - x3 ** 4']
+```
+
+Using `auto_diff()` for lambda function
+```
+var_dict = {"x1": np.pi, "x2": 2, "x3": 5}
+
+lambda_vec_func = lambda x1, x2: [cos(x1 / 2) + x2 * log(x3), sin(x1) + exp(x2) - x3 ** 4]
+
+jacobian = auto_diff(functions=lambda_vec_func, var_dict=var_dict, target=["x1", "x2", "x3"], mode="reverse")
+```
+Output:
+```
+Functions: ['cos(x1 / 2) + x2 * log(x3)', 'sin(x1) + exp(x2) - x3 ** 4']
+Variables: {'x1': 3.141592653589793, 'x2': 2, 'x3': 5}
+------------------------------
+Jacobian:
+ [[-0.5, 1.6094379124341003, 0.4], [-1.0, 7.38905609893065, -500.0]]
+ ```
 
 ## Software Organization
 
@@ -317,7 +516,7 @@ Based on the suggestion from the teaching fellow, we decided to work on adding t
  
 For item 3, we were not able to implement it in our final submission due to the time limit. However, we think it would still be a good idea to develop this feature and allow the users to draw the graph structure of AD as a possible future direction to work on.
  
-We also implemented item 1 and 4 in this submission. We overloaded many dunder methods and math functions that we are using for ReverseNode class. We also updated our wrap function call auto_diff() which supports multivariate expression and vector containing multivariate expressions to calculate gradients or Jacobians.
+We also implemented item 1 and 4 in this submission. We overloaded many dunder methods and math functions that we are using for ReverseNode class. We also updated our wrap function call `auto_diff()` which supports multivariate expression and vector containing multivariate expressions to calculate gradients or Jacobians.
  
 ### Description of Extension feature
  
