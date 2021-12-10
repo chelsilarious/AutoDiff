@@ -27,6 +27,17 @@ class ForwardNodeTests(unittest.TestCase):
     func = ForwardNode(value, trace=trace, var=var)
     assert func.value == value and all(func.trace == np.array(trace)) and func.var == var
 
+  def test_init_fail(self):
+    def init_string():
+      ForwardNode("will fail")
+    self.assertRaises(TypeError, init_string)
+    def init_trace_string():
+      ForwardNode(2, trace="will fail")
+    self.assertRaises(TypeError, init_trace_string)
+    def init_var_nonstring():
+      ForwardNode(2, trace=1, var=1)
+    self.assertRaises(TypeError, init_var_nonstring)
+
   def test_add(self):
     value = 5.0
     trace = [1.0, 1.0, 0.0]
@@ -150,6 +161,15 @@ class ForwardNodeTests(unittest.TestCase):
     x = ForwardNode(value, trace=trace, var=var)
     func = x ** 2.0
     assert func.value == 4.0 and all(func.trace == np.array([4.0, 4.0, 0.0])) and func.var == var
+
+  def test_rpow(self):
+    x = ForwardNode(-0.5)
+    x1 = ForwardNode(4, trace=np.array([1,0]), var=['x1','x2']) 
+    x2 = ForwardNode(2, trace=np.array(([0,1])), var=['x1','x2']) 
+    z = x2 ** x1 
+    assert z.value == 16
+    with self.assertRaises(ValueError):
+      func = (-0.5) ** x
 
   # Testing error case in division
   def test_pow_assert_err(self):
@@ -422,7 +442,15 @@ class ForwardNodeTests(unittest.TestCase):
     assert y > z
     assert y >= z
     assert z == x + 0.5
+    assert x != 2
     assert x != z
+    assert 3.0 == x
+    def test_neq_fail():
+      return "not self string" != x
+    self.assertRaises(AttributeError, test_neq_fail)
+    def test_lt_fail():
+      return x < "not self string"
+    self.assertRaises(AttributeError, test_lt_fail)
 
   def test_negation(self):
     value = 3.0
