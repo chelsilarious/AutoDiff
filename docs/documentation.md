@@ -42,7 +42,7 @@ In reverse mode, AD starts from the inputs to do a forward pass to calculate all
 
 <img src="https://latex.codecogs.com/svg.latex?\bar{v}_k&space;=&space;\frac{\partial{f}}{\partial{v_k}}&space;=&space;\sum_{v_n&space;\in&space;\text{child}(v_k)}&space;\frac{\partial{f}}{\partial{v_n}}&space;\frac{\partial{v_n}}{\partial{v_k}}" title="\bar{v}_k = \frac{\partial{f}}{\partial{v_k}} = \sum_{v_n \in \text{child}(v_k)} \frac{\partial{f}}{\partial{v_n}} \frac{\partial{v_n}}{\partial{v_k}}" /></a>
 
-![reverse_tracetable_example](images/reverseTracetable_example.png)
+![reverse_tracetable_example](images/reverseTracetableExample.png)
 
 
 ## How to use
