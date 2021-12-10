@@ -156,3 +156,66 @@ v2 = ForwardNode(value2, trace2, variables)
 valuek, tracek = value1+value2, trace1+trace2
 vk = ForwardNode(valuek, tracek, variables)
 ```
+
+
+## **Extension**
+ 
+### **Reflection of Milestone 2 feedback**
+ 
+We added 4 futures features that we planned to implement in our milestone 2 report, and these features are listed below:
+ 
+1. More functions to be overloaded for the ReverseNode class.
+2. Modify the whole thing so that the derivation function can take in the python function as input but not limited to function expression string input.
+3. Drawing the graph structure of AD, with nodes (intermediate functions/variables) connected by arrows (elementary operations)
+4. A more developed version of AD that is able to take in multivariate expression or vector containing multivariate expressions to calculate gradients or Jacobians.
+ 
+#### **Feedback from teaching fellow**
+ 
+Great work. Definitely focus on item 2 and 3 in your immediate future plans. Resolving item 2 would make your package more usable (in the pythonic sense)
+ 
+####  **Reflection**
+Based on the suggestion from the teaching fellow, we decided to work on adding the python function as an input format for our automatic library to make it more accessible to users. So in our final implementation, the user can either input their functions as a string (a list of strings), or lambda functions.
+ 
+For item 3, we were not able to implement it in our final submission due to the time limit. However, we think it would still be a good idea to develop this feature and allow the users to draw the graph structure of AD as a possible future direction to work on.
+ 
+We also implemented item 1 and 4 in this submission. We overloaded many dunder methods and math functions that we are using for ReverseNode class. We also updated our wrap function call auto_diff() which supports multivariate expression and vector containing multivariate expressions to calculate gradients or Jacobians.
+ 
+### **Description of Extension feature**
+ 
+#### ** Lambda function input **
+ 
+In our previous milestones, we implemented a wrap function that would take a string representation of the function and convert it to create our ForwardNode objects, evaluate the function and return the final result. 
+However, we think inputting function as a string isn’t the best way to let the users use our library. Therefore, we decided to add a new feature in our final submission to allow the user input function as a python lambda function. 
+ 
+After adding this new feature, users can now declare either one or multiple functions and specify the function variables using lambda. In our updated wrap function `auto_diff()`, we would first check whether the function is lambda. If so, we would call the `translate` function to convert the lambda function into a list containing string representations of each function. After this, the automatic differentiation process would be the same as before.
+ 
+#### ** ReverseNode**
+ 
+Our extension feature allows users to performance automatic differentiation using the reverse mode method. This is achieved through a new class called ReverseNode. The ReverseNode class contains overloaded dunder methods for reverse mode automatic differentiation, such as `__add__`, `__radd__`, `__sub__`, `__pow__`, `__str__`, etc. We also updated the math functions such as `sin`, `cos`, `exp` in our utils.py file to add the calculation for reverse mode.
+ 
+Similar to the design of our `ForwardNode` object, each `ReverseNode` object represents a variable in the function that users input. Each `ReverseNode` will be initialized with the value user select, however, a `ReverseNode` object does not have the `self.trace` and `self.var` attributes as a `ForwardNode` object. Instead, each `ReverseNode` object has attributes called `self.adjoint` and `self.children`. Adjoint keeps trace of the derivative of a ReverseNode object and is always initialized as 1.0. The children attribute is used to record the historical dependency of a node and is initialized as an empty list.
+ 
+The gradient for each `ReverseNode` object is calculated by calling the function `gradient()`. This function calculated the derivative value for a node by iterating through all the nodes in this `self.children` list and sum over the derivative value of all child nodes. The `ReverseNode` class also contains a `gradient_reset()` function, which would reset the `self.adjoint` of a node a 1.0 and `self.children` as an empty list. The `gradient_rese` function is called before calculating the derivative / jacobian of a `ReverseNode` object for a new function when users input a vector function.
+ 
+Finally, `__main__.py` contains the wrap function `auto_diff()` that provides the users a simple method to perform automatic differentiation using either forward and reverse mode. The `auto_diff()` function takes a string (list of string) or lambda functions, dictionary of variable names and values, list indicating target variable, and a string indicating the mode. So to do the reverse mode calculation, the user just need to specify that mode = “reverse”. The `auto_diff()` function will then call `reverse_auto_diff()` function and create corresponding ReverseNode object based on user input, evaluate the input functions, and calculate the derivative for each variables in `gradientR()` function.
+ 
+### **Background of Extention - Reverse Mode Automatic Differentiation**
+ 
+The intuition for implementing a reverse mode method comes from a major disadvantage of the forward mode method.
+ 
+Consider a simple function with 2 variables:
+ 
+$$y = x_1 * x_2 + \\sin(x_1)$$
+ 
+To calculate the derivative $\frac{\partial{y}}{\partial{x_1}}$ and $\frac{\partial{y}}{\partial{x_2}}$, we will need to do 2 forward pass calculation, with the trace being `[1.0, 0.0]` for $\frac{\partial{y}}{\partial{x_1}}$ and `[0.0, 1.0]` for $\frac{\partial{y}}{\partial{x_2}}$. This yields a complexity of `O(N)`, where N equals the number of input variables. So if we need to compute the gradient of a complex function with thousands of variables, it would be computationally expensive to use forward mode method.
+ 
+However, we can actually avoid this problem using the symmetric property of the chain rule: 
+ 
+$$\frac{\partial{f}}{\partial{x_2}} = \frac{\partial{f}}{\partial{x_1}} \frac{\partial{x_1}}{\partial{x_2}}$$
+ 
+To account for this problem, the reverse mode method uses a forward pass to first calculate all the intermediate values of partial derivative and store these values in a dependency list, and then proceeds to calculate the derivative of each variable through a reverse pass using the chain rule.
+ 
+ 
+$$\bar{x}_k = \frac{\partial{f}}{\partial{x_k}} = \sum_{x_i \in \text{child}(x_k)} \frac{\partial{f}}{\partial{x_i}} \frac{\partial{x_i}}{\partial{x_k}} = \sum_{x_i \in \text{child}(x_k)} \bar{x}_i \frac{\partial{x_i}}{\partial{x_k}}$$
+ 
+One useful scenario for reverse mode automatic differentiation in the real-world would be calculating the gradient in deep learning models for video processing or image recognition. In these kind of problem, there are typically thousand or even millions of input representing the image or video pixels and for classification problem there could be only a few output representing the category of classes. So to calculate the gradient of each variables and find our the best direction for gradient descent, a reverse mode automatic differentation is usually used to achieve the best runtime.
