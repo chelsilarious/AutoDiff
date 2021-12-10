@@ -141,7 +141,7 @@ Gradient with respect to x1: [0.15883159318006335, 1.0, 0.3535533905932738]
 ```
 
 ```python
-jcb = auto_diff(function1, var_dict, mode="reverse")
+jcb = auto_diff(functions=fs, var_dict=vars, mode="reverse")
 ```
 ```
 Functions: ['tanh(x1) + cosh(x2 * 3) - sec(x3)', 'x1 / x2 * cos(x3)', 'sin(x1 / 2) + x2 * x3']
