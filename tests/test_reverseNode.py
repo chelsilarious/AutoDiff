@@ -502,7 +502,7 @@ class ReverseNodeTests(unittest.TestCase):
     functions = lambda x1, x2: exp(x1) + log(x2) - 5
     new_functions = translate(functions)
 
-    assert new_functions == ['exp(x1) + log(x2) - 5']
+    assert new_functions == 'exp(x1) + log(x2) - 5'
 
   def test_lambda_input(self):
     functions = lambda x1, x2: exp(x1) + log(x2) - 5
