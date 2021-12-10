@@ -24,10 +24,9 @@ In the graph structure of such calculation, each node is an intermediate result,
 
 An example is provided below.
 
-\begin{aligned}
-&f(x,y) = \sin(x) - y^2, \quad v_{-1} = x, \quad v_0 = y \\
-&v_1 = \sin(v_{-1}) = \sin(x), \quad v_2 = v_0^2 = y^2, v_3 = -v_2 = -y^2, \quad v_4 = v_1 + v_3 = \sin(x) - y^2 = f(x,y)
-\end{aligned}
+<img src="https://latex.codecogs.com/svg.latex?f(x,y)&space;=&space;sin(x)&space;-&space;y^2,&space;\quad&space;v_{-1}&space;=&space;x,&space;\quad&space;v_0&space;=&space;y" title="f(x,y) = sin(x) - y^2, \quad v_{-1} = x, \quad v_0 = y" /></a>
+
+<img src="https://latex.codecogs.com/svg.latex?\begin{aligned}&space;&v_1&space;=&space;sin(v_{-1})&space;=&space;sin(x),&space;\\&space;&v_2&space;=&space;v_0^2&space;=&space;y^2,&space;\quad&space;v_3&space;=&space;-v_2&space;=&space;-y^2,&space;\quad&space;v4&space;=&space;v_1\&space;&plus;&space;\&space;v_3&space;=&space;sin(x)&space;-&space;y^2&space;=&space;f(x,&space;y)&space;\end{aligned}" title="\begin{aligned} &v_1 = sin(v_{-1}) = sin(x), \\ &v_2 = v_0^2 = y^2, \quad v_3 = -v_2 = -y^2, \quad v4 = v_1\ + \ v_3 = sin(x) - y^2 = f(x, y) \end{aligned}" /></a>
 
 ![AD_example](images/AD_example.png)
 
@@ -43,7 +42,7 @@ In reverse mode, AD starts from the inputs to do a forward pass to calculate all
 
 <img src="https://latex.codecogs.com/svg.latex?\bar{v}_k&space;=&space;\frac{\partial{f}}{\partial{v_k}}&space;=&space;\sum_{v_n&space;\in&space;\text{child}(v_k)}&space;\frac{\partial{f}}{\partial{v_n}}&space;\frac{\partial{v_n}}{\partial{v_k}}" title="\bar{v}_k = \frac{\partial{f}}{\partial{v_k}} = \sum_{v_n \in \text{child}(v_k)} \frac{\partial{f}}{\partial{v_n}} \frac{\partial{v_n}}{\partial{v_k}}" /></a>
 
-![reverse_tracetable_example](images/reverse_tracetable_example.png)
+![reverse_tracetable_example](images/reverseTracetableExample.png)
 
 
 ## How to use
@@ -128,7 +127,7 @@ The `ForwardNode` class has 3 attributes:
 - `self.var`: a list of the names of the variable names <a href="https://www.codecogs.com/eqnedit.php?latex=x_i" target="_blank"><img src="https://latex.codecogs.com/svg.latex?x_i" title="x_i" /></a>
 
 The `ReverseNode` class has 3 attributes:
-- `self.value`: the actual value of the function expression $v_k$ represented by a ReverseNode instance
+- `self.value`: the actual value of the function expression <img src="https://latex.codecogs.com/svg.latex?v_k" title="v_k" /></a> represented by a ReverseNode instance
 - `self.adjoint`: a value of gradient <img src="https://latex.codecogs.com/svg.latex?\frac{\partial&space;f_i}{\partial&space;v_k}" title="\frac{\partial f_i}{\partial v_k}" /></a> of the ultimate function expression with respect to the intermediate variable <img src="https://latex.codecogs.com/svg.latex?v_k" title="v_k" /></a>
 - `self.children`: a list of tuples, with each of the tuple storing <img src="https://latex.codecogs.com/svg.latex?v_k" title="v_k" /></a>'s children <img src="https://latex.codecogs.com/svg.latex?v_n" title="v_n" /></a> and the derivatives <img src="https://latex.codecogs.com/svg.latex?\frac{\partial&space;v_n}{\partial&space;v_k}" title="\frac{\partial v_n}{\partial v_k}" /></a> in the form (<img src="https://latex.codecogs.com/svg.latex?v_n" title="v_n" /></a>, <img src="https://latex.codecogs.com/svg.latex?\frac{\partial&space;v_n}{\partial&space;v_k}" title="\frac{\partial v_n}{\partial v_k}" /></a>)
 
@@ -136,7 +135,7 @@ The `ReverseNode` class has 3 attributes:
 
 The implenentation is based heavily on numpy in the overloaded functions to do vectorized operations, and also in the wrap-up functions for easy calculation of gradients.
 
-### Elementary Functions
+### Elementary Functions - Basic Ideas Behind the Structure
 
 The elementary operations are overloaded in this class. Doing any one of the operation would return a new `ForwardNode` instance that represents the new intermediate function expression, and it would contain the attributes mentioned above.
 
@@ -157,10 +156,150 @@ valuek, tracek = value1+value2, trace1+trace2
 vk = ForwardNode(valuek, tracek, variables)
 ```
 
+- Subtraction: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;v_1&space;-&space;v_2&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;1&space;\cdot&space;\dot{v}_1&space;-&space;1&space;\cdot&space;\dot{v}_2" title="v_k = v_1 - v_2 \ \Rightarrow \ \dot{v}_k = 1 \cdot \dot{v}_1 - 1 \cdot \dot{v}_2" /></a>  
 
-## **Extension**
+```python
+valuek, tracek = value1-value2, trace1-trace2
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Multiplication: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;v_1&space;\cdot&space;v_2&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;v_1&space;\cdot&space;\dot{v}_2&space;&plus;&space;v_2&space;\cdot&space;\dot{v}_1" title="v_k = v_1 \cdot v_2 \ \Rightarrow \ \dot{v}_k = v_1 \cdot \dot{v}_2 + v_2 \cdot \dot{v}_1" /></a>
+
+```python
+valuek, tracek = value1*value2, value1*trace2+value2*trace1
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Division: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\frac{v_1}{v_2}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{v_2&space;\cdot&space;\dot{v}_1&space;-&space;v_1&space;\cdot&space;\dot{v}_2}{v_2^2}" title="v_k = \frac{v_1}{v_2} \ \Rightarrow \ \dot{v}_k = \frac{v_2 \cdot \dot{v}_1 - v_1 \cdot \dot{v}_2}{v_2^2}" /></a>
+
+```python
+valuek, tracek = value1/value2, (value2*trace1-value1*trace2) / (value2**2)
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Power: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;v_1^{v_2}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;v_2&space;\cdot&space;v_1^{v_2-1}&space;\cdot&space;\dot{v}_1&space;&plus;&space;v_1^{v_2}&space;\cdot&space;\log{v_1}&space;\cdot&space;\dot{v}_2" title="v_k = v_1^{v_2} \ \Rightarrow \ \dot{v}_k = v_2 \cdot v_1^{v_2-1} \cdot \dot{v}_1 + v_1^{v_2} \cdot \log{v_1} \cdot \dot{v}_2" /></a> 
+
+```python
+valuek = value1**value2
+tracek = value2*(value1**(value2 - 1))*trace1 + (value1**value2)*np.log(value1)*trace2
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+#### Unary elementary functions
+
+- Exponential: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\exp{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\exp{v_1}&space;\cdot&space;\dot{v}_1" title="v_k = \exp{v_1} \ \Rightarrow \ \dot{v}_k = \exp{v_1} \cdot \dot{v}_1" /></a>
+
+```python
+valuek, tracek = np.exp(value1), np.exp(value1)*trace1
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Natural log: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\log{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\dot{v}_1}{v_1}" title="v_k = \log{v_1} \ \Rightarrow \ \dot{v}_k = \frac{\dot{v}_1}{v_1}" /></a>
+
+```python
+valuek, tracek = np.log(value1), trace1/value1
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Square root: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\sqrt{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{1}{2}&space;v_1^{-\frac{1}{2}}&space;\cdot&space;\dot{v}_1" title="v_k = \sqrt{v_1} \ \Rightarrow \ \dot{v}_k = \frac{1}{2} v_1^{-\frac{1}{2}} \cdot \dot{v}_1" /></a>
+
+```python
+valuek, tracek = value1**0.5, trace1*0.5*value1**(-0.5)
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Sine: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\sin{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\cos{v_1}&space;\cdot&space;\dot{v}_1" title="v_k = \sin{v_1} \ \Rightarrow \ \dot{v}_k = \cos{v_1} \cdot \dot{v}_1" /></a>  
+
+```python
+valuek, tracek = np.sin(value1), np.cos(value1)*trace1
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Cosine: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\cos{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;-\sin{v_1}&space;\cdot&space;\dot{v}_1" title="v_k = \cos{v_1} \ \Rightarrow \ \dot{v}_k = -\sin{v_1} \cdot \dot{v}_1" /></a>
+
+```python
+valuek, tracek = np.cos(value1), -np.sin(value1)*trace1
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Tangent: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\tan{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\dot{v}_1}{\cos^2{v_1}}" title="v_k = \tan{v_1} \ \Rightarrow \ \dot{v}_k = \frac{\dot{v}_1}{\cos^2{v_1}}" /></a> 
+
+```python
+valuek, tracek = np.tan(value1), trace1/np.cos(value1)**2
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Cotangent: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\cot{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{-\dot{v}_1}{\sin^2{v_1}}" title="v_k = \cot{v_1} \ \Rightarrow \ \dot{v}_k = \frac{-\dot{v}_1}{\sin^2{v_1}}" /></a>  
+
+```python
+valuek, tracek = 1/np.tan(value1), -trace1/np.sin(value1)**2
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Secant: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\sec{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\sin{v_1}&space;\cdot&space;\dot{v}_1}{\cos^2{v_1}}" title="v_k = \sec{v_1} \ \Rightarrow \ \dot{v}_k = \frac{\sin{v_1} \cdot \dot{v}_1}{\cos^2{v_1}}" /></a> 
+
+```python
+valuek, tracek = 1/np.cos(value1), trace1*np.sin(value1)/np.cos(value1)**2
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Cosecant: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\csc{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{-\cos{v_1}&space;\cdot&space;\dot{v}_1}{\sin^2{v_1}}" title="v_k = \csc{v_1} \ \Rightarrow \ \dot{v}_k = \frac{-\cos{v_1} \cdot \dot{v}_1}{\sin^2{v_1}}" /></a>
+
+```python
+valuek, tracek = 1/np.sin(value1), -trace1*np.cos(value1)/np.sin(value1)**2
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Arcsine: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\arcsin{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\dot{v}_1}{\sqrt{1-v_1^2}}" title="v_k = \arcsin{v_1} \ \Rightarrow \ \dot{v}_k = \frac{\dot{v}_1}{\sqrt{1-v_1^2}}" /></a>  
+
+```python
+valuek, tracek = np.arcsin(value1), trace1/np.sqrt(1-value1**2)
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Arccosine: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\arccos{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{-\dot{v}_1}{\sqrt{1-v_1^2}}" title="v_k = \arccos{v_1} \ \Rightarrow \ \dot{v}_k = \frac{-\dot{v}_1}{\sqrt{1-v_1^2}}" /></a>  
+
+```python
+valuek, tracek = np.arccos(value1), -trace1/np.sqrt(1-value1**2)
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Arctangent: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\arctan{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\dot{v}_1}{1&plus;v_1^2}" title="v_k = \arctan{v_1} \ \Rightarrow \ \dot{v}_k = \frac{\dot{v}_1}{1+v_1^2}" /></a> 
+
+```python
+valuek, tracek = np.arctan(value1), trace1/(1+value1**2)
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Hyperbolic sine: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\sinh{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\cosh{v_1}&space;\cdot&space;\dot{v}_1" title="v_k = \sinh{v_1} \ \Rightarrow \ \dot{v}_k = \cosh{v_1} \cdot \dot{v}_1" /></a>  
+```python
+valuek, tracek = np.sinh(value1), trace1*np.cosh(value1)
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Hyperbolic cosine: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\cosh{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\sinh{v_1}&space;\cdot&space;\dot{v}_1" title="v_k = \cosh{v_1} \ \Rightarrow \ \dot{v}_k = \sinh{v_1} \cdot \dot{v}_1" /></a>  
+
+```python
+valuek, tracek = np.cosh(value1), trace1*np.sinh(value1)
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Hyperbolic tangent: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\tanh{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\dot{v}_1}{\cosh^2(v_1)}" title="v_k = \tanh{v_1} \ \Rightarrow \ \dot{v}_k = \frac{\dot{v}_1}{\cosh^2(v_1)}" /></a>
+
+```python
+valuek, tracek = np.tanh(value1), trace1/np.cosh(value1)**2
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+- Log of any base <img src="https://latex.codecogs.com/svg.latex?b" title="b" /></a>: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\log_b&space;v_1&space;=&space;\frac{\log&space;v_1}{\log&space;b}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\dot{v}_1}{v_1&space;\cdot&space;\log&space;b}" title="v_k = \log_b v_1 = \frac{\log v_1}{\log b} \ \Rightarrow \ \dot{v}_k = \frac{\dot{v}_1}{v_1 \cdot \log b}" /></a>
+```python
+valuek, tracek = np.log(value1)/np.log(b), trace1/(value1*np.log(b))
+vk = ForwardNode(valuek, tracek, variables)
+```
+
+## Extension
  
-### **Reflection of Milestone 2 feedback**
+### Reflection of Milestone 2 feedback
  
 We added 4 futures features that we planned to implement in our milestone 2 report, and these features are listed below:
  
@@ -169,27 +308,27 @@ We added 4 futures features that we planned to implement in our milestone 2 repo
 3. Drawing the graph structure of AD, with nodes (intermediate functions/variables) connected by arrows (elementary operations)
 4. A more developed version of AD that is able to take in multivariate expression or vector containing multivariate expressions to calculate gradients or Jacobians.
  
-#### **Feedback from teaching fellow**
+#### Feedback from teaching fellow
  
 Great work. Definitely focus on item 2 and 3 in your immediate future plans. Resolving item 2 would make your package more usable (in the pythonic sense)
  
-####  **Reflection**
+####  Reflection
 Based on the suggestion from the teaching fellow, we decided to work on adding the python function as an input format for our automatic library to make it more accessible to users. So in our final implementation, the user can either input their functions as a string (a list of strings), or lambda functions.
  
 For item 3, we were not able to implement it in our final submission due to the time limit. However, we think it would still be a good idea to develop this feature and allow the users to draw the graph structure of AD as a possible future direction to work on.
  
 We also implemented item 1 and 4 in this submission. We overloaded many dunder methods and math functions that we are using for ReverseNode class. We also updated our wrap function call auto_diff() which supports multivariate expression and vector containing multivariate expressions to calculate gradients or Jacobians.
  
-### **Description of Extension feature**
+### Description of Extension feature
  
-#### ** Lambda function input **
+####  Lambda Function Input 
  
 In our previous milestones, we implemented a wrap function that would take a string representation of the function and convert it to create our ForwardNode objects, evaluate the function and return the final result. 
 However, we think inputting function as a string isn’t the best way to let the users use our library. Therefore, we decided to add a new feature in our final submission to allow the user input function as a python lambda function. 
  
 After adding this new feature, users can now declare either one or multiple functions and specify the function variables using lambda. In our updated wrap function `auto_diff()`, we would first check whether the function is lambda. If so, we would call the `translate` function to convert the lambda function into a list containing string representations of each function. After this, the automatic differentiation process would be the same as before.
  
-#### ** ReverseNode**
+#### ReverseNode
  
 Our extension feature allows users to performance automatic differentiation using the reverse mode method. This is achieved through a new class called ReverseNode. The ReverseNode class contains overloaded dunder methods for reverse mode automatic differentiation, such as `__add__`, `__radd__`, `__sub__`, `__pow__`, `__str__`, etc. We also updated the math functions such as `sin`, `cos`, `exp` in our utils.py file to add the calculation for reverse mode.
  
@@ -205,17 +344,17 @@ The intuition for implementing a reverse mode method comes from a major disadvan
  
 Consider a simple function with 2 variables:
  
-$$y = x_1 * x_2 + \\sin(x_1)$$
+<img src="https://latex.codecogs.com/svg.latex?y&space;=&space;x_1&space;\cdot&space;x_2&space;&plus;&space;sin(x_1)" title="y = x_1 \cdot x_2 + sin(x_1)" /></a>
  
-To calculate the derivative $\frac{\partial{y}}{\partial{x_1}}$ and $\frac{\partial{y}}{\partial{x_2}}$, we will need to do 2 forward pass calculation, with the trace being `[1.0, 0.0]` for $\frac{\partial{y}}{\partial{x_1}}$ and `[0.0, 1.0]` for $\frac{\partial{y}}{\partial{x_2}}$. This yields a complexity of `O(N)`, where N equals the number of input variables. So if we need to compute the gradient of a complex function with thousands of variables, it would be computationally expensive to use forward mode method.
+To calculate the derivative <img src="https://latex.codecogs.com/svg.latex?\frac{\partial{y}}{\partial{x_1}}" title="\frac{\partial{y}}{\partial{x_1}}" /></a> and <img src="https://latex.codecogs.com/svg.latex?\frac{\partial{y}}{\partial{x_2}}" title="\frac{\partial{y}}{\partial{x_2}}" /></a>, we will need to do 2 forward pass calculation, with the trace being `[1.0, 0.0]` for <img src="https://latex.codecogs.com/svg.latex?\frac{\partial{y}}{\partial{x_1}}" title="\frac{\partial{y}}{\partial{x_1}}" /></a> and `[0.0, 1.0]` for <img src="https://latex.codecogs.com/svg.latex?\frac{\partial{y}}{\partial{x_2}}" title="\frac{\partial{y}}{\partial{x_2}}" /></a>. This yields a complexity of `O(N)`, where N equals the number of input variables. So if we need to compute the gradient of a complex function with thousands of variables, it would be computationally expensive to use forward mode method.
  
 However, we can actually avoid this problem using the symmetric property of the chain rule: 
  
-$$\frac{\partial{f}}{\partial{x_2}} = \frac{\partial{f}}{\partial{x_1}} \frac{\partial{x_1}}{\partial{x_2}}$$
+<img src="https://latex.codecogs.com/svg.latex?\frac{\partial{f}}{\partial{x_2}}&space;=&space;\frac{\partial{f}}{\partial{x_1}}&space;\frac{\partial{x_1}}{\partial{x_2}}" title="\frac{\partial{f}}{\partial{x_2}} = \frac{\partial{f}}{\partial{x_1}} \frac{\partial{x_1}}{\partial{x_2}}" /></a>
  
 To account for this problem, the reverse mode method uses a forward pass to first calculate all the intermediate values of partial derivative and store these values in a dependency list, and then proceeds to calculate the derivative of each variable through a reverse pass using the chain rule.
  
  
-$$\bar{x}_k = \frac{\partial{f}}{\partial{x_k}} = \sum_{x_i \in \text{child}(x_k)} \frac{\partial{f}}{\partial{x_i}} \frac{\partial{x_i}}{\partial{x_k}} = \sum_{x_i \in \text{child}(x_k)} \bar{x}_i \frac{\partial{x_i}}{\partial{x_k}}$$
+<img src="https://latex.codecogs.com/svg.latex?\bar{x}_k&space;=&space;\frac{\partial{f}}{\partial{x_k}}&space;=&space;\sum_{x_i&space;\in&space;\text{child}(x_k)}&space;\frac{\partial{f}}{\partial{x_i}}&space;\frac{\partial{x_i}}{\partial{x_k}}&space;=&space;\sum_{x_i&space;\in&space;\text{child}(x_k)}&space;\bar{x}_i&space;\frac{\partial{x_i}}{\partial{x_k}}" title="\bar{x}_k = \frac{\partial{f}}{\partial{x_k}} = \sum_{x_i \in \text{child}(x_k)} \frac{\partial{f}}{\partial{x_i}} \frac{\partial{x_i}}{\partial{x_k}} = \sum_{x_i \in \text{child}(x_k)} \bar{x}_i \frac{\partial{x_i}}{\partial{x_k}}" /></a>
  
 One useful scenario for reverse mode automatic differentiation in the real-world would be calculating the gradient in deep learning models for video processing or image recognition. In these kind of problem, there are typically thousand or even millions of input representing the image or video pixels and for classification problem there could be only a few output representing the category of classes. So to calculate the gradient of each variables and find our the best direction for gradient descent, a reverse mode automatic differentation is usually used to achieve the best runtime.
