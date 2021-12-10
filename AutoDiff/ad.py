@@ -171,7 +171,7 @@ def forward_auto_diff(functions, var_dict, target):
     if isinstance(target, list) and len(variables) == len(target):
         res = gradientF(funcs, variables)
         name = "Jacobian" if len(funcs) > 1 else "Derivative"
-        print(f"Funtions: {functions}\nVariables: {var_dict}\n------------------------------\n{name}:\n {res}")
+        print(f"Functions: {functions}\nVariables: {var_dict}\n------------------------------\n{name}:\n {res}")
     else:
         name = "gradient" if len(funcs) > 1 else "partial derivative"
         s = ""
@@ -179,7 +179,7 @@ def forward_auto_diff(functions, var_dict, target):
             der = gradientF(funcs, variables, target=t)
             res.append(der)
             s += f"{name} with respect to {t}: {der}\n"
-        print(f"Funtions: {functions}\nVariables: {var_dict}\n------------------------------\n" + s)
+        print(f"Functions: {functions}\nVariables: {var_dict}\n------------------------------\n" + s)
 
     return res
 
@@ -213,7 +213,7 @@ def reverse_auto_diff(functions, var_dict, target):
     if isinstance(target, list) and len(variables) == len(target):
         res = gradientR(functions, var_dict, variables)
         name = "Jacobian" if len(functions) > 1 else "Derivative"
-        print(f"Funtions: {functions}\nVariables: {var_dict}\n------------------------------\n{name}:\n {res}")
+        print(f"Functions: {functions}\nVariables: {var_dict}\n------------------------------\n{name}:\n {res}")
     else:
         name = "gradient" if len(functions) > 1 else "partial derivative"
         s = ""
@@ -221,7 +221,7 @@ def reverse_auto_diff(functions, var_dict, target):
             der = gradientR(functions, var_dict, target=t)
             res.append(der)
             s += f"{name} with respect to {t}: {der}\n"
-        print(f"Funtions: {functions}\nVariables: {var_dict}\n------------------------------\n" + s)
+        print(f"Functions: {functions}\nVariables: {var_dict}\n------------------------------\n" + s)
 
     return res
 
@@ -255,7 +255,7 @@ def auto_diff(functions, var_dict, target, mode="forward"):
     Wrap function for automatic differentiation
 
     Input:
-    functions - str, the functions output we a{re caculating
+    functions - str, the functions output we are caculating
     var_dict - dictionary, name and value pair of all variables in function
     target - list, name of our target variable(s) to calculate the gradient
     mode - str, either forward or reverse model
@@ -293,8 +293,7 @@ def auto_diff(functions, var_dict, target, mode="forward"):
 
 
 def main():
-    functions = lambda x1, x2: exp(x1) + log(x2) - 5
-    print(translate(functions))
+    functions = lambda x1, x2: [exp(x1) + log(x2) - 5, sin(x1) + cos(x2)]
     var_dict = {"x1": 3, "x2": 5}
     auto_diff(functions, var_dict, ["x1", "x2"], "reverse")
 
