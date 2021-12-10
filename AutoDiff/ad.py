@@ -252,7 +252,10 @@ def translate(lambda_func):
     ['exp(x1) + log(x2) - 5']
 
     '''
-    functions = inspect.getsourcelines(lambda_func)[0][0].strip('\n').split(": ")[-1].strip('][').split(", ")
+    functions = inspect.getsourcelines(lambda_func)[0][0].strip('\n').split(":")[-1].strip()
+    if "[" in functions:
+        #functions = inspect.getsourcelines(lambda_func)[0][0].strip('\n').split(": ")[-1].strip('][').split(", ")
+        functions = re.findall(r'(?<=\[).*(?=\])', inspect.getsourcelines(lambda_func)[0][0].strip('\n').split(":")[-1])[0].split(",")
     return functions
 
 
