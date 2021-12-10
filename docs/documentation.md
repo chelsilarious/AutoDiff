@@ -285,6 +285,7 @@ cs107project/
 ├── .travis.yml
 └── .circleci/
     └── config.yml
+├── setup.py
 └── requirements.txt
 ```
 
