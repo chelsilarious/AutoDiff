@@ -187,6 +187,7 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = 2 * sin(x)
+    assert sin(np.pi) == 1.2246467991473532e-16
     assert func.value == 0 and all(func.trace == np.array([2.0, 2.0, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = sin("string is not a valid type")
@@ -198,6 +199,7 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = 2 * cos(x)
+    assert cos(0) == 1.0
     assert func.value == 2.0 and all(func.trace == np.array([0.0, 0.0, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = cos("string is not a valid type")
@@ -209,9 +211,15 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = 2 * log(x)
+    assert log(np.e) == 1.0 
     assert func.value == 0.0 and all(func.trace == np.array([2.0, 2.0, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = log("string is not a valid type")
+    with self.assertRaises(ValueError):
+        x2 = ForwardNode(-1, trace=trace, var=var)
+        func = log(x2)
+    with self.assertRaises(ValueError):
+        func = log(-1)
 
   # Exponential Function
   def test_exp(self):
@@ -220,6 +228,7 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = 2 * exp(x)
+    assert exp(1) == np.e
     assert func.value == 4.0 and all(func.trace == np.array([4.0, 4.0, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = exp("string is not a valid type")
@@ -232,8 +241,14 @@ class ForwardNodeTests(unittest.TestCase):
     x = ForwardNode(value, trace=trace, var=var)
     func = 2 * sqrt(x)
     assert func.value == 4.0 and all(func.trace == np.array([0.5, 0.5, 0.0])) and func.var == var
+    assert sqrt(4) == 2.0
     with self.assertRaises(AttributeError):
         func = sqrt("string is not a valid type")
+    with self.assertRaises(ValueError):
+        x2 = ForwardNode(-1, trace=trace, var=var)
+        func = sqrt(x2)
+    with self.assertRaises(ValueError):
+        func = sqrt(-1)
         
   # Tan Function
   def test_tan(self):
@@ -242,9 +257,12 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = 2 * tan(x)
+    assert tan(0) == 0.0
     assert func.value == 0 and all(func.trace == np.array([2.0, 2.0, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = tan("string is not a valid type")
+    with self.assertRaises(ValueError):
+        func = tan(np.pi / 2)
 
   # Arctan Function
   def test_arctan(self):
@@ -253,6 +271,7 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = arctan(x)
+    assert arctan(0) == 0.0
     assert func.value == 0.0 and all(func.trace == np.array([1.0, 1.0, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = arctan("string is not a valid type")
@@ -264,6 +283,7 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = 2 * arcsin(x)
+    assert arcsin(0) == 0.0
     assert func.value == 0 and all(func.trace == np.array([2.0, 2.0, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = arcsin("string is not a valid type")
@@ -275,6 +295,8 @@ class ForwardNodeTests(unittest.TestCase):
     x = ForwardNode(value, trace=trace, var=var)
     with self.assertRaises(ValueError):
         func = arcsin(x)
+    with self.assertRaises(ValueError):
+        func = arcsin(2)
 
   # Arccos Function
   def test_arccos(self):
@@ -283,9 +305,12 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = 2 * arccos(x)
+    assert arccos(0) == 1.5707963267948966
     assert func.value == np.pi and all(func.trace == np.array([-2.0, -2.0, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = arccos("string is not a valid type")
+    with self.assertRaises(ValueError):
+        func = arccos(2)
 
   def test_arccos_edge(self):
     value = 1
@@ -313,6 +338,7 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = sinh(x)
+    assert sinh(0) == 0.0
     assert func.value == 0 and all(func.trace == np.array([1.0, 1.0, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = sinh("string is not a valid type")
@@ -324,6 +350,7 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = cosh(x)
+    assert cosh(0) == 1.0
     assert func.value == 1.0 and all(func.trace == np.array([0.0, 0.0, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = cosh("string is not a valid type")
@@ -335,9 +362,12 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = sec(x) * 2
+    assert sec(0) == 1.0
     assert func.value == 2.0 and all(func.trace == np.array([0.0, 0.0, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = sec("string is not a valid type")
+    with self.assertRaises(ValueError):
+        func = sec(np.pi / 2)
 
   # Csc function
   def test_csc(self):
@@ -346,9 +376,12 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = csc(x) * 2
+    assert csc(np.pi / 2) == 1.0
     assert func.value == 2.0 and all([round(x, 18) for x in func.trace] == np.array([-1.22e-16, -1.22e-16, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = csc("string is not a valid type")
+    with self.assertRaises(ValueError):
+        func = csc(np.pi)
 
   # Cot function
   def test_cot(self):
@@ -357,9 +390,12 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = cot(x) * 2
+    assert cot(np.pi / 2) == 6.123233995736766e-17
     assert round(func.value, 18) == 1.22e-16 and all(func.trace == np.array([-2.0, -2.0, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = cot("string is not a valid type")
+    with self.assertRaises(ValueError):
+        func = cot(np.pi)
 
   def test_log_base(self):
     value = 10 ** 5
@@ -367,9 +403,15 @@ class ForwardNodeTests(unittest.TestCase):
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
     func = log_base(x, base=10)
+    assert log_base(10) == 1.0
     assert func.value == 5.0 and all([round(x, 8) for x in func.trace] == np.array([4.34e-06, 4.34e-06, 0.0])) and func.var == var
     with self.assertRaises(AttributeError):
         func = log_base("string is not a valid type")
+    with self.assertRaises(ValueError):
+        func = log_base(-1)
+    with self.assertRaises(ValueError):
+        x2 = ForwardNode(-1)
+        func = log_base(x2)
 
   def test_comparison(self):
     x = ForwardNode(value=3.0, trace=[1.0, 0.0], var=["x1", "x2"])
