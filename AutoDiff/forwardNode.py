@@ -261,6 +261,8 @@ class ForwardNode():
 
         '''
         if isinstance(self, ForwardNode):
+            if not isinstance(other, (int,float)):
+                raise AttributeError("Invalid Input!")
             return ForwardNode(other / self.value, self.trace * (-1 * other) / (self.value ** 2), self.var)
         else:
             raise AttributeError("Invalid Input!")
@@ -324,6 +326,8 @@ class ForwardNode():
 
         '''
         if isinstance(self, ForwardNode):
+            if not isinstance(other, (int,float)):
+                raise AttributeError("Invalid Input!")
             if (self.value < 0) and abs(other) < 1:
                 raise ValueError("Derivatives of negative values to a power variable between -1 and 1 are not supported!")
             new_trace = (other ** self.value) * np.log(other) * self.trace

@@ -319,12 +319,12 @@ def arcsin(node):
             raise ValueError(f"Invalid Value: arcsin of {node} does not exist.")
         return np.arcsin(node)
     elif isinstance(node, ForwardNode):
-        if np.abs(node.value) > 1:
-            raise ValueError(f"Invalid Value: arcsin of {node.value} does not exist.")
+        if np.abs(node.value) >= 1:
+            raise ValueError(f"Invalid Value: derivative of arcsin of {node.value} does not exist.")
         return ForwardNode(np.arcsin(node.value), node.trace / np.sqrt(1 - node.value ** 2), node.var)
     elif isinstance(node, ReverseNode):
-        if np.abs(node.value) > 1:
-            raise ValueError(f"Invalid Value: arcsin of {node.value} does not exist.")
+        if np.abs(node.value) >= 1:
+            raise ValueError(f"Invalid Value: derivative of arcsin of {node.value} does not exist.")
         new = ReverseNode(np.arcsin(node.value))
         node.children.append((1.0 / np.sqrt(1 - node.value ** 2), new))
         return new
@@ -353,12 +353,12 @@ def arccos(node):
             raise ValueError(f"Invalid Value: arccos of {node} does not exist.")
         return np.arccos(node)
     elif isinstance(node, ForwardNode):
-        if np.abs(node.value) > 1:
-            raise ValueError(f"Invalid Value: arccos of {node.value} does not exist.")
+        if np.abs(node.value) >= 1:
+            raise ValueError(f"Invalid Value: derivative of arccos of {node.value} does not exist.")
         return ForwardNode(np.arccos(node.value), node.trace * (-1.0) / np.sqrt(1 - node.value ** 2), node.var)
     elif isinstance(node, ReverseNode):
-        if np.abs(node.value) > 1:
-            raise ValueError(f"Invalid Value: arccos of {node.value} does not exist.")
+        if np.abs(node.value) >= 1:
+            raise ValueError(f"Invalid Value: derivative of arccos of {node.value} does not exist.")
         new = ReverseNode(np.arccos(node.value))
         node.children.append((-1.0 / np.sqrt(1 - node.value ** 2), new))
         return new
