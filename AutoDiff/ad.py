@@ -1,4 +1,5 @@
 import numpy as np
+import inspect
 from AutoDiff.forwardNode import ForwardNode
 from AutoDiff.reverseNode import ReverseNode
 from AutoDiff.utils import *
@@ -87,7 +88,7 @@ def gradientF(y, variables, target=None):
         raise TypeError("Invalid Input!")
 
 
-def gradientR(functions, var_dict, target):
+def gradientR(functions, var_dict, target=None):
     '''
     Calculate the graident using reverse mode methods
 
@@ -109,6 +110,8 @@ def gradientR(functions, var_dict, target):
     '''
     res = []
     variables = list(var_dict.keys())
+    if not target:
+        target = variables
     nodes = []
     functions = [functions] if isinstance(functions, str) else functions
 
@@ -130,10 +133,10 @@ def gradientR(functions, var_dict, target):
 
     if isinstance(target, str):
         res = [item for sublist in res for item in sublist]
-    return res
+    return np.array(res)
 
 
-def forward_auto_diff(functions, var_dict, target):
+def forward_auto_diff(functions, var_dict, target=None):
     '''
     Perform forward mode automatic differentiation
 
@@ -155,6 +158,8 @@ def forward_auto_diff(functions, var_dict, target):
 
     '''
     variables = list(var_dict.keys())
+    if not target:
+        target = variables
     funcs = []
     res = []
     functions = [functions] if isinstance(functions, str) else functions
@@ -170,20 +175,20 @@ def forward_auto_diff(functions, var_dict, target):
     if isinstance(target, list) and len(variables) == len(target):
         res = gradientF(funcs, variables)
         name = "Jacobian" if len(funcs) > 1 else "Derivative"
-        print(f"Funtions: {functions}\nVariables: {var_dict}\n------------------------------\n{name}:\n {res}")
+        print(f"Functions: {functions}\nVariables: {var_dict}\n------------------------------\n{name}:\n {res}")
     else:
-        name = "gradient" if len(funcs) > 1 else "partial derivative"
+        name = "Gradient" if len(funcs) > 1 else "Partial derivative"
         s = ""
         for t in target:
             der = gradientF(funcs, variables, target=t)
             res.append(der)
             s += f"{name} with respect to {t}: {der}\n"
-        print(f"Funtions: {functions}\nVariables: {var_dict}\n------------------------------\n" + s)
+        print(f"Functions: {functions}\nVariables: {var_dict}\n------------------------------\n" + s)
 
     return res
 
 
-def reverse_auto_diff(functions, var_dict, target):
+def reverse_auto_diff(functions, var_dict, target=None):
     '''
     Perform reverse mode automatic differentiation
 
@@ -206,31 +211,60 @@ def reverse_auto_diff(functions, var_dict, target):
     '''
 
     variables = list(var_dict.keys())
+    if not target:
+        target = variables
     res = []
     functions = [functions] if isinstance(functions, str) else functions
 
     if isinstance(target, list) and len(variables) == len(target):
         res = gradientR(functions, var_dict, variables)
         name = "Jacobian" if len(functions) > 1 else "Derivative"
-        print(f"Funtions: {functions}\nVariables: {var_dict}\n------------------------------\n{name}:\n {res}")
+        print(f"Functions: {functions}\nVariables: {var_dict}\n------------------------------\n{name}:\n {res}")
     else:
-        name = "gradient" if len(functions) > 1 else "partial derivative"
+        name = "Gradient" if len(functions) > 1 else "Partial Derivative"
         s = ""
         for t in target:
             der = gradientR(functions, var_dict, target=t)
             res.append(der)
             s += f"{name} with respect to {t}: {der}\n"
-        print(f"Funtions: {functions}\nVariables: {var_dict}\n------------------------------\n" + s)
+        print(f"Functions: {functions}\nVariables: {var_dict}\n------------------------------\n" + s)
 
     return res
 
 
-def auto_diff(functions, var_dict, target, mode="forward"):
+def translate(lambda_func):
+    '''
+    Translate lambda function input to string representation of function
+
+    Input:
+    lambda_func - function, lambda function(s) that the user want to perform automatic differentiation
+
+    Output:
+    String representation of function input
+
+    Examples:
+    >>> functions = lambda x1, x2: x1 + sin(x2)
+    >>> translate(lambda_func=functions)
+    ['x1 + sin(x2)', 'cos(x1) + 5 / exp(x2)']
+
+    >>> functions = lambda x1, x2: [x1 + sin(x2), cos(x1) + 5 / exp(x2)]
+    >>> translate(lambda_func=functions)
+    ['exp(x1) + log(x2) - 5']
+
+    '''
+    functions = inspect.getsourcelines(lambda_func)[0][0].strip('\n').split(":")[-1].strip()
+    if "[" in functions:
+        #functions = inspect.getsourcelines(lambda_func)[0][0].strip('\n').split(": ")[-1].strip('][').split(", ")
+        functions = re.findall(r'(?<=\[).*(?=\])', inspect.getsourcelines(lambda_func)[0][0].strip('\n').split(":")[-1])[0].split(",")
+    return functions
+
+
+def auto_diff(functions, var_dict, target=None, mode="forward"):
     '''
     Wrap function for automatic differentiation
 
     Input:
-    functions - str, the functions output we a{re caculating
+    functions - str, the functions output we are caculating
     var_dict - dictionary, name and value pair of all variables in function
     target - list, name of our target variable(s) to calculate the gradient
     mode - str, either forward or reverse model
@@ -250,12 +284,15 @@ def auto_diff(functions, var_dict, target, mode="forward"):
     [[0.15883159318006335, 30.053624782229708, 0.0], [1.0, -1.5707963267948966, 0.0], [0.3535533905932738, 0.0, 1.0]]
 
     '''
+    if (not isinstance(functions, (str, list))) and functions.__name__ == "<lambda>":
+        functions = translate(functions)
     if not (isinstance(functions, str) or all([isinstance(f, str) for f in functions])):
-        raise TypeError('Invalid input type: each function should be a string')
+        raise TypeError('Invalid input type: each function should be a string or lambda function')
     if not isinstance(var_dict, dict):
         raise TypeError('Invalid input type: input variables should be dictionary')
-    if not (isinstance(target, str) or all([t in var_dict.keys() for t in target])):
-        raise ValueError('Invalid target value: target must be in the variable dictionary')
+    if target:
+        if not (isinstance(target, str) or all([t in var_dict.keys() for t in target])):
+            raise ValueError('Invalid target value: target must be in the variable dictionary')
 
     if mode == "forward":
         return forward_auto_diff(functions, var_dict, target)
@@ -263,4 +300,14 @@ def auto_diff(functions, var_dict, target, mode="forward"):
         return reverse_auto_diff(functions, var_dict, target)
     else:
         raise ValueError("Invalid mode: please choose between forward and reverse mode")
+
+
+def main():
+    functions = lambda x1, x2: [exp(x1) + log(x2) - 5, sin(x1) + cos(x2)]
+    var_dict = {"x1": 3, "x2": 5}
+    auto_diff(functions, var_dict, ["x1", "x2"], "reverse")
+
+
+if __name__ == "__main__":
+    main()
 

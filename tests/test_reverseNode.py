@@ -1,11 +1,14 @@
 import unittest
 import numpy as np
 
-import sys
+#import sys
+#sys.path.append('..')
+#sys.path.append('../AutoDiff')
+#sys.path.append('AutoDiff')
 
 from AutoDiff.reverseNode import ReverseNode
 from AutoDiff.utils import *
-from AutoDiff.ad import gradientR, reverse_auto_diff, auto_diff
+from AutoDiff.ad import gradientR, reverse_auto_diff, auto_diff, translate
 
 class ReverseNodeTests(unittest.TestCase):
   
@@ -145,6 +148,12 @@ class ReverseNodeTests(unittest.TestCase):
     func = x ** 2
     assert func.value == 4
     assert x.gradient() == 4.0
+    
+  def test_pow_edge(self):
+    value = -3.0
+    x = ReverseNode(value)
+    with self.assertRaises(ValueError):
+      func = x ** 0.5
 
   def test_pow_revnode(self):
     value = 2
@@ -229,7 +238,7 @@ class ReverseNodeTests(unittest.TestCase):
     self.assertRaises(AttributeError, assert_error)
   
   # Constant
-  def test_constant_val(self):
+  def test_constant(self):
     value = 2.0
     x = ReverseNode(value)
     func = x
@@ -237,7 +246,7 @@ class ReverseNodeTests(unittest.TestCase):
     assert x.gradient() == 1.0
 
   # Sine Function
-  def test_sin_val(self):
+  def test_sin(self):
     value = 0
     x = ReverseNode(value)
     func = 2 * sin(x)
@@ -245,22 +254,29 @@ class ReverseNodeTests(unittest.TestCase):
     assert x.gradient() == 2.0
 
   # Cosine Function
-  def test_cos_val(self):
+  def test_cos(self):
     value = 0
     x = ReverseNode(value)
     func = 2 * cos(x)
     assert func.value == 2.0
     assert x.gradient() == 0
 
-  def test_log_val(self):
+  def test_log(self):
     value = 2.0
     x = ReverseNode(value)
     func = 2 * log(x)
     assert round(func.value, 4) == 1.3863
     assert x.gradient() == 1.0
 
+  def test_log_assert_err(self):
+    def assert_error():
+      value = -0.1
+      x = ReverseNode(value)
+      func = log(x)
+    self.assertRaises(ValueError, assert_error)
+
   # Exponential Function
-  def test_exp_val(self):
+  def test_exp(self):
     value = np.log(2.0)
     x = ReverseNode(value)
     func = 2 * exp(x)
@@ -268,15 +284,22 @@ class ReverseNodeTests(unittest.TestCase):
     assert x.gradient() == 4.0
 
   # Square root
-  def test_sqrt_val(self):
+  def test_sqrt(self):
     value = 4
     x = ReverseNode(value)
     func = 2 * sqrt(x)
     assert func.value == 4.0
     assert x.gradient() == 0.5
 
+  def test_sqrt_assert_err(self):
+    def assert_error():
+      value = -0.1
+      x = ReverseNode(value)
+      func = sqrt(x)
+    self.assertRaises(ValueError, assert_error)
+
   # Tan Function
-  def test_tan_val(self):
+  def test_tan(self):
     value = 0
     x = ReverseNode(value)
     func = 2 * tan(x)
@@ -284,7 +307,7 @@ class ReverseNodeTests(unittest.TestCase):
     assert x.gradient() == 2
 
   # Arctan Function
-  def test_arctan_val(self):
+  def test_arctan(self):
     value = 0
     x = ReverseNode(value)
     func = arctan(x)
@@ -292,7 +315,7 @@ class ReverseNodeTests(unittest.TestCase):
     assert x.gradient() == 1.0
 
   # Arcsin Function
-  def test_arcsin_val(self):
+  def test_arcsin(self):
     value = 0
     x = ReverseNode(value)
     func = 2 * arcsin(x)
@@ -300,7 +323,7 @@ class ReverseNodeTests(unittest.TestCase):
     assert x.gradient() == 2.0
 
   # Arccos Function
-  def test_arccos_val(self):
+  def test_arccos(self):
     value = 0
     x = ReverseNode(value)
     func = 2 * arccos(x)
@@ -308,7 +331,7 @@ class ReverseNodeTests(unittest.TestCase):
     assert x.gradient() == -2
 
   # Tanh Function
-  def test_tanh_val(self):
+  def test_tanh(self):
     value = 0
     x = ReverseNode(value)
     func = tanh(x)
@@ -316,7 +339,7 @@ class ReverseNodeTests(unittest.TestCase):
     assert x.gradient() == 1
 
   # Sinh Function
-  def test_sinh_val(self):
+  def test_sinh(self):
     value = 0
     x = ReverseNode(value)
     func = sinh(x)
@@ -361,6 +384,9 @@ class ReverseNodeTests(unittest.TestCase):
     func = log_base(x, base=10)
     assert func.value == 5.0
     assert round(x.gradient(), 8) == 4.34e-06
+    with self.assertRaises(ValueError):
+        x2 = ReverseNode(-1)
+        func = log_base(x2)
 
   def test_comparison(self):
     x = ReverseNode(2.5)
@@ -471,6 +497,19 @@ class ReverseNodeTests(unittest.TestCase):
     res = auto_diff(functions, var_dict, ["x1", "x2", "x3"], mode="forward")
 
     assert [[round(r, 4) for r in row] for row in res] == [[0.1588, 30.0536, 0.0], [1.0, -1.5708, 0.0], [0.3536, 0.0, 1.0]]
+
+  def test_translate(self):
+    functions = lambda x1, x2: exp(x1) + log(x2) - 5
+    new_functions = translate(functions)
+
+    assert new_functions == 'exp(x1) + log(x2) - 5'
+
+  def test_lambda_input(self):
+    functions = lambda x1, x2: exp(x1) + log(x2) - 5
+    var_dict = {"x1": 3, "x2": 5}
+    res = auto_diff(functions, var_dict, ["x1", "x2"], "reverse")
+
+    assert [[round(r, 4) for r in row] for row in res] == [[20.0855, 0.2]]
 
   def test_repr(self):
     x = ReverseNode(value=5)
