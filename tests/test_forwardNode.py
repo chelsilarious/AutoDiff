@@ -107,6 +107,15 @@ class ForwardNodeTests(unittest.TestCase):
     func = x ** 2.0
     assert func.value == 4.0 and all(func.trace == np.array([4.0, 4.0, 0.0])) and func.var == var
 
+  # Power Edge Case
+  def test_pow_edge(self):
+    value = -3.0
+    trace = [1.0, 1.0, 0.0]
+    var = ["x1", "x2", "x3"]
+    x = ForwardNode(value, trace=trace, var=var)
+    with self.assertRaises(ValueError):
+        func = x ** 0.5
+  
   # Constant
   def test_constant(self):
     value = 2.0

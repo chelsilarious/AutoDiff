@@ -148,6 +148,12 @@ class ReverseNodeTests(unittest.TestCase):
     func = x ** 2
     assert func.value == 4
     assert x.gradient() == 4.0
+    
+  def test_pow_edge(self):
+    value = -3.0
+    x = ReverseNode(value)
+    with self.assertRaises(ValueError):
+      func = x ** 0.5
 
   def test_pow_revnode(self):
     value = 2
