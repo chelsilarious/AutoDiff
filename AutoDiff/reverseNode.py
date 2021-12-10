@@ -297,6 +297,8 @@ class ReverseNode():
 
         '''
         if isinstance(other, (int, float)):
+            if (self.value < 0) and abs(other) < 1
+                raise ValueError("Derivatives of variables with negative values to a power between -1 and 1 are not supported!")
             new = ReverseNode(self.value ** other)
             self.children.append((other * self.value ** (other - 1), new))
             return new
@@ -331,6 +333,8 @@ class ReverseNode():
 
         '''
         if isinstance(other, (int, float)):
+            if (self.value < 0) and abs(other) < 1
+                raise ValueError("Derivatives of negative values to a power variable between -1 and 1 are not supported!")
             new = ReverseNode(other ** self.value)
             self.children.append((np.log(other) * other ** self.value, new))
             return new

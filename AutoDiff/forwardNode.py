@@ -288,6 +288,8 @@ class ForwardNode():
 
         '''
         if isinstance(other, (int, float)):
+            if (self.value < 0) and abs(other) < 1
+                raise ValueError("Derivatives of variables with negative values to a power between -1 and 1 are not supported!")
             # v = y ** c; dv/dx1 = c * (y ** (c-1)) * dy/dx1, dv/dx2 = c * (y ** (c-1)) * dy/dx2, ...
             new_trace = other * (self.value ** (other - 1)) * self.trace
             return ForwardNode(self.value ** other, new_trace, self.var)
@@ -322,6 +324,8 @@ class ForwardNode():
 
         '''
         if isinstance(self, ForwardNode):
+            if (self.value < 0) and abs(other) < 1
+                raise ValueError("Derivatives of negative values to a power variable between -1 and 1 are not supported!")
             new_trace = (other ** self.value) * np.log(other) * self.trace
             return ForwardNode(other ** self.value, new_trace, self.var)
         else:
