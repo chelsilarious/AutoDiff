@@ -43,12 +43,9 @@ jobs:
           # This assumes pytest is installed via the install-package step above
           command: pip install -r requirements.txt
       - run:
-          name: run tests
+          name: run tests and generate report
           # This assumes pytest is installed via the install-package step above
-          command: coverage run -m pytest
-      - run:
-          name: generate report
-          command: coverage xml
+          command: coverage run -m pytest --cov=AutoDiff tests/ --cov-report xml
       - codecov/upload:
           file: coverage.xml
           token: '8c281f16-f2da-4a66-aba4-3c6b63bec375'

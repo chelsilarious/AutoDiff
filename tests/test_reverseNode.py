@@ -268,6 +268,13 @@ class ReverseNodeTests(unittest.TestCase):
     assert round(func.value, 4) == 1.3863
     assert x.gradient() == 1.0
 
+  def test_log_assert_err(self):
+    def assert_error():
+      value = -0.1
+      x = ReverseNode(value)
+      func = log(x)
+    self.assertRaises(ValueError, assert_error)
+
   # Exponential Function
   def test_exp(self):
     value = np.log(2.0)
@@ -283,6 +290,13 @@ class ReverseNodeTests(unittest.TestCase):
     func = 2 * sqrt(x)
     assert func.value == 4.0
     assert x.gradient() == 0.5
+
+  def test_sqrt_assert_err(self):
+    def assert_error():
+      value = -0.1
+      x = ReverseNode(value)
+      func = sqrt(x)
+    self.assertRaises(ValueError, assert_error)
 
   # Tan Function
   def test_tan(self):
@@ -370,6 +384,9 @@ class ReverseNodeTests(unittest.TestCase):
     func = log_base(x, base=10)
     assert func.value == 5.0
     assert round(x.gradient(), 8) == 4.34e-06
+    with self.assertRaises(ValueError):
+        x2 = ReverseNode(-1)
+        func = log_base(x2)
 
   def test_comparison(self):
     x = ReverseNode(2.5)
