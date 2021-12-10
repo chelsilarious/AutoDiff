@@ -234,24 +234,24 @@ def reverse_auto_diff(functions, var_dict, target=None):
 
 def translate(lambda_func):
     '''
-        Translate lambda function input to string representation of function
+    Translate lambda function input to string representation of function
 
-        Input:
-        lambda_func - function, lambda function(s) that the user want to perform automatic differentiation
+    Input:
+    lambda_func - function, lambda function(s) that the user want to perform automatic differentiation
 
-        Output:
-        String representation of function input
+    Output:
+    String representation of function input
 
-        Examples:
-        >>> functions = lambda x1, x2: x1 + sin(x2)
-        >>> translate(lambda_func=functions)
-        ['x1 + sin(x2)', 'cos(x1) + 5 / exp(x2)']
+    Examples:
+    >>> functions = lambda x1, x2: x1 + sin(x2)
+    >>> translate(lambda_func=functions)
+    ['x1 + sin(x2)', 'cos(x1) + 5 / exp(x2)']
 
-        >>> functions = lambda x1, x2: [x1 + sin(x2), cos(x1) + 5 / exp(x2)]
-        >>> translate(lambda_func=functions)
-        ['exp(x1) + log(x2) - 5']
+    >>> functions = lambda x1, x2: [x1 + sin(x2), cos(x1) + 5 / exp(x2)]
+    >>> translate(lambda_func=functions)
+    ['exp(x1) + log(x2) - 5']
 
-        '''
+    '''
     functions = inspect.getsourcelines(lambda_func)[0][0].strip('\n').split(": ")[-1].strip('][').split(", ")
     return functions
 
