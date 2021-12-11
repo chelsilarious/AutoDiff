@@ -29,6 +29,7 @@ An example is provided below.
 <img src="https://latex.codecogs.com/svg.latex?f(x,y)&space;=&space;sin(x)&space;-&space;y^2,&space;\quad&space;v_{-1}&space;=&space;x,&space;\quad&space;v_0&space;=&space;y" title="f(x,y) = sin(x) - y^2, \quad v_{-1} = x, \quad v_0 = y" /></a>
 </p>
 
+The computation graph for this function is shown below:
 
 ![AD_example](images/ad_example2.png)
 
@@ -73,9 +74,6 @@ You are recommended to use the package under Python version 3.6.2 or later.
 
 ```
 import AutoDiff as ad
-from AutoDiff import ForwardNode
-from AutoDiff import ReverseNode
-from AutoDiff.utils import *
 ```
 #### Automatic Differentiation with auto_diff() function
 
