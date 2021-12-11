@@ -1,5 +1,6 @@
 import numpy as np
 import inspect
+import re
 from AutoDiff.forwardNode import ForwardNode
 from AutoDiff.reverseNode import ReverseNode
 from AutoDiff.utils import *
