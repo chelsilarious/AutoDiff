@@ -50,7 +50,8 @@ The `auto_diff()` function takes 4 parameters
 #### Scalar Function with Scalar Input:
 
 ```python
-f = lambda x: sin(x) + cos(x)  # or f = "sin(x) + cos(x)"
+f = lambda x: sin(x) + cos(x)  
+# or f = "sin(x) + cos(x)"
 var = {"x": np.pi}
 der = ad.auto_diff(functions=f, var_dict=var)
 ```
@@ -72,9 +73,10 @@ print(der)
 #### Scalar Function with Vector Input:
 
 ```python
-f = lambda x1, x2, x3: in(x1) + cos(x2) - exp(x3)  # or f = "sin(x1) + cos(x2) - exp(x3)"
+f = lambda x1, x2, x3: in(x1) + cos(x2) - exp(x3)  
+# or f = "sin(x1) + cos(x2) - exp(x3)"
 vars = {"x1": np.pi/2, "x2": 1, "x3": 0}
-der2 = auto_diff(functions=f, var_dict=vars, target=["x2"], mode="reverse")
+der2 = ad.auto_diff(functions=f, var_dict=vars, target=["x2"], mode="reverse")
 ```
 ```
 Functions: ['sin(x1) + cos(x2) - exp(x3)']
@@ -91,7 +93,7 @@ print(der2)
 ```
 
 ```python
-grad = auto_diff(functions=f, var_dict=vars, mode="reverse")
+grad = ad.auto_diff(functions=f, var_dict=vars, mode="reverse")
 ```
 ```
 Functions: ['sin(x1) + cos(x2) - exp(x3)']
@@ -113,7 +115,7 @@ print(grad)
 fs = lambda x1: [sec(x1), x1/cos(x1), sin(x1) + x1]  
 # or fs = ["sec(x1)", "x1/cos(x1)", "sin(x1) + x1"]
 var = {"x1": np.pi/3}
-ders = auto_diff(functions=fs, var_dict=var, mode="forward")
+ders = ad.auto_diff(functions=fs, var_dict=var, mode="forward")
 ```
 ```
 Functions: ['sec(x1)', 'x1/cos(x1)', 'sin(x1) + x1']
@@ -139,7 +141,7 @@ print(ders)
 fs = lambda x1, x2, x3: ["tanh(x1) + cosh(x2 * 3) - sec(x3)", "x1 / x2 * cos(x3)", "sin(x1 / 2) + x2 * x3"]
 # or fs = ["tanh(x1) + cosh(x2 * 3) - sec(x3)", "x1 / x2 * cos(x3)", "sin(x1 / 2) + x2 * x3"]
 vars = {"x1": np.pi/2, "x2": 1, "x3": 0}
-grad_x1 = auto_diff(f, vars, ["x1"], mode="reverse")
+grad_x1 = ad.auto_diff(f, vars, ["x1"], mode="reverse")
 ```
 ```
 Functions: ['tanh(x1) + cosh(x2 * 3) - sec(x3)', 'x1 / x2 * cos(x3)', 'sin(x1 / 2) + x2 * x3']
@@ -149,7 +151,7 @@ Gradient with respect to x1: [0.15883159318006335, 1.0, 0.3535533905932738]
 ```
 
 ```python
-jcb = auto_diff(functions=fs, var_dict=vars, mode="reverse")
+jcb = ad.auto_diff(functions=fs, var_dict=vars, mode="reverse")
 ```
 ```
 Functions: ['tanh(x1) + cosh(x2 * 3) - sec(x3)', 'x1 / x2 * cos(x3)', 'sin(x1 / 2) + x2 * x3']
