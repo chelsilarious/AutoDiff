@@ -417,7 +417,7 @@ Below is an example of our overloaded dunder method `__add__` for `ReverseNode` 
 
 #### Binary elementary functions
 
-We also overloaded the binary elementary functions such as `sin`, `cos`, `tan`, `exp`, etc in a seperate file called `utils,py`. Each of our overloaded functions will first check the type of the variables pass in using the `isinstance` method, and it deals with python integer / float, our `ForwardNode`, and `ReverseNode` objects differently. We also make sure to check for valid value and will throw a `ValueError` if the input value is outside the domain for the this function.
+We also overloaded the binary elementary functions such as `sin`, `cos`, `tan`, `exp`, etc in a seperate file called `utils.py`. Each of our overloaded functions will first check the type of the variables pass in using the `isinstance` method, and it deals with python integer / float, our `ForwardNode`, and `ReverseNode` objects differently. We also make sure to check for valid value and will throw a `ValueError` if the input value is outside the domain for the this function.
 
 Below is an example of our overloaded function `tan`:
 ```
