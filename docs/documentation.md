@@ -24,26 +24,36 @@ In the graph structure of such calculation, each node is an intermediate result,
 
 An example is provided below.
 
+
+<p align="center">
 <img src="https://latex.codecogs.com/svg.latex?f(x,y)&space;=&space;sin(x)&space;-&space;y^2,&space;\quad&space;v_{-1}&space;=&space;x,&space;\quad&space;v_0&space;=&space;y" title="f(x,y) = sin(x) - y^2, \quad v_{-1} = x, \quad v_0 = y" /></a>
+</p>
 
-<img src="https://latex.codecogs.com/svg.latex?\begin{aligned}&space;&v_1&space;=&space;sin(v_{-1})&space;=&space;sin(x),&space;\\&space;&v_2&space;=&space;v_0^2&space;=&space;y^2,&space;\quad&space;v_3&space;=&space;-v_2&space;=&space;-y^2,&space;\quad&space;v4&space;=&space;v_1\&space;&plus;&space;\&space;v_3&space;=&space;sin(x)&space;-&space;y^2&space;=&space;f(x,&space;y)&space;\end{aligned}" title="\begin{aligned} &v_1 = sin(v_{-1}) = sin(x), \\ &v_2 = v_0^2 = y^2, \quad v_3 = -v_2 = -y^2, \quad v4 = v_1\ + \ v_3 = sin(x) - y^2 = f(x, y) \end{aligned}" /></a>
 
-![AD_example](images/AD_example.png)
+![AD_example](images/ad_example2.png)
+
+### Forward Mode
 
 In forward mode, AD starts from the inputs and work towards the outputs, evaluating the value of each intermediate value along with its derivative with respect to a fixed input variable using the chain rule.
-
+<p align="center">
 <img src="https://latex.codecogs.com/svg.latex?\dot{v}_k&space;=&space;\frac{\partial{v_k}}{\partial{x_i}}&space;=&space;\sum_{v_m&space;\in&space;\text{parent}(v_k)}&space;\frac{\partial{v_k}}{\partial{v_m}}&space;\frac{\partial{v_m}}{\partial{x_i}}" title="\dot{v}_k = \frac{\partial{v_k}}{\partial{x_i}} = \sum_{v_m \in \text{parent}(v_k)} \frac{\partial{v_k}}{\partial{v_m}} \frac{\partial{v_m}}{\partial{x_i}}" /></a>
-
+</p>
 In the example above, a trace table for forward AD would look like the following to compute and store intermediate values and derivatives:
 
+<p align="center">
+
 ![foward_tracetable_example.png](images/foward_tracetable_example.png)
+</p>
 
+### Reverse Mode
 In reverse mode, AD starts from the inputs to do a forward pass to calculate all the intermediate values, and then starts from the outputs to do a reverse pass to compute the derivatives of the function with respect to the intermediate values backwards using the chain rule.
-
+<p align="center">
 <img src="https://latex.codecogs.com/svg.latex?\bar{v}_k&space;=&space;\frac{\partial{f}}{\partial{v_k}}&space;=&space;\sum_{v_n&space;\in&space;\text{child}(v_k)}&space;\frac{\partial{f}}{\partial{v_n}}&space;\frac{\partial{v_n}}{\partial{v_k}}" title="\bar{v}_k = \frac{\partial{f}}{\partial{v_k}} = \sum_{v_n \in \text{child}(v_k)} \frac{\partial{f}}{\partial{v_n}} \frac{\partial{v_n}}{\partial{v_k}}" /></a>
+</p>
+<p align="center">
 
 ![reverse_tracetable_example](images/reverseTracetableExample.png)
-
+</p>
 
 ## How to use
 
@@ -63,59 +73,9 @@ You are recommended to use the package under Python version 3.6.2 or later.
 
 ```
 import AutoDiff as ad
-```
-#### ForwardNode Class
-
-Create a ForwardNode object
-```
 from AutoDiff import ForwardNode
-
-x1 = ForwardNode(value=5.0, trace=[0, 0, 1], var=["x1", "x2", "x3"])
-x2 = ForwardNode(value=10.0, trace=[0, 0, 1], var=["x1", "x2", "x3"])
-x3 = ForwardNode(value=8.5, trace=[0, 0, 1], var=["x1", "x2", "x3"])
-```
-
-#### ReverseNode Class
-
-Create a ReverseNode object
-```
 from AutoDiff import ReverseNode
-
-x1 = ReverseNode(value=5.0)
-x2 = ReverseNode(value=10.0)
-x3 = ReverseNode(value=8.5)
-```
-
-Elementary operations with ReverseNode objects is the same as ordinary Python operations
-```
 from AutoDiff.utils import *
-
-y1 = x1 + x2 - x3
-y2 = x1 ** 3 / x2 - x3
-y3 = sin(x1) + cos(x2) / tan(x3)
-y4 = csc(5 * x1) * sinh(x2 / 2) - arcsin(x3 / 10)
-```
-Using gradient_reset() to reset gradient of a ReverseNode object and then get the derivative for each ReverseNode object using gradient() function.
-```
-x1.gradient_reset()
-x2.gradient_reset()
-x3.gradient_reset()
-
-y5 = sin(x1 / 2) + exp(x2) - log(x3 ** 2)
-
-der1 = x1.gradient()
-der2 = x2.gradient()
-der3 = x3.gradient()
-
-print(f"Partical derivative of x1 with respect to y5: {der1}")
-print(f"Partical derivative of x2 with respect to y5: {der2}")
-print(f"Partical derivative of x3 with respect to y5: {der3}")
-```
-Output:
-```
-Partical derivative of x1 with respect to y5: -0.40057180777346685
-Partical derivative of x2 with respect to y5: 22026.465794806718
-Partical derivative of x3 with respect to y5: -0.23529411764705882
 ```
 #### Automatic Differentiation with auto_diff() function
 
@@ -213,7 +173,7 @@ Jacobian:
  [ 0.35355339  0.          1.        ]]
  ```
 
- #### Lambda function input using `auto_diff()` function
+#### Lambda function input using `auto_diff()` function
 
 In our final submission, we added lambda function input as one of our new features. Using `auto_diff()` for lambda function is the same as string function input.
 ```
@@ -231,6 +191,72 @@ Variables: {'x1': 3.141592653589793, 'x2': 2, 'x3': 5}
 Jacobian:
  [[-0.5, 1.6094379124341003, 0.4], [-1.0, 7.38905609893065, -500.0]]
  ```
+
+#### ForwardNode Class
+
+While it is not necessary since we provided the wrap function `auto_diff()`, user can also choose to create their own ForwardNode variables and define the functions using these ForwardNode variables. This would require importing additional modules from the package.
+```
+import AutoDiff as ad
+from AutoDiff import ForwardNode
+from AutoDiff import ReverseNode
+from AutoDiff.utils import *
+
+```
+Create a ForwardNode object
+
+```
+x1 = ForwardNode(value=5.0, trace=[0, 0, 1], var=["x1", "x2", "x3"])
+x2 = ForwardNode(value=10.0, trace=[0, 0, 1], var=["x1", "x2", "x3"])
+x3 = ForwardNode(value=8.5, trace=[0, 0, 1], var=["x1", "x2", "x3"])
+```
+Elementary operations with ForwardNode objects is the same as ordinary Python operations
+```
+y1 = x1 + x2 - x3
+y2 = x1 ** 3 / x2 - x3
+y3 = sin(x1) + cos(x2) / tan(x3)
+y4 = csc(5 * x1) * sinh(x2 / 2) - arcsin(x3 / 10)
+```
+To obtain the value and derivative for a ForwardNode variable, simple retrive it with `.value` and `.trace`.
+```
+print(y1.value)
+print(y1.trace)
+```
+Output:
+```
+6.5
+[0 0 1]
+```
+
+#### ReverseNode Class
+
+Create a ReverseNode object
+```
+x1 = ReverseNode(value=5.0)
+x2 = ReverseNode(value=10.0)
+x3 = ReverseNode(value=8.5)
+```
+To obtain the derivative for a ReverseNode variable, you need to first reset its attributes using `gradient_reset()` and then get the derivative for each ReverseNode object using `gradient()` function.
+```
+x1.gradient_reset()
+x2.gradient_reset()
+x3.gradient_reset()
+
+y5 = sin(x1 / 2) + exp(x2) - log(x3 ** 2)
+
+der1 = x1.gradient()
+der2 = x2.gradient()
+der3 = x3.gradient()
+
+print(f"Partical derivative with respect to x1: {der1}")
+print(f"Partical derivative with respect to x2: {der2}")
+print(f"Partical derivative with respect to x3: {der3}")
+```
+Output:
+```
+Partical derivative with respect to x1: -0.40057180777346685
+Partical derivative with respect to x2: 22026.465794806718
+Partical derivative with respect to x3: -0.23529411764705882
+```
 
 ## Software Organization
 
@@ -313,165 +339,125 @@ The implenentation is based heavily on numpy in the overloaded functions to do v
 
 ### Elementary Functions - Basic Ideas Behind the Structure
 
-The elementary operations are overloaded in this class. Doing any one of the operation would return a new `ForwardNode` instance that represents the new intermediate function expression, and it would contain the attributes mentioned above.
+We overloaded most of the elementart functions such as `__add__`, `__radd__`, `__pow__`, `__mul__` in both ForwardNode and ReverseNode class. 
 
-Below, `variables` is a list of names of the variables all the functions are derived with respect to. <a href="https://www.codecogs.com/eqnedit.php?latex=v_1" target="_blank"><img src="https://latex.codecogs.com/svg.latex?v_1" title="v_1" /></a> is an instance of ForwardNode, representing a variable (function) having value `value1` and its derivatives with respect to the variables whose names are in `variables` are in `trace1`. <img src="https://latex.codecogs.com/svg.latex?v_2" title="v_2" /></a> is an instance of ForwardNode, representing a variable (function) having value `value2` and its derivatives with respect to the variables whose names are in `variables` are in `trace2`. 
+For ForwardNode, doing any one of the operation would return a new `ForwardNode` instance that represents the new intermediate function expression with updated `self.value` and `trace`.
 
-```python
-variables = ...
-v1 = ForwardNode(value1, trace1, variables)
-v2 = ForwardNode(value2, trace2, variables)
+Below is an example of our overloaded dunder method `__add__` for `ForwardNode` class:
+```
+def __add__(self, other):
+        '''
+        Dunder method to add another ForwardNode variable, scalar and vector
+
+        Input:
+        self - a ForwardNode variable
+        other - a constant of integers or decimals / a ForwardNode object representing a variable
+
+        Output:
+        a ForwardNode object, containing new value and trace after addition
+
+        Examples:
+        >>> x = ForwardNode(3, trace=1, var=['x'])
+        >>> y = x + 3
+        ForwardNode(6, 1, 'x')
+
+        >>> x1 = ForwardNode(3, trace=np.array([1,0]), var=['x1','x2'])
+        >>> x2 = ForwardNode(4, trace=np.array([0,1]), var=['x1','x2'])
+        >>> z = x1 + x2
+        ForwardNode(7, [1,1], ['x1','x2'])
+
+        '''
+        if isinstance(other, (int, float)):
+            # v = y + c; dv/dx1 = dy/dx1, dv/dx2 = dy/dx2, ...
+            return ForwardNode(self.value + other, self.trace, self.var)
+        elif isinstance(other, ForwardNode):
+            # v = y + z; dv/dx1 = dy/dx1 + dz/dx1, dv/dx2 = dy/dx2 + dz/dx2, ...
+            return ForwardNode(self.value + other.value, self.trace + other.trace, self.var)
+        else:
+            raise AttributeError("Invalid Input!")
+```
+
+For ReverseNode, doing any of the operation would return a new `ReverseNode` instance that represents the new intermediate function expression with updated `self.value` and append a tuple of the new node and value to the current ReverseNode variable's `self.children` list.
+
+Below is an example of our overloaded dunder method `__add__` for `ReverseNode` class:
+```
+    def __add__(self, other):
+        '''
+        Dunder method to add another ReverseNode variable, scalar and vector
+
+        Input:
+        self - a ReverseNode variable
+        other - a constant of integers or decimals / a ReverseNode object representing a variable
+
+        Output:
+        a ReverseNode object containing new value after addition
+
+        Examples:
+        >>> x = ReverseNode(3)
+        >>> y = x + 3
+        ReverseNode(6)
+
+        >>> x1 = ReverseNode(3)
+        >>> x2 = ReverseNode(4)
+        >>> z = x1 + x2
+        ReverseNode(7)
+
+        '''
+        if isinstance(other, (int, float)):
+            new = ReverseNode(self.value + other)
+            self.children.append((1.0, new))
+            return new
+        elif isinstance(other, ReverseNode):
+            new = ReverseNode(self.value + other.value)
+            self.children.append((1.0, new))
+            other.children.append((1.0, new))
+            return new
+        else:
+            raise AttributeError("Invalid Input!")
 ```
 
 #### Binary elementary functions
 
-- Addition: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;v_1&space;&plus;&space;v_2&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;1&space;\cdot&space;\dot{v}_1&space;&plus;&space;1&space;\cdot&space;\dot{v}_2" title="v_k = v_1 + v_2 \ \Rightarrow \ \dot{v}_k = 1 \cdot \dot{v}_1 + 1 \cdot \dot{v}_2" /></a>
+We also overloaded the binary elementary functions such as `sin`, `cos`, `tan`, `exp`, etc in a seperate file called `utils,py`. Each of our overloaded functions will first check the type of the variables pass in using the `isinstance` method, and it deals with python integer / float, our `ForwardNode`, and `ReverseNode` objects differently. We also make sure to check for valid value and will throw a `ValueError` if the input value is outside the domain for the this function.
 
-```python
-valuek, tracek = value1+value2, trace1+trace2
-vk = ForwardNode(valuek, tracek, variables)
+Below is an example of our overloaded function `tan`:
+```
+def tan(node):
+    '''
+    Compute the tangent of the ForwardNode object
+
+    Input:
+    self - a ForwardNode variable
+
+    Output:
+    The value and trace of the ForwardNode object after tan operation
+
+    Examples:
+    >>> x = ForwardNode(0, trace=1, var=['x'])
+    >>> tan(x)
+    ForwardNode Variable: ['x'],  Value: 0.0, Trace: [1.]
+
+    '''
+    # check for input type using isinstance
+    if isinstance(node, (int, float)):
+        # check for valid value with the doamin of tangent function
+        if node % (np.pi / 2) == 0 and node % np.pi != 0:
+            raise ValueError(f"Invalid input: derivative for tangent of {node} doesn't exist")
+        return np.tan(node)
+    elif isinstance(node, ForwardNode):
+        if node.value % (np.pi / 2) == 0 and node.value % np.pi != 0:
+            raise ValueError(f"Invalid input: derivative for tangent of {node.value} doesn't exist")
+        return ForwardNode(np.tan(node.value), node.trace / np.cos(node.value) ** 2, node.var)
+    elif isinstance(node, ReverseNode):
+        if node.value % (np.pi / 2) == 0 and node.value % np.pi != 0:
+            raise ValueError(f"Invalid input: derivative for tangent of {node.value} doesn't exist")
+        new = ReverseNode(np.tan(node.value))
+        node.children.append((1.0 / np.cos(node.value) ** 2, new))
+        return new
+    else:
+        raise AttributeError("Invalid Input!")
 ```
 
-- Subtraction: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;v_1&space;-&space;v_2&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;1&space;\cdot&space;\dot{v}_1&space;-&space;1&space;\cdot&space;\dot{v}_2" title="v_k = v_1 - v_2 \ \Rightarrow \ \dot{v}_k = 1 \cdot \dot{v}_1 - 1 \cdot \dot{v}_2" /></a>  
-
-```python
-valuek, tracek = value1-value2, trace1-trace2
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Multiplication: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;v_1&space;\cdot&space;v_2&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;v_1&space;\cdot&space;\dot{v}_2&space;&plus;&space;v_2&space;\cdot&space;\dot{v}_1" title="v_k = v_1 \cdot v_2 \ \Rightarrow \ \dot{v}_k = v_1 \cdot \dot{v}_2 + v_2 \cdot \dot{v}_1" /></a>
-
-```python
-valuek, tracek = value1*value2, value1*trace2+value2*trace1
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Division: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\frac{v_1}{v_2}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{v_2&space;\cdot&space;\dot{v}_1&space;-&space;v_1&space;\cdot&space;\dot{v}_2}{v_2^2}" title="v_k = \frac{v_1}{v_2} \ \Rightarrow \ \dot{v}_k = \frac{v_2 \cdot \dot{v}_1 - v_1 \cdot \dot{v}_2}{v_2^2}" /></a>
-
-```python
-valuek, tracek = value1/value2, (value2*trace1-value1*trace2) / (value2**2)
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Power: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;v_1^{v_2}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;v_2&space;\cdot&space;v_1^{v_2-1}&space;\cdot&space;\dot{v}_1&space;&plus;&space;v_1^{v_2}&space;\cdot&space;\log{v_1}&space;\cdot&space;\dot{v}_2" title="v_k = v_1^{v_2} \ \Rightarrow \ \dot{v}_k = v_2 \cdot v_1^{v_2-1} \cdot \dot{v}_1 + v_1^{v_2} \cdot \log{v_1} \cdot \dot{v}_2" /></a> 
-
-```python
-valuek = value1**value2
-tracek = value2*(value1**(value2 - 1))*trace1 + (value1**value2)*np.log(value1)*trace2
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-#### Unary elementary functions
-
-- Exponential: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\exp{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\exp{v_1}&space;\cdot&space;\dot{v}_1" title="v_k = \exp{v_1} \ \Rightarrow \ \dot{v}_k = \exp{v_1} \cdot \dot{v}_1" /></a>
-
-```python
-valuek, tracek = np.exp(value1), np.exp(value1)*trace1
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Natural log: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\log{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\dot{v}_1}{v_1}" title="v_k = \log{v_1} \ \Rightarrow \ \dot{v}_k = \frac{\dot{v}_1}{v_1}" /></a>
-
-```python
-valuek, tracek = np.log(value1), trace1/value1
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Square root: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\sqrt{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{1}{2}&space;v_1^{-\frac{1}{2}}&space;\cdot&space;\dot{v}_1" title="v_k = \sqrt{v_1} \ \Rightarrow \ \dot{v}_k = \frac{1}{2} v_1^{-\frac{1}{2}} \cdot \dot{v}_1" /></a>
-
-```python
-valuek, tracek = value1**0.5, trace1*0.5*value1**(-0.5)
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Sine: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\sin{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\cos{v_1}&space;\cdot&space;\dot{v}_1" title="v_k = \sin{v_1} \ \Rightarrow \ \dot{v}_k = \cos{v_1} \cdot \dot{v}_1" /></a>  
-
-```python
-valuek, tracek = np.sin(value1), np.cos(value1)*trace1
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Cosine: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\cos{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;-\sin{v_1}&space;\cdot&space;\dot{v}_1" title="v_k = \cos{v_1} \ \Rightarrow \ \dot{v}_k = -\sin{v_1} \cdot \dot{v}_1" /></a>
-
-```python
-valuek, tracek = np.cos(value1), -np.sin(value1)*trace1
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Tangent: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\tan{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\dot{v}_1}{\cos^2{v_1}}" title="v_k = \tan{v_1} \ \Rightarrow \ \dot{v}_k = \frac{\dot{v}_1}{\cos^2{v_1}}" /></a> 
-
-```python
-valuek, tracek = np.tan(value1), trace1/np.cos(value1)**2
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Cotangent: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\cot{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{-\dot{v}_1}{\sin^2{v_1}}" title="v_k = \cot{v_1} \ \Rightarrow \ \dot{v}_k = \frac{-\dot{v}_1}{\sin^2{v_1}}" /></a>  
-
-```python
-valuek, tracek = 1/np.tan(value1), -trace1/np.sin(value1)**2
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Secant: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\sec{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\sin{v_1}&space;\cdot&space;\dot{v}_1}{\cos^2{v_1}}" title="v_k = \sec{v_1} \ \Rightarrow \ \dot{v}_k = \frac{\sin{v_1} \cdot \dot{v}_1}{\cos^2{v_1}}" /></a> 
-
-```python
-valuek, tracek = 1/np.cos(value1), trace1*np.sin(value1)/np.cos(value1)**2
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Cosecant: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\csc{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{-\cos{v_1}&space;\cdot&space;\dot{v}_1}{\sin^2{v_1}}" title="v_k = \csc{v_1} \ \Rightarrow \ \dot{v}_k = \frac{-\cos{v_1} \cdot \dot{v}_1}{\sin^2{v_1}}" /></a>
-
-```python
-valuek, tracek = 1/np.sin(value1), -trace1*np.cos(value1)/np.sin(value1)**2
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Arcsine: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\arcsin{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\dot{v}_1}{\sqrt{1-v_1^2}}" title="v_k = \arcsin{v_1} \ \Rightarrow \ \dot{v}_k = \frac{\dot{v}_1}{\sqrt{1-v_1^2}}" /></a>  
-
-```python
-valuek, tracek = np.arcsin(value1), trace1/np.sqrt(1-value1**2)
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Arccosine: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\arccos{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{-\dot{v}_1}{\sqrt{1-v_1^2}}" title="v_k = \arccos{v_1} \ \Rightarrow \ \dot{v}_k = \frac{-\dot{v}_1}{\sqrt{1-v_1^2}}" /></a>  
-
-```python
-valuek, tracek = np.arccos(value1), -trace1/np.sqrt(1-value1**2)
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Arctangent: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\arctan{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\dot{v}_1}{1&plus;v_1^2}" title="v_k = \arctan{v_1} \ \Rightarrow \ \dot{v}_k = \frac{\dot{v}_1}{1+v_1^2}" /></a> 
-
-```python
-valuek, tracek = np.arctan(value1), trace1/(1+value1**2)
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Hyperbolic sine: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\sinh{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\cosh{v_1}&space;\cdot&space;\dot{v}_1" title="v_k = \sinh{v_1} \ \Rightarrow \ \dot{v}_k = \cosh{v_1} \cdot \dot{v}_1" /></a>  
-```python
-valuek, tracek = np.sinh(value1), trace1*np.cosh(value1)
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Hyperbolic cosine: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\cosh{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\sinh{v_1}&space;\cdot&space;\dot{v}_1" title="v_k = \cosh{v_1} \ \Rightarrow \ \dot{v}_k = \sinh{v_1} \cdot \dot{v}_1" /></a>  
-
-```python
-valuek, tracek = np.cosh(value1), trace1*np.sinh(value1)
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Hyperbolic tangent: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\tanh{v_1}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\dot{v}_1}{\cosh^2(v_1)}" title="v_k = \tanh{v_1} \ \Rightarrow \ \dot{v}_k = \frac{\dot{v}_1}{\cosh^2(v_1)}" /></a>
-
-```python
-valuek, tracek = np.tanh(value1), trace1/np.cosh(value1)**2
-vk = ForwardNode(valuek, tracek, variables)
-```
-
-- Log of any base <img src="https://latex.codecogs.com/svg.latex?b" title="b" /></a>: <img src="https://latex.codecogs.com/svg.latex?v_k&space;=&space;\log_b&space;v_1&space;=&space;\frac{\log&space;v_1}{\log&space;b}&space;\&space;\Rightarrow&space;\&space;\dot{v}_k&space;=&space;\frac{\dot{v}_1}{v_1&space;\cdot&space;\log&space;b}" title="v_k = \log_b v_1 = \frac{\log v_1}{\log b} \ \Rightarrow \ \dot{v}_k = \frac{\dot{v}_1}{v_1 \cdot \log b}" /></a>
-```python
-valuek, tracek = np.log(value1)/np.log(b), trace1/(value1*np.log(b))
-vk = ForwardNode(valuek, tracek, variables)
-```
 
 ## Extension
  
@@ -504,7 +490,7 @@ However, we think inputting function as a string isn’t the best way to let the
  
 After adding this new feature, users can now declare either one or multiple functions and specify the function variables using lambda. In our updated wrap function `auto_diff()`, we would first check whether the function is lambda. If so, we would call the `translate` function to convert the lambda function into a list containing string representations of each function. After this, the automatic differentiation process would be the same as before.
 
-## Wrap function auto_diff() to take in multivariate and vector functions
+#### Wrap function auto_diff() to take in multivariate and vector functions
 
 We implemented a wrap function call auto_diff(), which is able to deal with univariate, multivariate, and vector functions, and return the result from after automatic differentiation based on the target variable specified by the user. 
 
@@ -529,20 +515,24 @@ Finally, `__main__.py` contains the wrap function `auto_diff()` that provides th
 The intuition for implementing a reverse mode method comes from a major disadvantage of the forward mode method.
  
 Consider a simple function with 2 variables:
- 
+
+<p align="center">
 <img src="https://latex.codecogs.com/svg.latex?y&space;=&space;x_1&space;\cdot&space;x_2&space;&plus;&space;sin(x_1)" title="y = x_1 \cdot x_2 + sin(x_1)" /></a>
+</p>
  
 To calculate the derivative <img src="https://latex.codecogs.com/svg.latex?\frac{\partial{y}}{\partial{x_1}}" title="\frac{\partial{y}}{\partial{x_1}}" /></a> and <img src="https://latex.codecogs.com/svg.latex?\frac{\partial{y}}{\partial{x_2}}" title="\frac{\partial{y}}{\partial{x_2}}" /></a>, we will need to do 2 forward pass calculation, with the trace being `[1.0, 0.0]` for <img src="https://latex.codecogs.com/svg.latex?\frac{\partial{y}}{\partial{x_1}}" title="\frac{\partial{y}}{\partial{x_1}}" /></a> and `[0.0, 1.0]` for <img src="https://latex.codecogs.com/svg.latex?\frac{\partial{y}}{\partial{x_2}}" title="\frac{\partial{y}}{\partial{x_2}}" /></a>. This yields a complexity of `O(N)`, where N equals the number of input variables. So if we need to compute the gradient of a complex function with thousands of variables, it would be computationally expensive to use forward mode method.
  
 However, we can actually avoid this problem using the symmetric property of the chain rule: 
- 
+
+<p align="center">
 <img src="https://latex.codecogs.com/svg.latex?\frac{\partial{f}}{\partial{x_2}}&space;=&space;\frac{\partial{f}}{\partial{x_1}}&space;\frac{\partial{x_1}}{\partial{x_2}}" title="\frac{\partial{f}}{\partial{x_2}} = \frac{\partial{f}}{\partial{x_1}} \frac{\partial{x_1}}{\partial{x_2}}" /></a>
- 
+ </p>
 To account for this problem, the reverse mode method uses a forward pass to first calculate all the intermediate values of partial derivative and store these values in a dependency list, and then proceeds to calculate the derivative of each variable through a reverse pass using the chain rule.
- 
- 
+
+<p align="center">
 <img src="https://latex.codecogs.com/svg.latex?\bar{x}_k&space;=&space;\frac{\partial{f}}{\partial{x_k}}&space;=&space;\sum_{x_i&space;\in&space;\text{child}(x_k)}&space;\frac{\partial{f}}{\partial{x_i}}&space;\frac{\partial{x_i}}{\partial{x_k}}&space;=&space;\sum_{x_i&space;\in&space;\text{child}(x_k)}&space;\bar{x}_i&space;\frac{\partial{x_i}}{\partial{x_k}}" title="\bar{x}_k = \frac{\partial{f}}{\partial{x_k}} = \sum_{x_i \in \text{child}(x_k)} \frac{\partial{f}}{\partial{x_i}} \frac{\partial{x_i}}{\partial{x_k}} = \sum_{x_i \in \text{child}(x_k)} \bar{x}_i \frac{\partial{x_i}}{\partial{x_k}}" /></a>
- 
+</p>
+
 One useful scenario for reverse mode automatic differentiation in the real-world would be calculating the gradient in deep learning models for video processing or image recognition. In these kind of problem, there are typically thousand or even millions of input representing the image or video pixels and for classification problem there could be only a few output representing the category of classes. So to calculate the gradient of each variables and find our the best direction for gradient descent, a reverse mode automatic differentation is usually used to achieve the best runtime.
 
 ### Inclusivity Statement

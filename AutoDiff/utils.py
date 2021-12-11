@@ -353,11 +353,11 @@ def arccos(node):
             raise ValueError(f"Invalid Value: arccos of {node} does not exist.")
         return np.arccos(node)
     elif isinstance(node, ForwardNode):
-        if np.abs(node.value) >= 1:
+        if np.abs(node.value) > 1:
             raise ValueError(f"Invalid Value: derivative of arccos of {node.value} does not exist.")
         return ForwardNode(np.arccos(node.value), node.trace * (-1.0) / np.sqrt(1 - node.value ** 2), node.var)
     elif isinstance(node, ReverseNode):
-        if np.abs(node.value) >= 1:
+        if np.abs(node.value) > 1:
             raise ValueError(f"Invalid Value: derivative of arccos of {node.value} does not exist.")
         new = ReverseNode(np.arccos(node.value))
         node.children.append((-1.0 / np.sqrt(1 - node.value ** 2), new))
