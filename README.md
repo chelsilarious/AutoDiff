@@ -47,6 +47,9 @@ The `auto_diff()` function takes 4 parameters
 - target - list, list of string specifying the name of your target variables to calculate the derivative, default to None, which will return derivative for all variables
 - mode - str, "forward" or "reverse", specify the mode of automatic differentiation, default as "forward"
 
+Reminder: Don't write #comment on the same line when defining function for which derivative will be evaluated at!
+Notice: The method does not support power operation when the base is negative and the power is a value between -1 and 1, since the edge cases can be very complex. For instance, a negative value to the power of one half is invalid, but a negative value to the power of one third is okay. 
+
 #### Scalar Function with Scalar Input:
 
 ```python
