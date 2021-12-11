@@ -333,7 +333,7 @@ class ForwardNodeTests(unittest.TestCase):
         func = arccos(2)
 
   def test_arccos_edge(self):
-    value = 1
+    value = np.pi
     trace = [1.0, 1.0, 0.0]
     var = ["x1", "x2", "x3"]
     x = ForwardNode(value, trace=trace, var=var)
