@@ -90,7 +90,7 @@ The `auto_diff()` function takes 4 parameters
 ```
 var_dict = {"x1": np.pi}
 function1 = "sin(x1) + cos(x1)"
-der = auto_diff(functions=function1, var_dict=var_dict, target=["x1"], mode="reverse")
+der = ad.auto_diff(functions=function1, var_dict=var_dict, target=["x1"], mode="reverse")
 ```
 Output:
 ```
@@ -116,9 +116,9 @@ Output:
 var_dict = {"x1": np.pi / 2, "x2": 1, "x3": 0}
 function1 = "sin(x1) + cos(x2) - exp(x3)"
 
-der1 = auto_diff(function1, var_dict, ["x1"], mode="reverse")
-der2 = auto_diff(function1, var_dict, ["x2"], mode="reverse")
-der3 = auto_diff(function1, var_dict, ["x3"], mode="reverse")
+der1 = ad.auto_diff(function1, var_dict, ["x1"], mode="reverse")
+der2 = ad.auto_diff(function1, var_dict, ["x2"], mode="reverse")
+der3 = ad.auto_diff(function1, var_dict, ["x3"], mode="reverse")
 ```
 Output:
 ```
@@ -143,7 +143,7 @@ partial derivative with respect to x3: [-1.0]
 var_dict = {"x1": np.pi / 2, "x2": 1, "x3": 0}
 function1 = ["tanh(x1) + cosh(x2 * 3) - sec(x3)", "x1 / x2 * cos(x3)", "sin(x1 / 2) + x2 * x3"]
 
-gradient = auto_diff(function1, var_dict, ["x1"], mode="reverse")
+gradient = ad.auto_diff(function1, var_dict, ["x1"], mode="reverse")
 ```
 Output:
 ```
@@ -158,7 +158,7 @@ gradient with respect to x1: [0.15883159318006335, 1.0, 0.3535533905932738]
 var_dict = {"x1": np.pi / 2, "x2": 1, "x3": 0}
 functions = ["tanh(x1) + cosh(x2 * 3) - sec(x3)", "x1 / x2 * cos(x3)", "sin(x1 / 2) + x2 * x3"]
 
-jacobian = auto_diff(functions, var_dict, ["x1", "x2", "x3"], mode="forward")
+jacobian = ad.auto_diff(functions, var_dict, ["x1", "x2", "x3"], mode="forward")
 ```
 Output:
 ```
@@ -179,7 +179,7 @@ var_dict = {"x1": np.pi, "x2": 2, "x3": 5}
 
 lambda_vec_func = lambda x1, x2: [cos(x1 / 2) + x2 * log(x3), sin(x1) + exp(x2) - x3 ** 4]
 
-jacobian = auto_diff(functions=lambda_vec_func, var_dict=var_dict, target=["x1", "x2", "x3"], mode="reverse")
+jacobian = ad.auto_diff(functions=lambda_vec_func, var_dict=var_dict, target=["x1", "x2", "x3"], mode="reverse")
 ```
 Output:
 ```
