@@ -77,20 +77,22 @@ import AutoDiff as ad
 ```
 #### Automatic Differentiation with auto_diff() function
 
-The auto_diff() function takes 4 parameters:
-
 The `auto_diff()` function takes 4 parameters
-- functions - str/list/lambda function, the function or list of function you want to calculate
+- functions - str (functions written as a string) / list (a list of functions written as strings) / lambda function (returning a single function or a list of functions), the function or list of functions for which you would like to get derivatives
 - var_dict - dictionary, specify the names and values for all variables in input functions
 - target - list, list of string specifying the name of your target variables to calculate the derivative, default to None, which will return derivative for all variables
 - mode - str, "forward" or "reverse", specify the mode of automatic differentiation, default as "forward"
+
+Reminder: Don't write #comment on the same line when defining function for which derivative will be evaluated at!  
+
+Notice: The method does not support power operation when the base is negative and the power is a value between -1 and 1, since the edge cases can be very complex. For instance, a negative value to the power of one half is invalid, but a negative value to the power of one third is okay. 
 
 ##### Scalar Function with Scalar Input:
 
 ```
 var_dict = {"x1": np.pi}
 function1 = "sin(x1) + cos(x1)"
-der = auto_diff(functions=function1, var_dict=var_dict, target=["x1"], mode="reverse")
+der = ad.auto_diff(functions=function1, var_dict=var_dict, target=["x1"], mode="reverse")
 ```
 Output:
 ```
@@ -116,9 +118,9 @@ Output:
 var_dict = {"x1": np.pi / 2, "x2": 1, "x3": 0}
 function1 = "sin(x1) + cos(x2) - exp(x3)"
 
-der1 = auto_diff(function1, var_dict, ["x1"], mode="reverse")
-der2 = auto_diff(function1, var_dict, ["x2"], mode="reverse")
-der3 = auto_diff(function1, var_dict, ["x3"], mode="reverse")
+der1 = ad.auto_diff(function1, var_dict, ["x1"], mode="reverse")
+der2 = ad.auto_diff(function1, var_dict, ["x2"], mode="reverse")
+der3 = ad.auto_diff(function1, var_dict, ["x3"], mode="reverse")
 ```
 Output:
 ```
@@ -143,7 +145,7 @@ partial derivative with respect to x3: [-1.0]
 var_dict = {"x1": np.pi / 2, "x2": 1, "x3": 0}
 function1 = ["tanh(x1) + cosh(x2 * 3) - sec(x3)", "x1 / x2 * cos(x3)", "sin(x1 / 2) + x2 * x3"]
 
-gradient = auto_diff(function1, var_dict, ["x1"], mode="reverse")
+gradient = ad.auto_diff(function1, var_dict, ["x1"], mode="reverse")
 ```
 Output:
 ```
@@ -158,7 +160,7 @@ gradient with respect to x1: [0.15883159318006335, 1.0, 0.3535533905932738]
 var_dict = {"x1": np.pi / 2, "x2": 1, "x3": 0}
 functions = ["tanh(x1) + cosh(x2 * 3) - sec(x3)", "x1 / x2 * cos(x3)", "sin(x1 / 2) + x2 * x3"]
 
-jacobian = auto_diff(functions, var_dict, ["x1", "x2", "x3"], mode="forward")
+jacobian = ad.auto_diff(functions, var_dict, ["x1", "x2", "x3"], mode="forward")
 ```
 Output:
 ```
@@ -179,7 +181,7 @@ var_dict = {"x1": np.pi, "x2": 2, "x3": 5}
 
 lambda_vec_func = lambda x1, x2: [cos(x1 / 2) + x2 * log(x3), sin(x1) + exp(x2) - x3 ** 4]
 
-jacobian = auto_diff(functions=lambda_vec_func, var_dict=var_dict, target=["x1", "x2", "x3"], mode="reverse")
+jacobian = ad.auto_diff(functions=lambda_vec_func, var_dict=var_dict, target=["x1", "x2", "x3"], mode="reverse")
 ```
 Output:
 ```
@@ -198,7 +200,6 @@ import AutoDiff as ad
 from AutoDiff import ForwardNode
 from AutoDiff import ReverseNode
 from AutoDiff.utils import *
-
 ```
 Create a ForwardNode object
 
@@ -214,7 +215,7 @@ y2 = x1 ** 3 / x2 - x3
 y3 = sin(x1) + cos(x2) / tan(x3)
 y4 = csc(5 * x1) * sinh(x2 / 2) - arcsin(x3 / 10)
 ```
-To obtain the value and derivative for a ForwardNode variable, simple retrive it with `.value` and `.trace`.
+To obtain the value and derivative for a ForwardNode variable, simply retrive it with `.value` and `.trace`.
 ```
 print(y1.value)
 print(y1.trace)
@@ -290,13 +291,13 @@ cs107project/
 ```
 
 ### Included Modules and their Basic Functionality
-We are using NumPy, UnitTest, PyTest, and inspect. We use NumPy to create numpy arrays for easier vectorized calculations in the overloaded elementary functions, and UnitTest and PyTest to run tests on our code. The inspect module in our new feature to convert lambda function inputs into their string representation of input functions.
+We are using NumPy, UnitTest, PyTest, inspect, and re. We use NumPy to create numpy arrays for easier vectorized calculations in the overloaded elementary functions, and UnitTest and PyTest to run tests on our code. We us the inspect module and the re package in our new feature to convert lambda function inputs into their string representation of input functions, so that the functions can be more user-friendly.
 
 ### Test Suite
 Our test suite will live in the /tests directory and it will be tested by CircleCI.
 
 ### Package Distribution
-We will distribute our package by uploading it to test.PyPI so everyone can use it.
+We will distribute our package by uploading it to PyPI so everyone can use it.
 
 ### Notes
 We will not be packing out software. The code will be on GitHub and PyPI so it will be accessible by everyone.
@@ -416,7 +417,7 @@ Below is an example of our overloaded dunder method `__add__` for `ReverseNode` 
 
 #### Binary elementary functions
 
-We also overloaded the binary elementary functions such as `sin`, `cos`, `tan`, `exp`, etc in a seperate file called `utils,py`. Each of our overloaded functions will first check the type of the variables pass in using the `isinstance` method, and it deals with python integer / float, our `ForwardNode`, and `ReverseNode` objects differently. We also make sure to check for valid value and will throw a `ValueError` if the input value is outside the domain for the this function.
+We also overloaded the binary elementary functions such as `sin`, `cos`, `tan`, `exp`, etc in a seperate file called `utils.py`. Each of our overloaded functions will first check the type of the variables pass in using the `isinstance` method, and it deals with python integer / float, our `ForwardNode`, and `ReverseNode` objects differently. We also make sure to check for valid value and will throw a `ValueError` if the input value is outside the domain for the this function.
 
 Below is an example of our overloaded function `tan`:
 ```
