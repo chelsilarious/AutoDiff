@@ -77,10 +77,8 @@ import AutoDiff as ad
 ```
 #### Automatic Differentiation with auto_diff() function
 
-The auto_diff() function takes 4 parameters:
-
 The `auto_diff()` function takes 4 parameters
-- functions - str/list/lambda function, the function or list of function you want to calculate
+- functions - str (functions written as a string) / list (a list of functions written as strings) / lambda function (returning a single function or a list of functions), the function or list of functions for which you would like to get derivatives
 - var_dict - dictionary, specify the names and values for all variables in input functions
 - target - list, list of string specifying the name of your target variables to calculate the derivative, default to None, which will return derivative for all variables
 - mode - str, "forward" or "reverse", specify the mode of automatic differentiation, default as "forward"
@@ -202,7 +200,6 @@ import AutoDiff as ad
 from AutoDiff import ForwardNode
 from AutoDiff import ReverseNode
 from AutoDiff.utils import *
-
 ```
 Create a ForwardNode object
 
@@ -218,7 +215,7 @@ y2 = x1 ** 3 / x2 - x3
 y3 = sin(x1) + cos(x2) / tan(x3)
 y4 = csc(5 * x1) * sinh(x2 / 2) - arcsin(x3 / 10)
 ```
-To obtain the value and derivative for a ForwardNode variable, simple retrive it with `.value` and `.trace`.
+To obtain the value and derivative for a ForwardNode variable, simply retrive it with `.value` and `.trace`.
 ```
 print(y1.value)
 print(y1.trace)
@@ -294,13 +291,13 @@ cs107project/
 ```
 
 ### Included Modules and their Basic Functionality
-We are using NumPy, UnitTest, PyTest, and inspect. We use NumPy to create numpy arrays for easier vectorized calculations in the overloaded elementary functions, and UnitTest and PyTest to run tests on our code. The inspect module in our new feature to convert lambda function inputs into their string representation of input functions.
+We are using NumPy, UnitTest, PyTest, inspect, and re. We use NumPy to create numpy arrays for easier vectorized calculations in the overloaded elementary functions, and UnitTest and PyTest to run tests on our code. We us the inspect module and the re package in our new feature to convert lambda function inputs into their string representation of input functions, so that the functions can be more user-friendly.
 
 ### Test Suite
 Our test suite will live in the /tests directory and it will be tested by CircleCI.
 
 ### Package Distribution
-We will distribute our package by uploading it to test.PyPI so everyone can use it.
+We will distribute our package by uploading it to PyPI so everyone can use it.
 
 ### Notes
 We will not be packing out software. The code will be on GitHub and PyPI so it will be accessible by everyone.
