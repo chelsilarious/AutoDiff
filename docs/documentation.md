@@ -63,7 +63,7 @@ In reverse mode, AD starts from the inputs to do a forward pass to calculate all
 Install the AutoDiffRunTimeError package using `pip` command like below:
 
 ```
-pip install -i https://test.pypi.org/simple/ AutoDiffRunTimeError==0.0.1
+pip install -i https://test.pypi.org/simple/ AutoDiffRunTimeError==0.0.2
 ```
 
 You are recommended to use the package under Python version 3.6.2 or later. 

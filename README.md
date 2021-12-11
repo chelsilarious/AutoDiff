@@ -30,7 +30,7 @@ The full documentation can be found [here](https://github.com/cs107-runtimeterro
 Install the package using `pip` command like below:
 
 ```
-pip install -i https://test.pypi.org/simple/ AutoDiffRunTimeError==0.0.1
+pip install -i https://test.pypi.org/simple/ AutoDiffRunTimeError==0.0.2
 ```
 
 ### Import AutoDiff library
