@@ -25,17 +25,29 @@ The full documentation can be found [here](https://github.com/cs107-runtimeterro
 
 ## Quick Start on How to use
 
+### Installing the AutoDiffRunTimeError package
+
 Install the package using `pip` command like below:
 
 ```
-pip install AutoDiff-RunTimeTerror
+pip install -i https://test.pypi.org/simple/ AutoDiffRunTimeError==0.0.1
 ```
+
+### Import AutoDiff library
 
 ```python
-import AutoDiff-RunTimeTerror as ad
+import AutoDiff as ad
 ```
 
-### Scalar Function with Scalar Input:
+### Automatic Differentiation with auto_diff()
+
+The `auto_diff()` function takes 4 parameters
+- functions - str/list/lambda function, the function or list of function you want to calculate
+- var_dict - dictionary, specify the names and values for all variables in input functions
+- target - list, list of string specifying the name of your target variables to calculate the derivative, default to None, which will return derivative for all variables
+- mode - str, "forward" or "reverse", specify the mode of automatic differentiation, default as "forward"
+
+#### Scalar Function with Scalar Input:
 
 ```python
 f = lambda x: sin(x) + cos(x)  # or f = "sin(x) + cos(x)"
@@ -57,8 +69,7 @@ print(der)
 [[-1.0000000000000002]]
 ```
 
-
-### Scalar Function with Vector Input:
+#### Scalar Function with Vector Input:
 
 ```python
 f = lambda x1, x2, x3: in(x1) + cos(x2) - exp(x3)  # or f = "sin(x1) + cos(x2) - exp(x3)"
@@ -97,8 +108,7 @@ print(grad)
  [[6.123233995736766e-17, -0.8414709848078965, -1.0]]
 ```
 
-
-### Vector Function with Scalar Input
+#### Vector Function with Scalar Input
 ```python
 fs = lambda x1: [sec(x1), x1/cos(x1), sin(x1) + x1]  
 # or fs = ["sec(x1)", "x1/cos(x1)", "sin(x1) + x1"]
@@ -124,8 +134,7 @@ print(ders)
  [1.5       ]]
 ```
 
-
-### Vector Function with Vector Input:
+#### Vector Function with Vector Input:
 ```python
 fs = lambda x1, x2, x3: ["tanh(x1) + cosh(x2 * 3) - sec(x3)", "x1 / x2 * cos(x3)", "sin(x1 / 2) + x2 * x3"]
 # or fs = ["tanh(x1) + cosh(x2 * 3) - sec(x3)", "x1 / x2 * cos(x3)", "sin(x1 / 2) + x2 * x3"]
@@ -161,14 +170,5 @@ print(jcb)
  [ 0.35355339  0.          1.        ]]
 ```
 
-
-
-#### Inclusivity Statement
-Over the past few years, people have put in an increased effort to bridge the gap in STEM between underrepresented groups and inclusivity. However, even with this increased effort there is much more that can and should be done to fill this gap. While creating our software, we kept in mind that people from different backgrounds and experience levels would access this. Therefore, we tried to add docstrings and the proper documentation in order to make this software as accessible as possible. However, we do understand that there is more work that needs to be done to make our software more accessible and user-friendly. Currently, our software is targeted towards those who are familiar with English mathematical terms and symbols. Our software is catered towards the average English speaker. Moving forward, to make our software more inclusive, we would try to make it more accessible for those who are not as familiar with the English language.
-
-Furthermore, Harvard's diversity statement says, "[their] commitment to diversity in all forms is rooted in [the] fundamental belief that engaging with unfamiliar ideas, perspectives, cultures, and people creates the conditions for dramatic and meaningful growth." Our team believes that by engaging with the software we have created, we are sharing our ideas and perspectives on a certain way to solve a problem. However, we are open to suggestions and any feedback our users have. We are constantly seeking to improve the way we implemented our software.
-
-#### Broader Impact
-We understand that our software has both positive and negative implications. However, we believe the positive implications outweigh the negative ones. Our team has simply found one way to tackle the problem using Automatic Differentiation and believe that we are adding to the diversity of technology in the community by contributing our software. Furthermore, by using this software, we hope that users will be able to solve different real-world problems. However, we do understand that there is more that can be done to make this software inclusive as mentioned above.
 
 

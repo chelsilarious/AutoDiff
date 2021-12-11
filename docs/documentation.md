@@ -49,57 +49,51 @@ In reverse mode, AD starts from the inputs to do a forward pass to calculate all
 
 ### Installation
 
-TODO
+Install the AutoDiffRunTimeError package using `pip` command like below:
+
+```
+pip install -i https://test.pypi.org/simple/ AutoDiffRunTimeError==0.0.1
+```
 
 You are recommended to use the package under Python version 3.6.2 or later. 
 
 ### Demo
 
+#### Import the AutoDiff library
+
+```
+import AutoDiff as ad
+```
+#### ForwardNode Class
+
+Create a ForwardNode object
+```
+from AutoDiff import ForwardNode
+
+x1 = ForwardNode(value=5.0, trace=[0, 0, 1], var=["x1", "x2", "x3"])
+x2 = ForwardNode(value=10.0, trace=[0, 0, 1], var=["x1", "x2", "x3"])
+x3 = ForwardNode(value=8.5, trace=[0, 0, 1], var=["x1", "x2", "x3"])
+```
+
 #### ReverseNode Class
 
 Create a ReverseNode object
 ```
+from AutoDiff import ReverseNode
+
 x1 = ReverseNode(value=5.0)
 x2 = ReverseNode(value=10.0)
 x3 = ReverseNode(value=8.5)
-
-print(x1)
-print(x2)
-print(x3)
-```
-Output:
-```
-ReverseNode Variable Value: 5.0, Adjoint: 1.0, Chidren: []
-ReverseNode Variable Value: 10.0, Adjoint: 1.0, Chidren: []
-ReverseNode Variable Value: 8.5, Adjoint: 1.0, Chidren: []
 ```
 
-Elementary function with ReverseNode objects
+Elementary operations with ReverseNode objects is the same as ordinary Python operations
 ```
+from AutoDiff.utils import *
+
 y1 = x1 + x2 - x3
 y2 = x1 ** 3 / x2 - x3
-
-print(y1)
-print(y2)
-```
-Output:
-```
-ReverseNode Variable Value: 6.5, Adjoint: 1.0, Chidren: []
-ReverseNode Variable Value: 4.0, Adjoint: 1.0, Chidren: []
-```
-
-Math function with ReverseNode objects
-```
 y3 = sin(x1) + cos(x2) / tan(x3)
 y4 = csc(5 * x1) * sinh(x2 / 2) - arcsin(x3 / 10)
-
-print(y3)
-print(y4)
-```
-Output:
-```
-ReverseNode Variable Value: -0.32631413015080835, Adjoint: 1.0, Chidren: []
-ReverseNode Variable Value: -561.667510664444, Adjoint: 1.0, Chidren: []
 ```
 Using gradient_reset() to reset gradient of a ReverseNode object and then get the derivative for each ReverseNode object using gradient() function.
 ```
@@ -127,14 +121,13 @@ Partical derivative of x3 with respect to y5: -0.23529411764705882
 
 The auto_diff() function takes 4 parameters:
 
-- functions - str, the functions output we are caculating
-- var_dict - dictionary, name and value pair of all variables in function
-- target - list, name of our target variable(s) to calculate the gradient
-- mode - str, either forward or reverse model
+The `auto_diff()` function takes 4 parameters
+- functions - str/list/lambda function, the function or list of function you want to calculate
+- var_dict - dictionary, specify the names and values for all variables in input functions
+- target - list, list of string specifying the name of your target variables to calculate the derivative, default to None, which will return derivative for all variables
+- mode - str, "forward" or "reverse", specify the mode of automatic differentiation, default as "forward"
 
-To use it for reverse mode automatic differentiation, simple put mode = "reverse"
-
-Calculating the derivative for a single variable in a function using auto_diff()
+##### Scalar Function with Scalar Input:
 
 ```
 var_dict = {"x1": np.pi}
@@ -160,7 +153,7 @@ Output:
 [[-1.0000000000000002]]
 ```
 
-Calculating the partial derivative of variables in a function using auto_diff()
+##### Scalar Function with Vector Input:
 ```
 var_dict = {"x1": np.pi / 2, "x2": 1, "x3": 0}
 function1 = "sin(x1) + cos(x2) - exp(x3)"
@@ -187,7 +180,7 @@ Variables: {'x1': 1.5707963267948966, 'x2': 1, 'x3': 0}
 partial derivative with respect to x3: [-1.0]
 ```
 
-Calculating the gradient of a variable for a vector function using auto_diff()
+##### Vector Function with Scalar Input
 ```
 var_dict = {"x1": np.pi / 2, "x2": 1, "x3": 0}
 function1 = ["tanh(x1) + cosh(x2 * 3) - sec(x3)", "x1 / x2 * cos(x3)", "sin(x1 / 2) + x2 * x3"]
@@ -202,7 +195,7 @@ Variables: {'x1': 1.5707963267948966, 'x2': 1, 'x3': 0}
 gradient with respect to x1: [0.15883159318006335, 1.0, 0.3535533905932738]
 ```
 
-Calculating the jacobian of input variables for a vector function using `auto_diff()`
+##### Vector Function with Vector Input:
 ```
 var_dict = {"x1": np.pi / 2, "x2": 1, "x3": 0}
 functions = ["tanh(x1) + cosh(x2 * 3) - sec(x3)", "x1 / x2 * cos(x3)", "sin(x1 / 2) + x2 * x3"]
@@ -222,24 +215,7 @@ Jacobian:
 
  #### Lambda function input using `auto_diff()` function
 
-In our final submission, we added lambda function input as one of our new features.
-
-To perform automatic differentiation on lambda function, we first translate it into string representation using traslante() function
-
-```
-var_dict = {"x1": np.pi, "x2": 2, "x3": 5}
-
-lambda_func = lambda x1, x2: sin(x1) + exp(x2) - x3 ** 4
-
-functions = translate(lambda_func=lambda_func)
-print(functions)
-```
-Output:
-```
-['sin(x1) + exp(x2) - x3 ** 4']
-```
-
-Using `auto_diff()` for lambda function
+In our final submission, we added lambda function input as one of our new features. Using `auto_diff()` for lambda function is the same as string function input.
 ```
 var_dict = {"x1": np.pi, "x2": 2, "x3": 5}
 
@@ -290,13 +266,13 @@ cs107project/
 ```
 
 ### Included Modules and their Basic Functionality
-We are using NumPy, UnitTest and PyTest. We use NumPy to create numpy arrays for easier vectorized calculations in the overloaded elementary functions, and UnitTest and PyTest to run tests on our code.
+We are using NumPy, UnitTest, PyTest, and inspect. We use NumPy to create numpy arrays for easier vectorized calculations in the overloaded elementary functions, and UnitTest and PyTest to run tests on our code. The inspect module in our new feature to convert lambda function inputs into their string representation of input functions.
 
 ### Test Suite
 Our test suite will live in the /tests directory and it will be tested by CircleCI.
 
 ### Package Distribution
-We will distribute our package by uploading it to PyPI so everyone can use it.
+We will distribute our package by uploading it to test.PyPI so everyone can use it.
 
 ### Notes
 We will not be packing out software. The code will be on GitHub and PyPI so it will be accessible by everyone.
@@ -527,6 +503,16 @@ In our previous milestones, we implemented a wrap function that would take a str
 However, we think inputting function as a string isn’t the best way to let the users use our library. Therefore, we decided to add a new feature in our final submission to allow the user input function as a python lambda function. 
  
 After adding this new feature, users can now declare either one or multiple functions and specify the function variables using lambda. In our updated wrap function `auto_diff()`, we would first check whether the function is lambda. If so, we would call the `translate` function to convert the lambda function into a list containing string representations of each function. After this, the automatic differentiation process would be the same as before.
+
+## Wrap function auto_diff() to take in multivariate and vector functions
+
+We implemented a wrap function call auto_diff(), which is able to deal with univariate, multivariate, and vector functions, and return the result from after automatic differentiation based on the target variable specified by the user. 
+
+Specifically, the  `auto_diff()` function will detect whether the user input a scaler function or a vector function, and whether the target variable is scaler or vector. It will deal with each cases differential and return the result based on these input information. 
+
+For instance, if the user input a scaler functioin `y` with 3 variables `x1`, `x2`, and `x3` and only specify one variables `x2` in the `target` parameter, then the `auto_diff()` function will just return the partial derivative of `x1` with respect to `y`. 
+
+On the other hand, if the user input a vector function with vector input and input all the variable names in the `target` parameter (or leave it as None), the `auto_diff()` funcition will then return the jacobian matrix of this vector function.
  
 #### ReverseNode
  
@@ -538,7 +524,7 @@ The gradient for each `ReverseNode` object is calculated by calling the function
  
 Finally, `__main__.py` contains the wrap function `auto_diff()` that provides the users a simple method to perform automatic differentiation using either forward and reverse mode. The `auto_diff()` function takes a string (list of string) or lambda functions, dictionary of variable names and values, list indicating target variable, and a string indicating the mode. So to do the reverse mode calculation, the user just need to specify that mode = “reverse”. The `auto_diff()` function will then call `reverse_auto_diff()` function and create corresponding ReverseNode object based on user input, evaluate the input functions, and calculate the derivative for each variables in `gradientR()` function.
  
-### **Background of Extention - Reverse Mode Automatic Differentiation**
+### Background of Extention - Reverse Mode Automatic Differentiation
  
 The intuition for implementing a reverse mode method comes from a major disadvantage of the forward mode method.
  
